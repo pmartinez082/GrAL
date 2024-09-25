@@ -3,8 +3,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Froga</title>
+    <link rel="manifest" href="/froga/pwa/manifest.json" />
+    <link rel="stylesheet" type=" text/css" href="/froga/css/style.css"> 
+    <script src="/froga/js/app.js"></script>
 </head>
 <body>
- test   
+ test  
+ 
+ <!-- Register the app's service worker. -->
+<script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/froga/js/sw.js");
+    }
+  </script>
+  
 </body>
 </html>
