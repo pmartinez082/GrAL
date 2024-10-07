@@ -9,9 +9,12 @@ form1.addEventListener("submit", (event) =>{
     event.preventDefault();
     const izena = izenaInput.value;
     const abizenak = abizenakInput.value;
-    emaitza.innerHTML="";
-    emaitza.append("izena: "+ izena+", abizenak: "+abizenak);
+    let galdera = document.getElementById("galdera");
+    galdera.setAttribute("hidden", "hidden");
+    emaitza.innerHTML="izena: "+ izena+", abizenak: "+abizenak;
     form1.reset();
     
 });
+
+
 
