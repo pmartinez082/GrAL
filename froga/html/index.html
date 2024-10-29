@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Froga</title>
-    <link rel="manifest" href="/froga/pwa/manifest.json" />
-    <link rel="stylesheet" type=" text/css" href="/froga/css/style.css"> 
+    <link rel="manifest" href="../pwa/manifest.json" />
+    <!--link rel="stylesheet" type=" text/css" href="../css/style.css"--> 
+    <script src = "../js/conf.js" type = "module"></script> 
     
-
 </head>
-<body>
 
+
+<body>
 <h1>FROGA</h1>
 <section id = "emaitza"></section>
 
@@ -19,23 +20,28 @@
 <h2>Sartu zure datuak</h2>
 <form id = "form1">
 Izena <input id = "iz" type = text required ><br/>
-Abizenak <input id = "ab" type = "text" required ><br/>
+email <input id = "em" type = "email" required ><br/>
+Pasahitza <input id = pass type = "password" required><br/>
 <button type ="submit">sartu</button>
 </form>
 </section>
 
-<button id = hasiera onclick="erakutsi()" hidden>hasiera</button>
 
-<script src = "/froga/js/app.js" defer></script>
+
 
  <!-- Register the app's service worker. -->
   <script>
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/froga/js/sw.js");
+      
+      navigator.serviceWorker.register("../js/sw.js");
+      
     }
   </script>
+
+
   
 </body>
 
+<script src = "../js/app.js" type ="module" defer></script>
 
 </html>

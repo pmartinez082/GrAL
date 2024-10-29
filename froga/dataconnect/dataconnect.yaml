@@ -1,0 +1,12 @@
+specVersion: "v1beta"
+serviceId: "froga"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "froga-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]

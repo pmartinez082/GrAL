@@ -1,0 +1,26 @@
+{
+    "name": "Putxerapp  ",
+    "icons": [
+      {
+        "src": "/froga/icons/putxera.jpg",
+        "type": "image/jpg",
+        "sizes": "868x868"
+      },
+
+      {
+
+        "src": "/froga/icons/putxera.png",
+        "type": "image/png",
+        "sizes": "868x868"
+      }
+    ],
+    
+    "id": "/",
+    "start_url": "/",
+    "theme_color": "#CCCCFF",
+    "background_color": "#ffffff",
+    "display": "standalone"
+
+    
+  }
+  
