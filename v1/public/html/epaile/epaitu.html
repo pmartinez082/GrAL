@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="../../pwa/manifest.json" />
+    <title>Balorazioak</title>
+</head>
+<body >
+    <form action = "../index.html">
+        <button type="submit">Atzera joan</button>
+    </form>
+    
+        <button type="click"  id = hasiForm onclick = "epaitu('epaile1',0)">Bozkaketa hasi</button>
+    
+    <form id="epaiketaForm" onsubmit = "balorazioaSortu('epaile1',event)">
+        <div id = "epaiketa" >
+
+        </div> 
+    </form>
+</body>
+<script src="../../pl/epaile.js"></script>
+</html>
