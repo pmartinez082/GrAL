@@ -5,21 +5,19 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "start": "node public/pl/index.js"
+        "start": "node index.js"
     },
     "dependencies": {
+        "cors": "^2.8.5",
         "dotenv": "^16.0.3",
-        "express": "^4.21.1"
+        "express": "^4.21.1",
+        "morgan": "^1.10.0",
+        "mysql2": "^3.11.4"
     },
     "engines": {
         "node": ">=14.0.0"
     },
     "author": "PaulaM",
     "license": "ISC",
-    "keywords": [],
-    "devDependencies": {
-        "nodemon": "^3.1.7",
-        "ts-node": "^10.9.2",
-        "typescript": "^5.6.3"
-    }
+    "keywords": []
 }
