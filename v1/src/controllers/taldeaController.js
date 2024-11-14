@@ -1,0 +1,82 @@
+
+import dbConnection from '../database/database.js';
+
+
+export const getTaldeak = async (req, res) => {
+  try {
+    
+    const [results] = await dbConnection.query("SELECT * FROM taldea");
+    res.status(200).json(results);  
+  } catch (error) {
+    console.error(error); 
+    res.status(500).json({ error: 'errorea taldeak eskuratzean' });    }
+};
+
+
+
+export const createNewTaldea = async (req, res) => {
+  const taldea = req.body;
+
+ 
+  if (!taldea.izena || !taldea.email ) {
+    return res.status(400).json({
+      ErrorCode: 204,
+      Message: 'Fields cannot be empty'
+    });
+  }
+
+if(!taldea.telefonoa)
+  taldea.telefonoa = null;
+
+if(!taldea.puntuakGuztira)
+  taldea.puntuakGuztira = 0;
+
+  const taldeaObj = [
+   taldea.izena,
+   taldea.email,
+   taldea.telefonoa,
+   taldea.puntuakGuztira
+   
+  ];
+
+  const sqlQuery = 'INSERT INTO taldea (izena, email, telefonoa, puntuakGuztira) VALUES (?, ?, ?, ?)';
+
+  try {
+
+    await dbConnection.execute(sqlQuery, taldeaObj);
+    res.status(201).json({ message: 'taldea created'});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error creating taldea' });
+  }
+};
+
+export const getTaldea = async (req, res) => {
+  const id = parseInt(req.params.idTaldea);
+  
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'You must enter a valid id as a parameter' });
+  }
+
+  const sqlQuery = `SELECT * FROM taldea WHERE idTaldea = ?`;
+
+  try {
+
+    const [results] = await dbConnection.query(sqlQuery, [id]);
+    
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'taldea not found' });
+    }
+
+   
+    res.status(200).json(results);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error retrieving data' });
+  }
+};
+
+  
+
+  
+

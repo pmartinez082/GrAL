@@ -1,10 +1,16 @@
 
 import txapelketaRoutes from './src/routes/txapelketaRoutes.js';
 import userRoutes from './src/routes/userRoutes.js';
+import taldeaRoutes from './src/routes/taldeaRoutes.js';
+import epaimahaikideaRoutes from './src/routes/epaimahaikideaRoutes.js';
+import ebaluazioaRoutes from './src/routes/ebaluazioaRoutes.js';
 
 const router = (app) => {
     app.use('/txapelketa', txapelketaRoutes);
     app.use('/user', userRoutes);
+    app.use('/taldea', taldeaRoutes);
+    app.use('/epaimahaikidea', epaimahaikideaRoutes);
+    app.use('/ebaluazioa', ebaluazioaRoutes);
 };
 
 export default router;
