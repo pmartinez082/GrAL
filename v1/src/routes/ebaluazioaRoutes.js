@@ -2,10 +2,11 @@ import express from 'express';
 import * as eC from '../controllers/ebaluazioaController.js';
 const router = express.Router();
 
-router.get('/:idEpaimahaikidea', eC.getEpailearenEbaluazioak); // 3000/epaimahaikidea/
-router.get('/fasea/:idFasea', eC.getfasearenEbaluazioak); // 3000/epaimahaikidea/1
-router.get('/taldea/:idTaldea', eC.getTaldearenEbaluazioak); // 3000/epaimahaikidea/1
-router.get('/epaimahaikidea/:idEpaimahaikidea', eC.getEpailearenEbaluazioak); // 3000/epaimahaikidea/1
-router.post('/add', eC.createNewEbaluazioa); // 3000/epaimahaikidea/ebaluazioa/add
+router.get('/', eC.getEbaluazioak); // 3000/ebaluazioa/
+router.get('/:idEbaluazioa', eC.getEbaluazioa); // 3000/ebaluazioa/1
+router.delete('/delete/', eC.deleteEbaluazioa); // 3000/ebaluazioa/delete/
+router.put('/update/', eC.updateEbaluazioa); //3000/ebaluazioa/update/
+router.post('/add', eC.createNewEbaluazioa); // 3000/ebaluazioa/add
+
 
 export default router;

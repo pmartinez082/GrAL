@@ -12,6 +12,23 @@ export const getTxapelketak = async (req, res) => {
     res.status(500).json({ error: 'errorea txapelketak eskuratzean' });    }
 };
 
+export const getTxapelketa = async (req, res) => {
+  const id = parseInt(req.params.idTxapelketa);
+  
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'You must enter a valid id as a parameter' });
+  }
+  
+  const sqlQuery = `SELECT * FROM txapelketa WHERE idTxapelketa = ?`;
+  
+  try {
+    const [results] = await dbConnection.query(sqlQuery, id);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'errorea txapelketa eskuratzean' });
+  }
+};
 
 export const getTxapelketarenFaseak = async (req, res) => {
   const id = parseInt(req.params.idTxapelketa);
@@ -68,66 +85,35 @@ export const createNewTxapelketa = async (req, res) => {
   }
 };
 
-export const faseaExists = async (req, res) => {
-  const idTxapelketa = parseInt(req.params.idTxapelketa);
-  const idFasea = parseInt(req.params.idFasea);
-  if(isNaN(idTxapelketa||isNaN(idFasea))){
-    return res.status(400).json({ error: 'You must enter a valid id as a parameter' });
-  }
-  try {
-    
-      const [results] = await dbConnection.query("SELECT * FROM fasea WHERE idFasea = ? and idTxapelketa = ?", [idFasea, idTxapelketa]);
-      if(results.length > 0)
-        res.status(200).json(results);
-      else
-        res.status(200).json(false);
+
   
-
-    } catch (error) {
-      console.error(error); 
-      res.status(500).json({ error: 'errorea' });    }
-  };
-
-  export const createNewFasea = async (req, res) => {
-    const fasea = req.body;
-    if(!fasea.hasiera)
-      fasea.hasiera = null;
-    if(!fasea.amaiera)
-      fasea.amaiera = null;
-
-
-   
-    if (!fasea.izena || !fasea.kodea || !fasea.egoera || !fasea.irizpidea) {
-      return res.status(400).json({
-        ErrorCode: 204,
-        Message: 'Fields cannot be empty'
-      });
+export const updateTxapelketa = async (req, res) => {
+    const txapelketa = req.body;
+    const idTxapelketa = parseInt(req.body.idTxapelketa);
+    if(isNaN(idTxapelketa)){
+      return res.status(400).json({ error: 'You must enter a valid id as a parameter' });
     }
-  
-    const faseaObj = [
-    fasea.idTxapelketa,
-    fasea.izena,
-    fasea.kodea,
-    fasea.egoera,
-    fasea.hasiera,
-    fasea.amaiera,
-    fasea.irizpidea
-     
-    ];
-  
-    const sqlQuery = 'INSERT INTO fasea (idTxapelketa, izena, kodea, egoera, hasiera, amaiera, irizpidea) VALUES (?, ?, ?, ?, ?, ?, ?)';
-  
     try {
-  
-      await dbConnection.execute(sqlQuery, faseaObj);
-      res.status(201).json({ message: 'fasea created'});
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Error creating fasea' });
+      const txapelketaObj = [
+        txapelketa.izena,
+        txapelketa.dataOrdua,
+        txapelketa.lekua,
+        idTxapelketa
+      ];
+      const sqlQuery = 'UPDATE txapelketa SET izena = ?, dataOrdua = ?, lekua = ? WHERE idTxapelketa = ?';
+      await dbConnection.execute(sqlQuery, txapelketaObj);
+      res.status(200).json({ message: 'txapelketa updated' });
+    }
+
+    catch(error){
+      console.log(error);
     }
   };
 
-  
- 
-  
+ export const deleteTxapelketa = async (req, res) =>{
+   const idTxapelketa = parseInt(req.body.idTxapelketa);
+   const sqlQuery = 'DELETE FROM txapelketa WHERE idTxapelketa = ?';
+   await dbConnection.execute(sqlQuery, [idTxapelketa]);
+   res.status(200).json({ message: 'txapelketa deleted' });
+ };
 

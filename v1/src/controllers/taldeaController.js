@@ -76,7 +76,66 @@ export const getTaldea = async (req, res) => {
   }
 };
 
-  
+export const updateTaldea = async (req, res) => {
+  const id = parseInt(req.body.idTaldea);
+  const taldea = req.body;
+
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'You must enter a valid id as a parameter' });
+  }
+
+  try {
+      const taldeaObj = [
+        taldea.izena,
+        taldea.email,
+        taldea.telefonoa,
+        taldea.puntuakGuztira,
+        id
+      ];
+      const sqlQuery = 'UPDATE taldea SET izena = ?, email = ?, telefonoa = ?, puntuakGuztira = ? WHERE idTaldea = ?';
+      await dbConnection.execute(sqlQuery, taldeaObj);
+      res.status(200).json({ message: 'taldea updated' });
 
   
+
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error updating taldea' });
+  }
+};
+
+export async function deleteTaldea(req, res) {
+  const idTaldea = parseInt(req.body.idTaldea);
+  const sqlQuery = 'DELETE FROM taldea WHERE idTaldea = ?';
+  await dbConnection.execute(sqlQuery, [idTaldea]);
+  res.status(200).json({ message: 'taldea deleted' });
+}
+
+export const getTaldearenEbaluazioak = async (req, res) => {
+  const id = parseInt(req.params.idTaldea);
+  
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'You must enter a valid id as a parameter' });
+  }
+
+  const sqlQuery = `SELECT * FROM ebaluazioa WHERE idTaldea = ?`;
+
+  try {
+
+    const [results] = await dbConnection.query(sqlQuery, [id]);
+    
+    if (results.length === 0) {
+      res.status(404).json({ error: 'Ebaluazioa not found' });
+    }
+
+    else{
+      res.status(200).json(results);}
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error retrieving data' });
+  }
+
+}; 
+
 

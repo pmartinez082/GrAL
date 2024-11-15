@@ -43,7 +43,7 @@ export const createNewEpaimahaikidea = async (req, res) => {
   const idFasea = req.body.idFasea;
   const username = req.body.username;
 
-  // Validar que los campos requeridos estén presentes
+
   if (!idFasea || !username) {
     return res.status(400).json({
       ErrorCode: 204,
@@ -52,20 +52,13 @@ export const createNewEpaimahaikidea = async (req, res) => {
   }
 
   try {
-
-    const faseaExists = await booleanFaseaExists(req);
-
-    if (faseaExists) {
     
       const sqlQuery = `INSERT INTO epaimahaikidea (idFasea, username) VALUES (?, ?)`;
       await dbConnection.execute(sqlQuery, [idFasea, username]);
       res.status(201).json({ message: 'epaimahaikidea created' });
-    } else {
- 
-      res.status(404).json({ message: 'Fasea not found' });
-    }
+
   } catch (error) {
-    console.error('Error en createNewEpaimahaikidea:', error);
+
     res.status(500).json({ error: 'Error creating epaimahaikidea' });
   }
 };
@@ -122,5 +115,40 @@ export const booleanEpaimahaikideaExists = async (req) => {
   } catch (error) {
     console.error(error);
     
+  }
+};
+
+export const updateEpaimahaikidea = async (req, res) => {
+  const idEpaimahaikidea = parseInt(req.body.idEpaimahaikidea);
+  const epaimahaikidea = req.body;
+  const epaimahaikideaObj = [
+    epaimahaikidea.username,
+    epaimahaikidea.idFasea,
+    idEpaimahaikidea
+  ];
+  if(isNaN(idEpaimahaikidea)){
+    return res.status(400).json({ error: 'You must enter a valid id as a parameter' });
+  }
+  try {
+    const sqlQuery = `UPDATE epaimahaikidea SET username = ?, idFasea = ? WHERE idEpaimahaikidea = ?`;
+    await dbConnection.execute(sqlQuery, epaimahaikideaObj);
+    res.status(200).json({ message: 'epaimahaikidea updated' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error updating epaimahaikidea' });
+  }
+};
+
+export const deleteEpaimahaikidea = async (req, res) => {
+  const idEpaimahaikidea = parseInt(req.body.idEpaimahaikidea);
+  if (isNaN(idEpaimahaikidea)) {
+    return res.status(400).json({ error: 'You must enter a valid id as a parameter' });
+  }
+  try {
+    const sqlQuery = 'DELETE FROM epaimahaikidea WHERE idEpaimahaikidea = ?';
+    await dbConnection.execute(sqlQuery, [idEpaimahaikidea]);
+    res.status(200).json({ message: 'epaimahaikidea deleted' });
+  } catch (error) {
+    console.error(error);
   }
 };
