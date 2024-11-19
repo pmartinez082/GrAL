@@ -5,14 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ikusi lehiaketak</title>
     <link rel="manifest" href="..//../pwa/manifest.json" />
+    <script type = "module">
+        import { txapelketaBistaratu } from '../../js/admin.js';
+        window.addEventListener('DOMContentLoaded', () => {
+            txapelketaBistaratu(1);
+        });
+    </script>
 </head>
 <body >
     <form action = "admin.html">
         <button type="submit">Atzera joan</button>
     </form>
-<div id = lehiaketak ></div>
+<div id = "txapelketak" ></div>
 </body>
 
    
-<script src = "../../pl/admin.js" type = "module"></script>
+
 </html>

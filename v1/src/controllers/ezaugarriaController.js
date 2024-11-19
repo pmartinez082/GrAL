@@ -60,8 +60,10 @@ export const createNewEzaugarria = async (req, res) => {
 
   try {
 
-    await dbConnection.execute(sqlQuery, ezaugarriaObj);
-    res.status(201).json({ message: 'ezaugarria created'});
+    const [result] = await dbConnection.execute(sqlQuery, ezaugarriaObj);
+    
+    const idEzaugarria = result.insertId;
+    res.status(201).json({idEzaugarria});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error creating ezaugarria' });

@@ -1,3 +1,4 @@
+
 import dbConnection from '../database/database.js';
 
 export const getEbaluazioak = async (req, res) => {
@@ -61,8 +62,8 @@ export const createNewEbaluazioa = async (req, res) => {
          
         const sqlQuery = 'INSERT INTO ebaluazioa (idEpaimahaikidea, idEzaugarria, idTaldea, puntuak, noiz) VALUES (?, ?, ?, ?, ?)';
         await dbConnection.execute(sqlQuery, ebaluazioaObj);
-        res.status(201).json({ message: 'ebaluazioa created' });
-
+        const idEbaluazioa = result.insertId;
+        res.status(201).json({ idEbaluazioa });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Error creating ebaluazioa' });

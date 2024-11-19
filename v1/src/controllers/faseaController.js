@@ -84,8 +84,9 @@ export const faseaExists = async (req, res) => {
   
     try {
   
-      await dbConnection.execute(sqlQuery, faseaObj);
-      res.status(201).json({ message: 'fasea created'});
+      const [result] = await dbConnection.execute(sqlQuery, faseaObj);
+      const idFasea = result.insertId;
+      res.status(201).json({ idFasea });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Error creating fasea' });
@@ -175,6 +176,42 @@ export const faseaExists = async (req, res) => {
       
       if (results.length === 0) {
         res.status(404).json({ error: 'Fasearen ezaugarriak not found' });
+      }
+  
+      else{
+        res.status(200).json(results);}
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error retrieving data' });
+    }
+  
+  };
+
+  export const getFasearenEpaimahaikideakEzaugarriak = async (req, res) => {
+    const id = parseInt(req.params.idFasea);
+    
+    if (isNaN(id)) {
+      return res.status(400).json({ error: 'You must enter a valid id as a parameter' });
+    }
+  
+    const sqlQuery = `SELECT 
+    f.idFasea, 
+    e.idEzaugarria, 
+    e.izena, 
+    ep.idEpaimahaikidea, 
+    ep.username
+FROM fasea f
+LEFT JOIN ezaugarria e ON f.idFasea = e.idFasea
+LEFT JOIN epaimahaikidea ep ON f.idFasea = ep.idFasea
+WHERE f.idFasea = ?;
+`;
+  
+    try {
+  
+      const [results] = await dbConnection.query(sqlQuery, [id]);
+      
+      if (results.length === 0) {
+        res.status(404).json({ error: 'Epaimahaikideak ezaugarriak not found' });
       }
   
       else{

@@ -1,4 +1,5 @@
 
+
 import dbConnection from '../database/database.js';
 
 
@@ -58,32 +59,36 @@ export const getTxapelketarenFaseak = async (req, res) => {
 export const createNewTxapelketa = async (req, res) => {
   const txapelketa = req.body;
 
- 
-  if (!txapelketa.izena || !txapelketa.dataOrdua || !txapelketa.lekua ) {
+  
+  if (!txapelketa.izena || !txapelketa.dataOrdua || !txapelketa.lekua) {
     return res.status(400).json({
       ErrorCode: 204,
-      Message: 'Fields cannot be empty'
+      Message: 'Fields cannot be empty',
     });
   }
 
   const txapelketaObj = [
-   txapelketa.izena,
-   txapelketa.dataOrdua,
-   txapelketa.lekua 
-   
+    txapelketa.izena,
+    txapelketa.dataOrdua,
+    txapelketa.lekua,
   ];
 
   const sqlQuery = 'INSERT INTO txapelketa (izena, dataOrdua, lekua) VALUES (?, ?, ?)';
 
   try {
+    
+    const [result] = await dbConnection.execute(sqlQuery, txapelketaObj);
 
-    await dbConnection.execute(sqlQuery, txapelketaObj);
-    res.status(201).json({ message: 'txapelketa created'});
+
+    const idTxapelketa = result.insertId;
+
+    res.status(201).json({ idTxapelketa });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error creating txapelketa' });
   }
 };
+
 
 
   
@@ -116,4 +121,142 @@ export const updateTxapelketa = async (req, res) => {
    await dbConnection.execute(sqlQuery, [idTxapelketa]);
    res.status(200).json({ message: 'txapelketa deleted' });
  };
+
+export const getInfoGuztia = async (req, res) => {
+  const sqlQuery = `SELECT 
+    t.idTxapelketa,
+    t.izena AS txapelketaIzena,
+    t.dataOrdua AS txapelketaData,
+    t.lekua AS txapelketaLekua,
+
+    f.idFasea,
+    f.izena AS faseIzena,
+    f.kodea AS faseKodea,
+    f.egoera AS faseEgoera,
+    f.hasiera AS faseHasiera,
+    f.amaiera AS faseAmaiera,
+    f.irizpidea AS faseIrizpidea,
+
+    e.idEzaugarria,
+    e.izena AS ezaugarriaIzena,
+
+    ep.idEpaimahaikidea,
+    ep.username AS epaimahaikideaUsername
+FROM txapelketa t
+LEFT JOIN fasea f ON t.idTxapelketa = f.idTxapelketa
+LEFT JOIN ezaugarria e ON f.idFasea = e.idFasea
+LEFT JOIN epaimahaikidea ep ON f.idFasea = ep.idFasea
+ORDER BY t.idTxapelketa, f.idFasea, e.idEzaugarria, ep.idEpaimahaikidea;
+`
+  try {
+    const [results] = await dbConnection.query(sqlQuery);
+    res.status(200).json(transformData(results));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error retrieving data' });
+  }
+
+};
+
+
+function transformData(data) {
+  const txapelketakMap = new Map();
+
+  data.forEach((row) => {
+    
+      if (!txapelketakMap.has(row.idTxapelketa)) {
+          txapelketakMap.set(row.idTxapelketa, {
+              idTxapelketa: row.idTxapelketa,
+              txapelketaIzena: row.txapelketaIzena,
+              txapelketaData: row.txapelketaData,
+              txapelketaLekua: row.txapelketaLekua,
+              faseak: []
+          });
+      }
+      const txapelketa = txapelketakMap.get(row.idTxapelketa);
+
+      
+      if (!row.idFasea) return;
+
+      let fase = txapelketa.faseak.find(f => f.idFasea === row.idFasea);
+      if (!fase) {
+          fase = {
+              idFasea: row.idFasea,
+              faseIzena: row.faseIzena,
+              faseKodea: row.faseKodea,
+              faseEgoera: row.faseEgoera,
+              faseHasiera: row.faseHasiera,
+              faseAmaiera: row.faseAmaiera,
+              faseIrizpidea: row.faseIrizpidea,
+              ezaugarriak: [],
+              epaimahaikideak: []
+          };
+          txapelketa.faseak.push(fase);
+      }
+
+      
+      if (row.idEzaugarria) {
+          const ezaugarriaExists = fase.ezaugarriak.some(e => e.idEzaugarria === row.idEzaugarria);
+          if (!ezaugarriaExists) {
+              fase.ezaugarriak.push({
+                  idEzaugarria: row.idEzaugarria,
+                  ezaugarriaIzena: row.ezaugarriaIzena
+              });
+          }
+      }
+
+     
+      if (row.idEpaimahaikidea) {
+          const epaimahaikideaExists = fase.epaimahaikideak.some(ep => ep.idEpaimahaikidea === row.idEpaimahaikidea);
+          if (!epaimahaikideaExists) {
+              fase.epaimahaikideak.push({
+                  idEpaimahaikidea: row.idEpaimahaikidea,
+                  epaimahaikideaUsername: row.epaimahaikideaUsername
+              });
+          }
+      }
+  });
+
+ 
+  return Array.from(txapelketakMap.values());
+}
+
+export async function getTxapelketarenInfoGuztia(req, res) {
+  const idTxapelketa = parseInt(req.params.idTxapelketa);
+  if (isNaN(idTxapelketa)) {
+    return res.status(400).json({ error: 'You must enter a valid id as a parameter' });
+  }
+  const sqlQuery = `SELECT 
+    t.idTxapelketa, 
+    t.izena AS txapelketaIzena, 
+    t.dataOrdua AS txapelketaData, 
+    t.lekua AS txapelketaLekua,
+    f.idFasea, 
+    f.izena AS faseIzena, 
+    f.kodea AS faseKodea, 
+    f.egoera AS faseEgoera, 
+    f.hasiera AS faseHasiera, 
+    f.amaiera AS faseAmaiera, 
+    f.irizpidea AS faseIrizpidea,
+    e.idEzaugarria, 
+    e.izena AS ezaugarriaIzena,
+    em.idEpaimahaikidea, 
+    em.username AS epaimahaikideaUsername
+FROM txapelketa t
+LEFT JOIN fasea f ON f.idTxapelketa = t.idTxapelketa
+LEFT JOIN ezaugarria e ON e.idFasea = f.idFasea
+LEFT JOIN epaimahaikidea em ON em.idFasea = f.idFasea
+WHERE t.idTxapelketa = ?
+ORDER BY f.idFasea, e.idEzaugarria, em.idEpaimahaikidea;
+
+`
+  try {
+    const [results] = await dbConnection.query(sqlQuery, [idTxapelketa]);
+    res.status(200).json(transformData(results));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error retrieving data' });
+  }
+
+};
 

@@ -54,8 +54,9 @@ export const createNewEpaimahaikidea = async (req, res) => {
   try {
     
       const sqlQuery = `INSERT INTO epaimahaikidea (idFasea, username) VALUES (?, ?)`;
-      await dbConnection.execute(sqlQuery, [idFasea, username]);
-      res.status(201).json({ message: 'epaimahaikidea created' });
+      const [result] = await dbConnection.execute(sqlQuery, [idFasea, username]);
+      const idEpaimahaikidea = result.insertId;
+      res.status(201).json({ idEpaimahaikidea });
 
   } catch (error) {
 

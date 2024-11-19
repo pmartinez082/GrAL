@@ -43,8 +43,9 @@ if(!taldea.puntuakGuztira)
 
   try {
 
-    await dbConnection.execute(sqlQuery, taldeaObj);
-    res.status(201).json({ message: 'taldea created'});
+    const [result] = await dbConnection.execute(sqlQuery, taldeaObj);
+    const idTaldea = result.insertId; 
+    res.status(201).json({ idTaldea });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error creating taldea' });

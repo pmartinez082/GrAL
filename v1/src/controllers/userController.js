@@ -61,7 +61,8 @@ export const createNewUser = async (req, res) => {
         try {
 
           const [result] = await dbConnection.execute(sqlQuery, userObj);
-          res.status(201).json({ message: 'user created', username: result.username });
+          const username = result.username;
+          res.status(201).json({ username});
         } catch (error) {
           console.error(error);
           res.status(500).json({ error: 'Error creating user' });
