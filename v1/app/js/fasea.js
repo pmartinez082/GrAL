@@ -1,5 +1,5 @@
 const API_URL = 'http://localhost:3000';
-
+import * as klaseak from "./klaseak.js";
 //FASEAK LORTU
 export const getFaseak = async (event) => {
     event.preventDefault();
@@ -132,7 +132,7 @@ export const getFasea = async () => {
         });
         if (response.ok) {
             const data = await response.json();
-           return new klaseak.Fasea(data.idFasea, data.idTxapelketa, data.kodea, data.izena, data.hasiera, data.amaiera, data.egoera, data.irizpidea);
+           return new klaseak.Fasea(data.idFasea, data.idTxapelketa, data.izena, data.kodea, data.egoera, data.hasiera, data.amaiera, data.irizpidea);
 
 
         }
@@ -161,33 +161,28 @@ export const getFasearenEzaugarriak = async () => {
             data.forEach(ezaugarri => {
                 ezaugarriak.push(new klaseak.Ezaugarria(ezaugarri.idEzaugarria, ezaugarri.izena, ezaugarri.puntuakMax, ezaugarri.puntuakMin));
             });
-            return faseak;
+            return ezaugarriak;
         }
     } catch (err) {
         console.error(err);
     }
 };
 
-export const getFasearenEpaimahaikideakEzaugarriak = async () => {
+export const getFaseAktiboa = async () => {
     
-    const idFasea = document.getElementById('idFasea').value;
     try {
-        const response = await fetch(`${API_URL}/fasea/${idFasea}/epaimahaikideak/ezaugarriak`, {
+        const response = await fetch(`${API_URL}/fasea/lortu/aktiboa`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
-            
         });
         if (response.ok) {
             const data = await response.json();
-            const guztia = [];
-            data.forEach(g => {
-                guztia.push(new klaseak.FaseaEzEp(g.idFasea, g.izena, g.idEpaimahaikidea, g.username, g.idEzaugarria));
-            });
-            return guztia;      
+            return new klaseak.Fasea(data[0].idFasea, data[0].idTxapelketa, data[0].izena, data[0].kodea, data[0].egoera, data[0].hasiera, data[0].amaiera, data[0].irizpidea);
         }
     } catch (err) {
-        console.error(err);
+        //console.error(err);
+        return null;
     }
 };

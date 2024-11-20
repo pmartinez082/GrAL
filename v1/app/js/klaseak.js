@@ -51,3 +51,15 @@ export class user{
         this.role = role;
     }
 }
+
+export class Taldea {
+    constructor(idTaldea, izena, email, telefonoa, puntuakGuztira, egoera) {
+        this.idTaldea = idTaldea;
+        this.izena = izena;
+        this.email = email;
+        this.telefonoa = telefonoa;
+        this.puntuakGuztira = puntuakGuztira;
+        this.egoera = egoera;
+       
+    }
+}

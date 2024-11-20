@@ -61,7 +61,7 @@ export const createNewEbaluazioa = async (req, res) => {
 
          
         const sqlQuery = 'INSERT INTO ebaluazioa (idEpaimahaikidea, idEzaugarria, idTaldea, puntuak, noiz) VALUES (?, ?, ?, ?, ?)';
-        await dbConnection.execute(sqlQuery, ebaluazioaObj);
+        const [result] = await dbConnection.execute(sqlQuery, ebaluazioaObj);
         const idEbaluazioa = result.insertId;
         res.status(201).json({ idEbaluazioa });
     } catch (error) {
@@ -140,4 +140,18 @@ export const createNewEbaluazioa = async (req, res) => {
   };
 
   
+  export const EbaluazioaExists = async (req, res) => {
+    const data = req.body;
+    const sqlQuery = `SELECT * FROM ebaluazioa WHERE idEpaimahaikidea = ? and idEzaugarria = ? and idTaldea = ?`;
+    try {
+      const [results] = await dbConnection.query(sqlQuery, [data.idEpaimahaikidea, data.idEzaugarria, data.idTaldea]);
+      if(results.length > 0)
+        res.status(200).json(true);
+      else
+        res.status(200).json(false);
   
+
+    } catch (error) {
+      console.error(error); 
+      res.status(500).json({ error: 'errorea' });    }
+  };

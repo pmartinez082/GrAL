@@ -222,3 +222,23 @@ WHERE f.idFasea = ?;
     }
   
   };
+
+  export const getFaseAktiboa = async (req, res) => {
+    
+    const sqlQuery = `SELECT * FROM fasea WHERE egoera = 1;`;
+  
+    try {
+  
+      const [results] = await dbConnection.query(sqlQuery);
+      
+      if (results.length === 0) {
+        res.status(404).json({ error: 'Fasea not found' });
+      }
+  
+      else{
+        res.status(200).json(results);}
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error retrieving data' });
+    }
+  };

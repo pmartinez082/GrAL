@@ -10,14 +10,19 @@
     <form action = "../index.html">
         <button type="submit">Atzera joan</button>
     </form>
+    <script type = "module">
+        import {ebaluazioaForm, ebaluazioaSortu} from '../../js/epaile.js';
+        document.getElementById('ebaluazioaButton').addEventListener('click', ebaluazioaForm);
+        document.getElementById('ebaluazioaForm').addEventListener('submit', ebaluazioaSortu);
+        
+  </script>
+    <button type="button" id="ebaluazioaButton">Baloratzen hasi</button>
     
-        <button type="click"  id = hasiForm onclick = "epaitu('epaile1',0)">Bozkaketa hasi</button>
-    
-    <form id="epaiketaForm" onsubmit = "balorazioaSortu('epaile1',event)">
-        <div id = "epaiketa" >
-
-        </div> 
+    <form id = "ebaluazioaForm">
+    <table id="ebaluazioaTaula"></table>
     </form>
+    
+    <div id = "idFasea" hidden></div>
 </body>
-<script src="../../pl/epaile.js"></script>
+
 </html>

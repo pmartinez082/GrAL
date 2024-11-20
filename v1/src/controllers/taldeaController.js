@@ -35,11 +35,12 @@ if(!taldea.puntuakGuztira)
    taldea.izena,
    taldea.email,
    taldea.telefonoa,
-   taldea.puntuakGuztira
+   taldea.puntuakGuztira,
+   taldea.egoera
    
   ];
 
-  const sqlQuery = 'INSERT INTO taldea (izena, email, telefonoa, puntuakGuztira) VALUES (?, ?, ?, ?)';
+  const sqlQuery = 'INSERT INTO taldea (izena, email, telefonoa, puntuakGuztira, egoera) VALUES (?, ?, ?, ?, ?)';
 
   try {
 
@@ -91,9 +92,10 @@ export const updateTaldea = async (req, res) => {
         taldea.email,
         taldea.telefonoa,
         taldea.puntuakGuztira,
+        taldea.egoera,
         id
       ];
-      const sqlQuery = 'UPDATE taldea SET izena = ?, email = ?, telefonoa = ?, puntuakGuztira = ? WHERE idTaldea = ?';
+      const sqlQuery = 'UPDATE taldea SET izena = ?, email = ?, telefonoa = ?, puntuakGuztira = ?, egoera = ? WHERE idTaldea = ?';
       await dbConnection.execute(sqlQuery, taldeaObj);
       res.status(200).json({ message: 'taldea updated' });
 
@@ -139,4 +141,48 @@ export const getTaldearenEbaluazioak = async (req, res) => {
 
 }; 
 
+//egoera = 0 baloratu gabe, =1, baloratuta, =2 deskalifikatuta
+export const getBaloratuGabekoTaldeak = async (req, res) => {
+  const idEpaimahaikidea = parseInt(req.params.idEpaimahaikidea);
+  const sqlQuery = `SELECT t.*
+FROM taldea t
+LEFT JOIN ebaluazioa e 
+    ON t.idTaldea = e.idTaldea AND e.idEpaimahaikidea = ?
+WHERE t.egoera = 0
+  AND e.idEbaluazioa IS NULL;
+`;
 
+  try {
+
+    const [results] = await dbConnection.query(sqlQuery, [idEpaimahaikidea]);
+    
+    if (results.length === 0) {
+      res.status(404).json({ error: 'Taldeak ez daude baloratu gabeko' });
+    }
+
+    else{
+      res.status(200).json(results);}
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error retrieving data' });
+  }
+
+};
+
+export const setTaldeenEgoera = async (req, res) => {
+const sqlQuery = `UPDATE taldea SET egoera = 0 WHERE egoera = 1;`;
+  try {
+
+    const [results] = await dbConnection.query(sqlQuery);
+    
+    if (results.length === 0) {
+      res.status(404).json({ error: 'Talde guztiak deskalifikatuak izan dira' });
+    }
+
+    else{
+      res.status(200).json(results);}
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error retrieving data' });
+  }
+};
