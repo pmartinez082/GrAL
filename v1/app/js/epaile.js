@@ -1,6 +1,7 @@
 import * as f from "./fasea.js";
 import * as eb from "./ebaluazioa.js";
 import * as t from "./taldea.js";
+import * as u from "./user.js";
 
 export async function ebaluazioaSortu(event){
     event.preventDefault();
@@ -9,10 +10,12 @@ export async function ebaluazioaSortu(event){
     await eb.createNewEbaluazioa(event);
     document.getElementById('ebaluazioaTaula').innerHTML = "";
     ebaluazioaForm1.reset();
-    const hurrengoButton = document.createElement('button');
-    hurrengoButton.textContent = 'Hurrengo balorazioa';
+    document.getElementById('ebaluazioaButton').hidden = true;
+    
+    const hurrengoButton = document.getElementById('hurrengoaButton');
+    hurrengoButton.hidden = false;
     hurrengoButton.addEventListener('click', ebaluazioaForm);
-    ebaluazioaForm1.appendChild(hurrengoButton);
+ 
 
 
 }

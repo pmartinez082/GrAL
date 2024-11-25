@@ -153,3 +153,21 @@ export const deleteEpaimahaikidea = async (req, res) => {
     console.error(error);
   }
 };
+
+export const getEpailearenEpaimahaiak = async (req, res) => {
+  const info = req.body;
+  const infoObj =
+  [{
+    username: info.username,
+    idFasea: info.idFasea,
+    idEzaugarria: info.idEzaugarria
+  }]
+  try {
+    const sqlQuery = `SELECT * FROM epaimahaikidea WHERE username = ?, idFasea = ?, idEzaugarria  = ?`;
+    const [results] = await dbConnection.query(sqlQuery, infoObj);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error retrieving data' });
+  }
+};

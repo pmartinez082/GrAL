@@ -1,6 +1,6 @@
 
 import dbConnection from '../database/database.js';
-
+import jwt from 'jsonwebtoken';
 
 export const getUsers = async (req, res) => {
     try {
@@ -101,4 +101,57 @@ export const deleteUser = async (req, res) => {
 
   } catch (error) {
     console.error(error);   }
+};
+
+export const verifyUser = async (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  try {
+    const sqlQuery = 'SELECT * FROM user WHERE username = ? AND password = ?';
+    const [results] = await dbConnection.query(sqlQuery, [username, password]);
+    if (results.length === 0) {
+      res.status(401).json({ error: 'Invalid username or password' });
+    } else {
+      const token = jwt.sign({ username }, 'token', { expiresIn: '1h' });
+      res.json({ success: true, token });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(false);
+  }
+};
+
+export const findUser = async (req, res) => {
+  const username = req.body.username;
+
+  try {
+    const sqlQuery = 'SELECT * FROM user WHERE username = ?';
+    const [results] = await dbConnection.query(sqlQuery, [username]);
+    if (results.length === 0) {
+      res.status(401).json(true);
+    } else {
+      res.status(200).json(false);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error verifying user' });
+  }
+};
+
+export const getRole = async (req, res) => {
+  const username = req.body.username;
+
+  try {
+    const sqlQuery = 'SELECT * FROM user WHERE username = ?';
+    const [results] = await dbConnection.query(sqlQuery, [username]);
+    if (results.length === 0) {
+      res.status(401).json(false);
+    } else {
+      res.status(200).json(results[0].role);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error verifying user' });
+  }
 };

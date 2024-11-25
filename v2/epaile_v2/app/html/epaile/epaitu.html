@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="../../pwa/manifest.json" />
+    <title>Balorazioak</title>
+</head>
+<body >
+    <form action = "../index.html">
+        <button type="submit">Atzera joan</button>
+    </form>
+    <script type = "module">
+        import {ebaluazioaForm, ebaluazioaSortu} from '../../js/epaile.js';
+        import {autentifikatu} from '../../js/user.js';
+        document.getElementById('ebaluazioaButton').addEventListener('click', ebaluazioaForm);
+        document.getElementById('ebaluazioaForm').addEventListener('submit', ebaluazioaSortu);
+        window.addEventListener('DOMContentLoaded', autentifikatu);
+
+        
+  </script>
+    <button type="button" id="ebaluazioaButton">Baloratzen hasi</button>
+    <button type="button" id = "hurrengoaButton" hidden>Hurrengo balorazioa</button>
+    <form id = "ebaluazioaForm">
+    <table id="ebaluazioaTaula"></table>
+    </form>
+    
+    <div id = "idFasea" hidden></div>
+</body>
+
+</html>
