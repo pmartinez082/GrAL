@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://192.168.13.117:3000';
+import { getFaseAktiboa } from './fasea.js';
 import * as klaseak from './klaseak.js';
 import {autentifikatu} from './user.js';
 function getEpaimahaikideakArray(){
@@ -76,9 +77,12 @@ export const createNewEpaimahaikidea = async () => {
 };
 
 export const getEpailearenEpaimahaiak = async () => {
+    
+    const fasea = await getFaseAktiboa();
+    const idFasea = fasea.idFasea;
     const data = {
         username: await autentifikatu(),
-        idFasea: document.getElementById('idFasea').value.toString()
+        idFasea: idFasea
     };
     try {
         const response = await fetch(`${API_URL}/epaimahaikidea/getEpailearenEpaimahaiak`, {

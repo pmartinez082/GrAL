@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://192.168.13.117:3000';
 import * as klaseak from "./klaseak.js";
 //FASEAK LORTU
 export const getFaseak = async (event) => {
@@ -146,7 +146,9 @@ export const getFasea = async () => {
 //FASEAREN EZAUGARRIAK LORTU
 export const getFasearenEzaugarriak = async () => {
     
-    const idFasea = document.getElementById('idFasea').value;
+    const fasea = await getFaseAktiboa();
+    console.log(fasea);
+    const idFasea = fasea.idFasea; 
     try {
         const response = await fetch(`${API_URL}/fasea/${idFasea}/ezaugarriak`, {
             method: 'GET',

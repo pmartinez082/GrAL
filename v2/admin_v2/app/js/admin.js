@@ -60,7 +60,7 @@ export async function faseakForm() {
     row2.insertCell().innerHTML = "<input type='text' id='faseIrizpidea' placeholder='Fase irizpidea'></input>";
 
    
-    ezaugarriak = [];
+    
     const ezaugarriakDiv = document.createElement('div');
     const ezaugarriakTable = document.createElement('table');
 
@@ -131,7 +131,7 @@ export async function faseaSortu(event){
         return;
     }
   
-
+    let epaimahakideak = [];
     await f.createNewFasea();
     await ez.createNewEzaugarria();
     const checkEpaileak = document.getElementsByName('checkbox');
@@ -257,6 +257,7 @@ function epaileakCheckbox(epaileak) {
     return htmlString;
 }
 export async function faseakBistaratu() {
+    u.autentifikatu();
     const faseakTaula = document.getElementById("faseakTaula");
     const faseak = await tx.getTxapelketaAktiboarenInfo();
     const row1 = faseakTaula.insertRow();
@@ -287,19 +288,26 @@ export async function faseakBistaratu() {
         row.insertCell().textContent = fase.irizpidea || "";
         row.insertCell().innerHTML = ez.map(item => `<table id="ezaugarria-${item.idEzaugarria}"><tr><td><button id="buttonEzaugarria-${item.idEzaugarria}">${item.izena || ""}</button></td></tr></table>`).join('\n');
         row.insertCell().innerHTML = ep.map(item => `<table id="epaimahaikidea-${item.idEpaimahaikidea}"><tr><td><button id="buttonEpaimahaikidea-${item.idEpaimahaikidea}">${item.username || ""}</button></td></tr></table>`).join('\n');
-        document.getElementById(`buttonEgoera-${fase.idFasea}`).addEventListener('click', (event) => aldatuEgoera(event));
+        const buttonEg = document.getElementById(`buttonEgoera-${fase.idFasea}`);
+        if(buttonEg !== null){
+            buttonEg.addEventListener('click', (event) => aldatuEgoera(event));
+        }
+        if(ez.length >0){
         ez.forEach(ezaugarria => {
             const button = document.getElementById(`buttonEzaugarria-${ezaugarria.idEzaugarria}`);
             if (button) {
                 button.addEventListener('click', (event) => ezaugarriaBistaratu(event));
             }
         });
+    }
+    if(ep.length >0){   
         ep.forEach(epaimahaikidea => {
             const button = document.getElementById(`buttonEpaimahaikidea-${epaimahaikidea.idEpaimahaikidea}`);
             if (button) {
                 button.addEventListener('click', (event) => epaimahaikideaBistaratu(event, ez.length));
             }
         });
+    }
     });
 }
 
@@ -351,8 +359,8 @@ async function epaimahaikideaBistaratu(event,ez){
     row1.insertCell().textContent = "Baloratzeke";
     const row2 = taula.insertRow();
     row2.insertCell().innerHTML = `<table id = taulaEpaimahaikideak-${ebaluazioak[0].idEpaimahaikidea}"><td><tr><button id="buttonEpaimahaikidea-${ebaluazioak[0].idEpaimahaikidea}">${event.target.textContent || ""}</button></tr></td></table>`;	
-    const taldeak = await ta.getTaldeAktiboak();    row2.insertCell().innerHTML = `<table id = "taulaEbaluazioak-${ebaluazioak[0].idEpaimahaikidea}"><tr><td><button id = "buttonEbaluazioak-${ebaluazioak[0].idEpaimahaikidea}">${ebaluazioak.length}</button></td></tr></table>`;
-
+    const taldeak = await ta.getTaldeAktiboak();    
+    row2.insertCell().innerHTML = `<table id = "taulaEbaluazioak-${ebaluazioak[0].idEpaimahaikidea}"><tr><td><button id = "buttonEbaluazioak-${ebaluazioak[0].idEpaimahaikidea}">${ebaluazioak.length}</button></td></tr></table>`;
     row2.insertCell().innerHTML =`<table id = "taulaTaldeak-${ebaluazioak[0].idEpaimahaikidea}"><tr><td><button id = "buttonTaldeak-${ebaluazioak[0].idEpaimahaikidea}">${parseInt( taldeak.length)*ez - parseInt(ebaluazioak.length)}</button></td></tr></table>`;
     const button = document.getElementById(`buttonEpaimahaikidea-${ebaluazioak[0].idEpaimahaikidea}`);
     if (button) {
@@ -431,14 +439,13 @@ async function ebaluazioakBistaratu(event, ebaluazioak){
     ebaluazioakTaula.innerHTML = "";
     const row1 = ebaluazioakTaula.insertRow();
     row1.insertCell().innerHTML = `<button id = "buttonEbaluazioak-${event.target.id.split('buttonEbaluazioak-')[1]}">${event.target.textContent}</button>`;
-    row1.insertCell().textContent = "Ebaluazioa";
     row1.insertCell().textContent = "Puntuazioa";
     row1.insertCell().textContent = "Data";
     row1.insertCell().textContent = "Ezaugarria";
     row1.insertCell().textContent = "Taldea";
     for (const ebaluazioa of ebaluazioak) {
         const row2 = ebaluazioakTaula.insertRow();
-        row2.insertCell().textContent = ebaluazioa.idEbaluazioa;
+        row2.insertCell();
         row2.insertCell().textContent = ebaluazioa.puntuak;
         row2.insertCell().textContent = ebaluazioa.noiz;
         row2.insertCell().textContent = ebaluazioa.idEzaugarria;

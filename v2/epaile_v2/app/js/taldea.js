@@ -1,5 +1,8 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://192.168.13.117:3000'
 import * as klaseak from "./klaseak.js";
+import {autentifikatu} from './user.js';
+import {getEpailearenEpaimahaiak} from './epaimahaikidea.js';
+import { getFaseAktiboa } from "./fasea.js";
 export const getTaldeak = async () => {
     try {
         const response = await fetch(`${API_URL}/taldea/`, {
@@ -76,8 +79,8 @@ export const getTaldea = async () => {
 };
 
 export const getBaloratuGabekoTaldeak = async () => {
-    //const idEpaimahaikidea = document.getElementById('idEpaimahaikidea').value;
-    const idEpaimahaikidea = 5; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
+    const idEpaimahaikidea = await getEpailearenEpaimahaiak(autentifikatu());
     try {
         const response = await fetch(`${API_URL}/taldea/${idEpaimahaikidea}/baloratu-gabekoak`, {
             method: 'GET',

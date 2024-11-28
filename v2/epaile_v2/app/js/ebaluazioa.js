@@ -1,5 +1,5 @@
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://192.168.13.117:3000';
 import * as klaseak from "./klaseak.js";
 import { getEpailearenEpaimahaiak } from './epaimahaikidea.js';
 import { autentifikatu } from "./user.js";
@@ -49,6 +49,7 @@ export function getEzaugarrienBalorazioak(){
 
 
 export const createNewEbaluazioa = async (event) => {
+    event.preventDefault();
     console.log("createNewEbaluazioa");
     event.preventDefault();
     const balorazioak = getEzaugarrienBalorazioak();
@@ -58,9 +59,8 @@ export const createNewEbaluazioa = async (event) => {
             console.log("Errorea");
             return;
         }
-   
+   console.log(event.target.id);
     const data = {
-        idEbaluazioa: null,
         idEpaimahaikidea: event.target.id.split('ebaluazioaButton-')[1],
         idEzaugarria: ezaugarriak[i],
         idTaldea: document.getElementById('taldeaMenua').value,

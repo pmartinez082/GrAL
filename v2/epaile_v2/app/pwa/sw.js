@@ -1,16 +1,24 @@
 const VERSION = "v1";
 const CACHE_NAME = `v1-bertsio-${VERSION}`;
 const APP_STATIC_RESOURCES = [
-    "/",
-    "../icons/putxera.jpg",
-    "../icons/putxera.png",
-    "/app.js",
-    "../pwa/manifest.json",
-    "../css/style.css",
-    
-    
-  ];
-
+  "/",
+  "../icons/putxera.jpg",
+  "../icons/putxera.png",
+  "../css/style.css",
+  "../html/index.html",
+  "../html/epaile/epaitu.html",
+  "../js/epaile.js",
+  "../js/app.js",
+  "../js/ebaluazioa.js",
+  "../js/epaimahaikidea.js",
+  "../js/ezaugarria.js",
+  "../js/fasea.js",
+  "../js/klaseak.js",
+  "../js/taldea.js",
+  "../js/txapelketa.js",
+  "../js/user.js",
+  "./manifest.json"
+];
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").then(
       (registration) => {

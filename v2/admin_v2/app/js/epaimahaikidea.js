@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://192.168.13.117:3000';
 import * as klaseak from './klaseak.js';
 function getEpaimahaikideakArray(){
    const epaimahaikideakCheck = document.getElementsByName('checkbox');

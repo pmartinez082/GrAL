@@ -6,17 +6,10 @@ import * as ep from "./epaimahaikidea.js"
 
 export async function ebaluazioaSortu(event){
     event.preventDefault();
-    const ebaluazioaForm1 = document.getElementById('ebaluazioaForm');
-    event.preventDefault();
     await eb.createNewEbaluazioa(event);
     document.getElementById('ebaluazioaTaula').innerHTML = "";
-    ebaluazioaForm1.reset();
     document.getElementById('ebaluazioaButton').hidden = true;
-    
-    const hurrengoButton = document.getElementById('hurrengoaButton');
-    hurrengoButton.hidden = false;
-    hurrengoButton.addEventListener('click', ebaluazioaForm);
- 
+    ebaluazioaForm();
 
 
 }
@@ -25,6 +18,7 @@ export async function ebaluazioaForm(){
    
 
     const fase = await f.getFaseAktiboa();
+    const fasearenEzaugarriak = await f.getFasearenEzaugarriak();
     if (fase == null) {
         const abisua = document.createElement('h1');
         abisua.innerHTML = "Oraindik ez da fasea hasi";
@@ -32,9 +26,7 @@ export async function ebaluazioaForm(){
         return;
     }
   
-    document.getElementById('idFasea').value = fase.idFasea;
-    console.log(document.getElementById('idFasea').value);
-    console.log(fase);
+   
     const taula = document.getElementById('ebaluazioaTaula');
     taula.innerHTML = "";
     const baloratzekoTaldeak = await t.getBaloratuGabekoTaldeak();
@@ -42,7 +34,7 @@ export async function ebaluazioaForm(){
         const abisua = document.createElement('h1');
         abisua.innerHTML = "Talde guztiak baloratu dira";
         document.body.appendChild(abisua);
-        document.getElementById('ebaluazioaForm').reset();
+    
         return;
     }
     const zutabe = taula.insertRow();
@@ -51,7 +43,7 @@ export async function ebaluazioaForm(){
     zutabe.insertCell().textContent = "Balorazioa";
     zutabe.insertCell().textContent = "Taldea";
     zutabe.insertCell().textContent = "Ekintza"
-    const fasearenEzaugarriak = await f.getFasearenEzaugarriak();
+
 
     const lerroa = taula.insertRow();
     lerroa.insertCell().textContent = fase.izena;
@@ -66,16 +58,21 @@ export async function ebaluazioaForm(){
       const abisua = document.createElement('h1');
       abisua.innerHTML = "Fase honetan ezin duzu bozkatu";
       document.body.appendChild(abisua);
+      const button = document.createElement('button');
+      button.textContent = "Birkargatu";
+      button.addEventListener('click', () => {
+          window.location.href = './epaitu.html';
+      });
+      document.body.appendChild(button);
       return;
     }
     lerroa.insertCell().innerHTML = "<button id = 'ebaluazioaButton-"+idEpaimahaikidea+"'>Baloratu</button>";
-
-}
+    document.getElementById('ebaluazioaButton-'+idEpaimahaikidea).addEventListener('click', (event) => ebaluazioaSortu(event));}
 function balorazioenTaula(i) {
-    let balTaula = '<table>';
+    let balTaula = '<table >';
     balTaula += '<td></td>';
     for (let j = 0; j < i; j++) {
-        balTaula += `<tr><td><input type="number" step = "any" name="balorazioa" placeholder="Balorazioa"></td></tr>`;
+        balTaula += `<tr><td><input type="number" required step = "any" name="balorazioa" placeholder="Balorazioa"></td></tr>`;
     }
     balTaula += '</table>';
     return balTaula;

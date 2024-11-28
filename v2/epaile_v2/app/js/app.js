@@ -68,7 +68,18 @@ export async function login(event) {
  async function bideratu(){
   const role = await u.getRole();
   if(role == "admin"){
-      window.location.href = "admin/admin.html";
+    
+      const mezua = document.createElement('h1');
+      mezua.textContent = "Ez duzu hemen egoteko baimenik";
+      const button = document.createElement('button');
+      button.textContent = "Atzera";
+      button.addEventListener('click', function(){
+          window.location.href = "index.html";
+      });
+      document.body.innerHTML = "";
+      document.body.appendChild(mezua);
+      document.body.appendChild(button);
+
         
   }
   else{

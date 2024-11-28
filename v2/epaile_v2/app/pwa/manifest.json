@@ -1,26 +1,29 @@
 {
-    "name": "Putxerapp  ",
-    "icons": [
-      {
-        "src": "../icons/putxera.jpg",
-        "type": "image/jpg",
-        "sizes": "868x868"
-      },
-
-      {
-
-        "src": "../icons/putxera.png",
-        "type": "image/png",
-        "sizes": "868x868"
-      }
-    ],
-    
-    "id": "/",
-    "start_url": "pl/html/index.html",
-    "theme_color": "#CCCCFF",
-    "background_color": "#ffffff",
-    "display": "standalone"
-
-    
-  }
+  "name": "Putxerapp_epaile",
+  "short_name": "Putx_epaile",
+  "description": "",
+  "orientation": "portrait",
   
+  "icons": [
+    {
+      "src": "../icons/putxera.jpg",
+      "type": "image/jpg",
+      "sizes": "868x868"
+    },
+
+    {
+
+      "src": "../icons/putxera.png",
+      "type": "image/png",
+      "sizes": "868x868"
+    }
+  ],
+  
+  "id": "/",
+  "start_url": "../html/index.html",
+  "theme_color": "#CCCCFF",
+  "background_color": "#ffffff",
+  "display": "standalone"
+
+  
+}

@@ -4,30 +4,20 @@ let isLogin = true;
 export function toggleLogin() {
   isLogin = !isLogin;
   const formTitle = document.getElementById('formTitle');
-  const role = document.getElementById('role');
   const email = document.getElementById('email');
   const toggleButton = document.getElementById('toggle-button');
   if (isLogin) {
     formTitle.textContent = 'Sesioa hasi';
     toggleButton.innerHTML = 'Ez duzu konturik? Erregistratu zaitez';
     email.setAttribute('hidden', '');
-    role.setAttribute('hidden', '');  
-    role.removeAttribute('required');
     email.removeAttribute('required');
-    document.getElementById("radmin").setAttribute('hidden', '');
-    document.getElementById("repaile").setAttribute('hidden', '');
   } 
   
   else {
     formTitle.textContent = 'Erregistratu';
     toggleButton.innerHTML = 'Badaukazu konturik? Sesioa hasi';
-    role.removeAttribute('hidden');
     email.removeAttribute('hidden');
     email.setAttribute('required', '');
-    role.setAttribute('required', '');
-    role.removeAttribute('hidden');
-    document.getElementById("radmin").removeAttribute('hidden');
-    document.getElementById("repaile").removeAttribute('hidden');
 
   }
 }
@@ -82,7 +72,16 @@ export async function login(event) {
         
   }
   else{
-      window.location.href = "epaile/epaitu.html";
+      const mezua = document.createElement('h1');
+      mezua.textContent = "Ez duzu hemen egoteko baimenik";
+      const button = document.createElement('button');
+      button.textContent = "Atzera";
+      button.addEventListener('click', function(){
+          window.location.href = "index.html";
+      });
+      document.body.innerHTML = "";
+      document.body.appendChild(mezua);
+      document.body.appendChild(button);
   }
   
  }
