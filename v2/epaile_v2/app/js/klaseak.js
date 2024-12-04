@@ -21,12 +21,12 @@ export class Txapelketa  {
 }
 
 export class Fasea {
-    constructor(idFasea, idTxapelketa, izena, kodea, egoera, hasiera, amaiera, irizpidea) {
+    constructor(idFasea, idTxapelketa, izena, egoera, hasiera, amaiera, irizpidea) {
 
         this.idFasea = idFasea;
         this.idTxapelketa = idTxapelketa;
         this.izena = izena;
-        this.kodea = kodea;
+        
         this.egoera = egoera;
         this.hasiera = hasiera;
         this.amaiera = amaiera;

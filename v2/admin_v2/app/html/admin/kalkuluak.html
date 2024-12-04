@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkuluak</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="manifest" href="../../../pwa/manifest.json" />
+</head>
+<body>
+    <form action = "admin.html">
+        <button type="submit">Atzera joan</button>
+    </form>
+    <form action = "kalkuluak.html">
+        <button type="submit">Birkargatu</button>
+    </form>
+    <script type = "module">
+        import { autentifikatu } from '../../js/user.js';
+        import { kalkuluakBistaratu } from '../../js/admin.js';
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            
+            kalkuluakBistaratu();
+        });
+    </script>
+
+</body>
+
+</html>

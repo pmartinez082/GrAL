@@ -159,7 +159,7 @@ export const getEpailearenEpaimahaiak = async (req, res) => {
   const infoObj =
   [
     info.username,
-    info.idFasea
+    parseInt(info.idFasea)
   ]
   try {
     const sqlQuery = `SELECT * FROM epaimahaikidea WHERE username = ? AND idFasea = ?`;

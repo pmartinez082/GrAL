@@ -21,7 +21,7 @@ export const getEzaugarria = async (req, res) => {
 
   try {
 
-    const [results] = await dbConnection.query(sqlQuery, [id]);
+    const [results] = await dbConnection.query(sqlQuery, id);
     
     if (results.length === 0) {
       res.status(404).json({ error: 'Ezaugarria not found' });
@@ -51,12 +51,13 @@ export const createNewEzaugarria = async (req, res) => {
    ezaugarria.izena,
    ezaugarria.puntuakMin,
    ezaugarria.puntuakMax,
-   ezaugarria.idFasea
+   ezaugarria.idFasea,
+   ezaugarria.ponderazioa
    
    
   ];
 
-  const sqlQuery = 'INSERT INTO ezaugarria (izena, puntuakMin, puntuakMax, idFasea) VALUES (?, ?, ?, ?)';
+  const sqlQuery = 'INSERT INTO ezaugarria (izena, puntuakMin, puntuakMax, idFasea, ponderazioa) VALUES (?, ?, ?, ?, ?)';
 
   try {
 
@@ -77,13 +78,14 @@ export const updateEzaugarria = async (req, res) => {
     ezaugarria.izena,
     ezaugarria.puntuakMin,
     ezaugarria.puntuakMax,
+    ezaugarria.ponderazioa,
     idEzaugarria
   ];
   if(isNaN(idEzaugarria)){
     return res.status(400).json({ error: 'You must enter a valid id as a parameter' });
   }
   try {
-    const sqlQuery = `UPDATE ezaugarria SET izena = ?, puntuakMin = ?, puntuakMax = ? WHERE idEzaugarria = ?`;
+    const sqlQuery = `UPDATE ezaugarria SET izena = ?, puntuakMin = ?, puntuakMax = ?, ponderazioa = ? WHERE idEzaugarria = ?`;
     await dbConnection.execute(sqlQuery, ezaugarriaObj);
     res.status(200).json({ message: 'ezaugarria updated' });
   } catch (error) {

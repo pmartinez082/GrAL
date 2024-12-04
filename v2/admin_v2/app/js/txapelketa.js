@@ -1,6 +1,6 @@
 import * as klaseak from './klaseak.js';
 import {createClassesFromDataF} from './fasea.js' ;
-const API_URL = 'http://192.168.13.117:3000';
+const API_URL = 'http://192.168.1.140:3000';
 
 
 
@@ -41,6 +41,7 @@ export const createNewTxapelketa = async (event) => {
         lekua: document.getElementById('lekua').value,
         dataOrdua: document.getElementById('dataOrdua').value,
         izena: document.getElementById('txapelketaIzena').value,
+        egoera: 1
     };
     event.preventDefault();
 
@@ -168,7 +169,7 @@ export const getTxapelketarenFaseak = async () => {
             const data = await response.json();
             const faseak = [];
             data.forEach(fase => {
-                faseak.push(new klaseak.Fasea(fase.idFasea, fase.idTxapelketa, fase.izena, fase.kodea, fase.egoera, fase.hasiera, fase.amaiera, fase.irizpidea));
+                faseak.push(new klaseak.Fasea(fase.idFasea, fase.idTxapelketa, fase.izena, fase.egoera, fase.hasiera, fase.amaiera, fase.irizpidea));
             });
             return faseak;
         }
@@ -225,6 +226,7 @@ function createClassesFromData(data) {
             txData.txapelketaIzena,
             txData.txapelketaData
             
+            
         );
 
         txData.faseak.forEach(faseData => {
@@ -232,11 +234,12 @@ function createClassesFromData(data) {
                 faseData.idFasea,
                 txData.idTxapelketa,
                 faseData.faseIzena,
-                faseData.faseKodea,
                 faseData.faseEgoera,
                 faseData.faseHasiera,
                 faseData.faseAmaiera,
-                faseData.faseIrizpidea
+                faseData.faseIrizpidea,
+                
+
 
             );
 
@@ -244,8 +247,9 @@ function createClassesFromData(data) {
                 const ezaugarria = new klaseak.Ezaugarria(
                     ezaugarriaData.idEzaugarria,
                     ezaugarriaData.ezaugarriaIzena,
-                    null,
-                    null
+                    ezaugarriaData.puntuakMin,
+                    ezaugarriaData.puntuakMax,
+                    ezaugarriaData.ponderazioa
                 );
                 fase.ezaugarriak.push(ezaugarria);
             });
@@ -280,6 +284,10 @@ export const getTxapelketaAktiboarenInfo = async (req, res) => {
         if (response.ok) {
             const data = await response.json();
             return createClassesFromDataF(data);
+        }
+
+        else{
+            return [];
         }
 
     } catch (error) {

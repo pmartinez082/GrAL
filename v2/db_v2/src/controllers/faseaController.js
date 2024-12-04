@@ -62,7 +62,7 @@ export const faseaExists = async (req, res) => {
 
 
    
-    if (!fasea.izena || !fasea.kodea || !fasea.egoera || !fasea.irizpidea|| !fasea.idTxapelketa) {
+    if (!fasea.izena  || !fasea.egoera || !fasea.irizpidea|| !fasea.idTxapelketa) {
       return res.status(400).json({
         ErrorCode: 204,
         Message: 'Fields cannot be empty'
@@ -72,7 +72,6 @@ export const faseaExists = async (req, res) => {
     const faseaObj = [
     fasea.idTxapelketa,
     fasea.izena,
-    fasea.kodea,
     fasea.egoera,
     fasea.hasiera,
     fasea.amaiera,
@@ -80,7 +79,7 @@ export const faseaExists = async (req, res) => {
      
     ];
   
-    const sqlQuery = 'INSERT INTO fasea (idTxapelketa, izena, kodea, egoera, hasiera, amaiera, irizpidea) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const sqlQuery = 'INSERT INTO fasea (idTxapelketa, izena, egoera, hasiera, amaiera, irizpidea) VALUES (?, ?, ?, ?, ?, ?)';
   
     try {
   
@@ -104,14 +103,13 @@ export const faseaExists = async (req, res) => {
       const faseaObj = [
         parseInt(fasea.idTxapelketa),
         fasea.izena,
-        fasea.kodea,
         fasea.egoera,
         fasea.hasiera,
         fasea.amaiera,
         fasea.irizpidea,
         idFasea
       ];
-      const sqlQuery = 'UPDATE fasea SET idTxapelketa = ?, izena = ?, kodea = ?, egoera = ?, hasiera = ?, amaiera = ?, irizpidea = ? WHERE idFasea = ?';
+      const sqlQuery = 'UPDATE fasea SET idTxapelketa = ?, izena = ?, egoera = ?, hasiera = ?, amaiera = ?, irizpidea = ? WHERE idFasea = ?';
       await dbConnection.execute(sqlQuery, faseaObj);
       res.status(200).json({ message: 'fasea updated' });
     }catch (error) {

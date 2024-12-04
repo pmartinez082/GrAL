@@ -71,9 +71,11 @@ export const createNewTxapelketa = async (req, res) => {
     txapelketa.izena,
     txapelketa.dataOrdua,
     txapelketa.lekua,
+    txapelketa.egoera
+    
   ];
 
-  const sqlQuery = 'INSERT INTO txapelketa (izena, dataOrdua, lekua) VALUES (?, ?, ?)';
+  const sqlQuery = 'INSERT INTO txapelketa (izena, dataOrdua, lekua, egoera) VALUES (?, ?, ?, ?)';
 
   try {
     
@@ -128,18 +130,21 @@ export const getInfoGuztia = async (req, res) => {
     t.izena AS txapelketaIzena,
     t.dataOrdua AS txapelketaData,
     t.lekua AS txapelketaLekua,
+    
 
     f.idFasea,
     f.izena AS faseIzena,
-    f.kodea AS faseKodea,
     f.egoera AS faseEgoera,
     f.hasiera AS faseHasiera,
     f.amaiera AS faseAmaiera,
     f.irizpidea AS faseIrizpidea,
+  
 
     e.idEzaugarria,
     e.izena AS ezaugarriaIzena,
-
+    e.puntuakMin as puntuakMin,
+    e.puntuakMax as puntuakMax,
+    e.ponderazioa AS ponderazioa,
     ep.idEpaimahaikidea,
     ep.username AS epaimahaikideaUsername
 FROM txapelketa t
@@ -200,7 +205,10 @@ function transformData(data) {
           if (!ezaugarriaExists) {
               fase.ezaugarriak.push({
                   idEzaugarria: row.idEzaugarria,
-                  ezaugarriaIzena: row.ezaugarriaIzena
+                  ezaugarriaIzena: row.ezaugarriaIzena,
+                  puntuakMin: row.puntuakMin,
+                  puntuakMax: row.puntuakMax
+                
               });
           }
       }
@@ -233,11 +241,11 @@ export async function getTxapelketarenInfoGuztia(req, res) {
     t.lekua AS txapelketaLekua,
     f.idFasea, 
     f.izena AS faseIzena, 
-    f.kodea AS faseKodea, 
     f.egoera AS faseEgoera, 
     f.hasiera AS faseHasiera, 
     f.amaiera AS faseAmaiera, 
     f.irizpidea AS faseIrizpidea,
+    e.ponderazioa AS ponderazioa,
     e.idEzaugarria, 
     e.izena AS ezaugarriaIzena,
     em.idEpaimahaikidea, 
@@ -288,6 +296,9 @@ export const getTxapAktiboaFasEpaimahaikideakEzaugarriak = async (req, res) => {
   
   e.idEzaugarria, 
   e.izena as ezaugarriIzena, 
+  e.puntuakMin,
+  e.puntuakMax,
+  e.ponderazioa,
   ep.idEpaimahaikidea, 
   ep.username
 FROM fasea f

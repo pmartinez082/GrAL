@@ -1,4 +1,4 @@
-const API_URL = 'http://192.168.13.117:3000';
+const API_URL = 'http://192.168.1.140:3000';
 import * as klaseak from "./klaseak.js";
 //FASEAK LORTU
 export const getFaseak = async (event) => {
@@ -16,7 +16,7 @@ export const getFaseak = async (event) => {
             const data = await response.json();
             const faseak = [];
             data.array.forEach(fasea => {
-                faseak.push(new klaseak.Fasea(fasea.idFasea, fasea.idTxapelketa, fasea.kodea, fasea.izena, fasea.hasiera, fasea.amaiera, fasea.egoera, fasea.irizpidea));
+                faseak.push(new klaseak.Fasea(fasea.idFasea, fasea.idTxapelketa, fasea.izena, fasea.hasiera, fasea.amaiera, fasea.egoera, fasea.irizpidea));
             });
             return faseak;
         }
@@ -30,7 +30,6 @@ export const createNewFasea = async () => {
     const data = {
         idFasea: null,
         idTxapelketa: document.getElementById('idTxapelketa').value,
-        kodea: document.getElementById('faseKodea').value,
         izena: document.getElementById('faseIzena').value,
         hasiera: document.getElementById('faseHasiera').value,
         amaiera: document.getElementById('faseAmaiera').value,
@@ -91,7 +90,6 @@ export const updateFasea = async (event) => {
     const data = {
         idFasea: document.getElementById('idFasea').value,
         idTxapelketa: document.getElementById('idTxapelketa').value,
-        kodea: document.getElementById('kodea').value,
         izena: document.getElementById('izena').value,
         hasiera: document.getElementById('hasiera').value,
         amaiera: document.getElementById('amaiera').value,
@@ -132,7 +130,7 @@ export const getFasea = async () => {
         });
         if (response.ok) {
             const data = await response.json();
-           return new klaseak.Fasea(data.idFasea, data.idTxapelketa, data.izena, data.kodea, data.egoera, data.hasiera, data.amaiera, data.irizpidea);
+           return new klaseak.Fasea(data.idFasea, data.idTxapelketa, data.izena, data.egoera, data.hasiera, data.amaiera, data.irizpidea);
 
 
         }
@@ -159,7 +157,7 @@ export const getFasearenEzaugarriak = async () => {
             const data = await response.json();
             const ezaugarriak = [];
             data.forEach(ezaugarri => {
-                ezaugarriak.push(new klaseak.Ezaugarria(ezaugarri.idEzaugarria, ezaugarri.izena, ezaugarri.puntuakMax, ezaugarri.puntuakMin));
+                ezaugarriak.push(new klaseak.Ezaugarria(ezaugarri.idEzaugarria, ezaugarri.izena, ezaugarri.puntuakMax, ezaugarri.puntuakMin, ezaugarri.ponderazioa));
             });
             return ezaugarriak;
         }
@@ -179,7 +177,10 @@ export const getFaseAktiboa = async () => {
         });
         if (response.ok) {
             const data = await response.json();
-            return new klaseak.Fasea(data[0].idFasea, data[0].idTxapelketa, data[0].izena, data[0].kodea, data[0].egoera, data[0].hasiera, data[0].amaiera, data[0].irizpidea);
+            return new klaseak.Fasea(data[0].idFasea, data[0].idTxapelketa, data[0].izena, data[0].egoera, data[0].hasiera, data[0].amaiera, data[0].irizpidea);
+        }
+        else{
+            return [];
         }
     } catch (err) {
         //console.error(err);
@@ -226,7 +227,10 @@ export function createClassesFromDataF(data) {
         if (item.idEzaugarria && !map[item.idFasea].ezaugarriak.find(e => e.idEzaugarria === item.idEzaugarria)) {
             map[item.idFasea].ezaugarriak.push({
                 idEzaugarria: item.idEzaugarria,
-                ezaugarriIzena: item.ezaugarriIzena
+                ezaugarriIzena: item.ezaugarriIzena,
+                puntuakMin: item.puntuakMin,
+                puntuakMax: item.puntuakMax,
+                ponderazioa: item.ponderazioa
             });
         }
 
@@ -248,7 +252,6 @@ export function createClassesFromDataF(data) {
             faseData.idFasea,
             null, 
             faseData.faseIzena,
-            null,
             faseData.egoera,
             faseData.hasiera,
             faseData.amaiera,
@@ -259,9 +262,13 @@ export function createClassesFromDataF(data) {
             const ezaugarria = new klaseak.Ezaugarria(
                 ezData.idEzaugarria,
                 ezData.ezaugarriIzena,
+                ezData.puntuakMax,
+                ezData.puntuakMin,
                 null,
-                null
+                ezData.ponderazioa
+               
             );
+            console.log(ezData.ponderazioa+ "ponderazioa");
             fase.ezaugarriak.push(ezaugarria);
         });
 

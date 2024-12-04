@@ -7,16 +7,13 @@ import * as ez from "./ezaugarria.js";
 import * as eb from "./ebaluazioa.js";
 import * as ta from "./taldea.js"
 import * as klaseak from "./klaseak.js";
-import  'https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js';
 
-
- export function txapelketaSortu(event){
-    const txapelketaForm = document.getElementById('txapelketaForm1');
+ export async function txapelketaSortu(event){
     event.preventDefault();
+    document.getElementById('txapelketaTaula').hidden = true;
+    document.getElementById('sortu').hidden = true;
     tx.createNewTxapelketa(event);
-    txapelketaForm.reset();
-    txapelketaForm.setAttribute('disabled', true);
-    txapelketaForm.style.display = "none";
+   
     faseakForm(1);
 
 }
@@ -45,7 +42,6 @@ export async function faseakForm() {
     id.hidden = true;
   
     row1.insertCell().textContent = "Fase izena";
-    row1.insertCell().textContent = "Kodea";
     row1.insertCell().textContent = "Hasiera";
     row1.insertCell().textContent = "Amaiera";
     row1.insertCell().textContent = "Irizpidea";
@@ -54,7 +50,6 @@ export async function faseakForm() {
 
     const row2 = taula.insertRow();
     row2.insertCell().innerHTML = "<input type='text' id='faseIzena' placeholder='Fase izena'></input>";
-    row2.insertCell().innerHTML = "<input type='text' id='faseKodea' placeholder='Fase kodea'></input>";
     row2.insertCell().innerHTML = "<input type='date-time-local' id='faseHasiera' placeholder='Fase hasiera'></input>";
     row2.insertCell().innerHTML = "<input type='date-time-local' id='faseAmaiera' placeholder='Fase amaiera'></input>";
     row2.insertCell().innerHTML = "<input type='text' id='faseIrizpidea' placeholder='Fase irizpidea'></input>";
@@ -66,8 +61,9 @@ export async function faseakForm() {
 
     const ezaugarriakHeaderRow = ezaugarriakTable.insertRow();
     ezaugarriakHeaderRow.insertCell().textContent = "Ezaugarria";
-    ezaugarriakHeaderRow.insertCell().textContent = "Puntuak Min";
-    ezaugarriakHeaderRow.insertCell().textContent = "Puntuak Max";    
+    ezaugarriakHeaderRow.insertCell().textContent = "Puntuazio minimoa";
+    ezaugarriakHeaderRow.insertCell().textContent = "Puntuazio maximoa";  
+    ezaugarriakHeaderRow.insertCell().textContent = "Ponderazioa (0-1)";
     const ezaugButton = document.createElement('button');
     ezaugButton.id = "ezaugButton"
     ezaugButton.textContent = "Gehitu Ezaugarria";
@@ -76,20 +72,25 @@ export async function faseakForm() {
     ezaugrow22.insertCell().innerHTML = "<input type='text' name='ezaugarriaIzena' placeholder='Ezaugarriaren izena'></input>";
     ezaugrow22.insertCell().innerHTML = "<input type='number' name='ezaugarriaMin' placeholder='Puntuak Min'></input>";
     ezaugrow22.insertCell().innerHTML = "<input type='number' name='ezaugarriaMax' placeholder='Puntuak Max'></input>";
+    ezaugrow22.insertCell().innerHTML = "<input type='number' name='ponderazioa' placeholder='0-1 arteko balioa'></input>";
     ezaugrow22.insertCell().appendChild(ezaugButton);
-        
+ 
     ezaugButton.onclick = () => {
         const ezIz = document.getElementsByName('ezaugarriaIzena');
         const eMin = document.getElementsByName('ezaugarriaMin');
         const eMax = document.getElementsByName('ezaugarriaMax');
+        const ponderazioa = document.getElementsByName('ponderazioa');
+        ponderazioa.disabled = true;
         ezIz.disabled = true;
         eMin.disabled = true;
         eMax.disabled = true;
+    
         
     const ezaugrow2 = ezaugarriakTable.insertRow();
     ezaugrow2.insertCell().innerHTML = "<input type='text' name='ezaugarriaIzena' placeholder='Ezaugarriaren izena' value = ''></input>";
     ezaugrow2.insertCell().innerHTML = "<input type='number' name='ezaugarriaMin' placeholder='Puntuak Min' value = ''></input>";
     ezaugrow2.insertCell().innerHTML = "<input type='number' name='ezaugarriaMax' placeholder='Puntuak Max' value = ''></input>";
+    ezaugrow2.insertCell().innerHTML = "<input type='number' name='ponderazioa' placeholder='0-1 arteko balioa' value = ''></input>";
     ezaugrow2.insertCell().appendChild(ezaugButton);
         
      
@@ -104,8 +105,10 @@ export async function faseakForm() {
     taulaContainer.appendChild(taula);
 
     const button = document.createElement('button');
-    button.setAttribute('type', 'submit');
+    button.setAttribute('type', 'click');
     button.textContent = 'Gorde eta hurrengo fasea konfiguratu';
+    button.addEventListener('click', async (event) => faseaSortu(event));
+    
     taulaContainer.appendChild(button);
 
     const amaituForm = document.getElementById('amaitu');
@@ -117,8 +120,8 @@ export async function faseakForm() {
   
 
 export async function faseaSortu(event){
-    const faseForm = document.getElementById('faseForm');
-
+  
+    const taulaContainer = document.getElementById('faseenTaula');
     event.preventDefault();
     const epaileakCheck = document.getElementsByName('checkbox');
     if(!checkCheckbox(epaileakCheck)){
@@ -126,14 +129,20 @@ export async function faseaSortu(event){
         taulaContainer.innerHTML = "";
         mezua.textContent = "Gutxienez epaile bat aukeratu behar duzu";
         taulaContainer.appendChild(mezua);
-        faseForm.reset();
+       
         faseakForm();
         return;
     }
   
     let epaimahakideak = [];
     await f.createNewFasea();
-    await ez.createNewEzaugarria();
+    const eza =await ez.createNewEzaugarria();
+    if(!eza){
+        const abisua = document.createElement('h1');
+        abisua.innerHTML = "Ezaugarrien ponderazioek bat gehitu behar dute";
+        document.body.appendChild(abisua);
+        return;
+    }
     const checkEpaileak = document.getElementsByName('checkbox');
     checkEpaileak.forEach(cE => {
         if (cE.checked) {
@@ -143,9 +152,12 @@ export async function faseaSortu(event){
  
     await ep.createNewEpaimahaikidea();
     
-    faseForm.reset();
-    const taulaContainer = document.getElementById('faseenTaula');
+    
+    
     taulaContainer.innerHTML = "";  
+    document.getElementById('amaitu').hidden = false;
+
+    
     faseakForm();
    
 
@@ -204,7 +216,6 @@ export async function txapelketaBistaratu(i) {
             if(txapelketa.faseak.length >0){
             const frow1 = ftaula.insertRow();
             frow1.insertCell().textContent = "Fase Izena";
-            frow1.insertCell().textContent = "Kodea";
             frow1.insertCell().textContent = "Egoera";
             frow1.insertCell().textContent = "Hasiera";
             frow1.insertCell().textContent = "Amaiera";
@@ -216,8 +227,9 @@ export async function txapelketaBistaratu(i) {
             (txapelketa.faseak || []).forEach((fase) => {
                 const faseRow = ftaula.insertRow();
                 faseRow.insertCell().textContent = fase.izena || "-";
-                faseRow.insertCell().textContent = fase.kodea || "-";
+                console.log(fase.egoera);
                 faseRow.insertCell().textContent =
+            
                     parseInt(fase.egoera) === 0
                         ? "Hasigabea"
                         : parseInt(fase.egoera) === 1
@@ -227,7 +239,7 @@ export async function txapelketaBistaratu(i) {
                 faseRow.insertCell().textContent = fase.amaiera || "-";
                 faseRow.insertCell().textContent =
                     (fase.ezaugarriak || [])
-                        .map((ez) => ez.izena)
+                        .map((eza) => eza.izena)
                         .join(", ") || "-";
 
                 faseRow.insertCell().textContent =
@@ -257,19 +269,30 @@ function epaileakCheckbox(epaileak) {
     return htmlString;
 }
 export async function faseakBistaratu() {
-    u.autentifikatu();
+    await u.autentifikatu();
+    
     const faseakTaula = document.getElementById("faseakTaula");
     const faseak = await tx.getTxapelketaAktiboarenInfo();
+    if(faseak.length === 0){
+        const mezua = document.createElement('h1');
+        mezua.textContent = 'Ez dago txapelketa aktiborik';
+        document.body.appendChild(mezua);
+        return false;
+    }
+    console.log(faseak);
     const row1 = faseakTaula.insertRow();
     row1.insertCell().textContent = "Fase Izena";
     row1.insertCell().textContent = "Hasiera";
     row1.insertCell().textContent = "Amaiera";
     row1.insertCell().textContent = "Egoera";
     row1.insertCell().textContent = "Irizpidea";
-    row1.insertCell().textContent = "Ezaugarriak";
+    row1.insertCell().innerHTML = "<table><tr><td>Ezaugarriak</td></tr><tr><td>Ezaugarria</td><td>Puntuazio minimoa</td><td>Puntuazio maximoa</td><td>Ponderazioa</td></tr></table>";
     row1.insertCell().textContent = "Parte hartzen duten epaileak";
+    row1.insertCell().innerHTML = "Fasearen ebaluazioak";
     faseak.forEach((fase) => {
-        const ez = fase.ezaugarriak || [];
+  
+        const eza = fase.ezaugarriak || [];
+        console.log(eza);
         const ep = fase.epaimahaikideak || [];
         const row = faseakTaula.insertRow();
         row.insertCell().textContent = fase.izena || "";
@@ -277,196 +300,194 @@ export async function faseakBistaratu() {
         row.insertCell().textContent = fase.amaiera || "";
         const buttonEgoera = document.createElement('button');
         buttonEgoera.id = `buttonEgoera-${fase.idFasea}`;
-        if (fase.egoera === 0) {
+        console.log(fase.egoera);
+        if (parseInt(fase.egoera) === 0) {
             buttonEgoera.textContent = "Hasi";
-        } else if (fase.egoera === 1) {
+        } else if (parseInt(fase.egoera) === 1) {
             buttonEgoera.textContent = "Bukatu";
         } else {
             buttonEgoera.hidden = true;
         }
         row.insertCell().innerHTML = fase.egoera ===0 ?  buttonEgoera.outerHTML : fase.egoera ===1 ? buttonEgoera.outerHTML : "<div>Amaituta</div>";
-        row.insertCell().textContent = fase.irizpidea || "";
-        row.insertCell().innerHTML = ez.map(item => `<table id="ezaugarria-${item.idEzaugarria}"><tr><td><button id="buttonEzaugarria-${item.idEzaugarria}">${item.izena || ""}</button></td></tr></table>`).join('\n');
-        row.insertCell().innerHTML = ep.map(item => `<table id="epaimahaikidea-${item.idEpaimahaikidea}"><tr><td><button id="buttonEpaimahaikidea-${item.idEpaimahaikidea}">${item.username || ""}</button></td></tr></table>`).join('\n');
+        row.insertCell().textContent = fase.irizpidea || "-";
+        row.insertCell().innerHTML = eza.map(item => `<table id ="ezaugarria-${item.idEzaugarria}"><tr><td>${item.izena || "-"}</td></tr></table>`).join('\n');
+        row.insertCell().innerHTML = ep.map(item => `<table id = "epaimahaikidea-${item.idEpaimahaikidea}"><tr><td>${item.username || ""}</td></tr></table>`).join('\n');
+        row.insertCell().innerHTML = "<button id = 'fasearenEbaluazioak-"+fase.idFasea+"'>ikusi</button>";
         const buttonEg = document.getElementById(`buttonEgoera-${fase.idFasea}`);
+        const buttonEb = document.getElementById(`fasearenEbaluazioak-${fase.idFasea}`);
+        if(buttonEb !== null){
+            buttonEb.addEventListener('click', (event) => fasearenEbaluazioakBistaratu(event));
+        }
         if(buttonEg !== null){
             buttonEg.addEventListener('click', (event) => aldatuEgoera(event));
         }
-        if(ez.length >0){
-        ez.forEach(ezaugarria => {
-            const button = document.getElementById(`buttonEzaugarria-${ezaugarria.idEzaugarria}`);
-            if (button) {
-                button.addEventListener('click', (event) => ezaugarriaBistaratu(event));
-            }
+        if(eza.length >0){
+        eza.forEach(ezaugarria => {
+            ezaugarriaBistaratu(ezaugarria);
         });
     }
     if(ep.length >0){   
         ep.forEach(epaimahaikidea => {
-            const button = document.getElementById(`buttonEpaimahaikidea-${epaimahaikidea.idEpaimahaikidea}`);
-            if (button) {
-                button.addEventListener('click', (event) => epaimahaikideaBistaratu(event, ez.length));
-            }
+           epaimahaikideaBistaratu(epaimahaikidea);
+            
         });
     }
     });
 }
 
-async function ezaugarriaBistaratu(event) {
-    event.preventDefault();
-    const ezaugarria = await ez.getEzaugarria(event);
-    console.log(ezaugarria);
-    console.log(ezaugarria.idEzaugarria);
-    const taula = document.getElementById(`ezaugarria-${ezaugarria.idEzaugarria}`);
+async function ezaugarriaBistaratu(ezaugarria) {
+  
+    const taula = document.getElementById("ezaugarria-"+ezaugarria.idEzaugarria);
     taula.innerHTML = "";
-    const row1 = taula.insertRow();
-    row1.insertCell().textContent = "Ezaugarria";
-    row1.insertCell().textContent = "Puntuazio minimoa";
-    row1.insertCell().textContent = "Puntuazio maximoa";
     const row2 = taula.insertRow();
-    row2.insertCell().innerHTML = `<button id="buttonEzaugarria-${ezaugarria.idEzaugarria}">${ezaugarria.izena || ""}</button>`;
+    row2.insertCell().textContent = ezaugarria.izena;
     row2.insertCell().textContent = ezaugarria.puntuakMin;
     row2.insertCell().textContent = ezaugarria.puntuakMax || "";
-    const button = document.getElementById(`buttonEzaugarria-${ezaugarria.idEzaugarria}`);
-    if (button) {
-        button.addEventListener('click', (event) => garbituEzaugarria(event, ezaugarria.idEzaugarria, ezaugarria.izena)); 
-    }
+    row2.insertCell().textContent = "% "+100* parseFloat(ezaugarria.ponderazioa) || "";
+    taula.removeAttribute("data-idEzaugarria");
 }
 
-function garbituEzaugarria(event,idEzaugarria, izena) {
-    event.preventDefault();
-    const taula = document.getElementById("ezaugarria-"+idEzaugarria);
-    if (!taula) return;
-    taula.innerHTML = `<tr><td><button id="buttonEzaugarria-${idEzaugarria}">${izena || ""}</button></td></tr>`;
-    const button = document.getElementById(`buttonEzaugarria-${idEzaugarria}`);
-    if (button) {
-        button.addEventListener('click', (event) => ezaugarriaBistaratu(event));
-    }
-}
 
-async function epaimahaikideaBistaratu(event,ez){
-    event.preventDefault();
-    const ebaluazioak = await eb.getEpailearenEbaluazioakFaseka(event);
-    console.log(ebaluazioak);
-    if (ebaluazioak.length === 0) {
-        return;
-    }
-    console.log(ebaluazioak);
-    const taula = document.getElementById("epaimahaikidea-"+ebaluazioak[0].idEpaimahaikidea);
+
+async function epaimahaikideaBistaratu(epaimahaikidea){
+
+    const taula = document.getElementById("epaimahaikidea-"+epaimahaikidea.idEpaimahaikidea);
     taula.innerHTML = "";
     const row1 = taula.insertRow();
-    row1.insertCell().textContent = "Epaimahaikidea";
-    row1.insertCell().textContent = "Egindako ebaluazioak";
-    row1.insertCell().textContent = "Baloratzeke";
-    const row2 = taula.insertRow();
-    row2.insertCell().innerHTML = `<table id = taulaEpaimahaikideak-${ebaluazioak[0].idEpaimahaikidea}"><td><tr><button id="buttonEpaimahaikidea-${ebaluazioak[0].idEpaimahaikidea}">${event.target.textContent || ""}</button></tr></td></table>`;	
-    const taldeak = await ta.getTaldeAktiboak();    
-    row2.insertCell().innerHTML = `<table id = "taulaEbaluazioak-${ebaluazioak[0].idEpaimahaikidea}"><tr><td><button id = "buttonEbaluazioak-${ebaluazioak[0].idEpaimahaikidea}">${ebaluazioak.length}</button></td></tr></table>`;
-    row2.insertCell().innerHTML =`<table id = "taulaTaldeak-${ebaluazioak[0].idEpaimahaikidea}"><tr><td><button id = "buttonTaldeak-${ebaluazioak[0].idEpaimahaikidea}">${parseInt( taldeak.length)*ez - parseInt(ebaluazioak.length)}</button></td></tr></table>`;
-    const button = document.getElementById(`buttonEpaimahaikidea-${ebaluazioak[0].idEpaimahaikidea}`);
-    if (button) {
-        button.addEventListener('click', (event) => garbituEpaimahaikidea(event, ebaluazioak[0].idEpaimahaikidea, event.target.textContent,ez)); 
-    }
-    const button2 = document.getElementById(`buttonTaldeak-${ebaluazioak[0].idEpaimahaikidea}`);
+    row1.insertCell().textContent = epaimahaikidea.username;
+    row1.insertCell().innerHTML = "<button id = 'buttonEbaluazioak-"+epaimahaikidea.idEpaimahaikidea+"'>Egindako ebaluazioak</button>";
+    row1.insertCell().innerHTML = "<button id = 'buttonTaldeak-"+epaimahaikidea.idEpaimahaikidea+"'>Baloratzeke</button>";
+    const button1 = document.getElementById('buttonEbaluazioak-'+epaimahaikidea.idEpaimahaikidea);
+    const button2 = document.getElementById('buttonTaldeak-'+epaimahaikidea.idEpaimahaikidea);
+   
     if (button2) {
-        button2.addEventListener('click', (event) => taldeakBistaratu(event, ebaluazioak[0].idEpaimahaikidea)); 
+        button2.addEventListener('click', (event) => taldeakBistaratu(event, epaimahaikidea)); 
     }
-    const button3 = document.getElementById(`buttonEbaluazioak-${ebaluazioak[0].idEpaimahaikidea}`);
-    if (button3) {
-        button3.addEventListener('click', (event) => ebaluazioakBistaratu(event, ebaluazioak)); 
+    if (button1) {
+        button1.addEventListener('click', (event) => ebaluazioakBistaratu(event, epaimahaikidea)); 
     }
     }
 
-async function garbituEpaimahaikidea(event,idEpaimahaikidea, username, ez) {
-    event.preventDefault();
-    const taula = document.getElementById("epaimahaikidea-"+idEpaimahaikidea);
-    if (!taula) return;
-    taula.innerHTML = `<tr><td><button id="buttonEpaimahaikidea-${idEpaimahaikidea}">${username || ""}</button></td></tr>`;
-    const button = document.getElementById(`buttonEpaimahaikidea-${idEpaimahaikidea}`);
-    if (button) {
-        button.addEventListener('click', (event) => epaimahaikideaBistaratu(event, ez));
+
+    async function taldeakBistaratu(event, epaimahaikidea) {
+        event.preventDefault();
+        const taldeak = await ta.getBaloratuGabekoTaldeak(event);
+    
+        taldeak.sort((a, b) => {
+            if (a.egoera < b.egoera) return -1;
+            if (a.egoera > b.egoera) return 1;
+            return 0;
+        });
+    
+        const modal = document.createElement("div");
+        const modalContent = document.createElement("div");
+        const overlay = document.createElement("div");
+        const taldeakTaula = document.createElement("table");
+        const titulua = document.createElement('h1');
+        titulua.textContent = epaimahaikidea.username+ " epaileari baloratzeko geratzen zaizkion taldeak"
+        overlay.id = "modalOverlay";
+        modal.id = "modal";
+        modalContent.id = "modalContent";
+        styling(overlay, modal);
+        const headerRow = taldeakTaula.insertRow();
+        if(taldeak.length === 0){
+            
+            titulua.textContent = 'Talde guztiak baloratu dira';
+            modalContent.appendChild(titulua);
+        }
+        else{
+        headerRow.insertCell().textContent = "Taldea";
+        headerRow.insertCell().textContent = "Datuak";
+        headerRow.insertCell().textContent = "Egoera";
+        headerRow.insertCell().textContent = "Puntuak Guztira";
+    
+        for (const taldea of taldeak) {
+            const row = taldeakTaula.insertRow();
+            row.insertCell().textContent = taldea.izena || "-";
+            row.insertCell().textContent = (taldea.email || "-") + ", " + (taldea.telefonoa || "-");
+            const cell =  row.insertCell();
+            cell.textContent = parseInt(taldea.egoera) === 2 ? "Deskalifikatuta" : "Txapelketan";                                     
+            cell.style.color = parseInt(taldea.egoera) === 2 ? "red" : "green";
+            row.insertCell().textContent = taldea.puntuakGuztira || "0";
+        }
+        modalContent.appendChild(titulua);
+        modalContent.appendChild(taldeakTaula);
+        }
+        const closeButton = document.createElement("button");
+        closeButton.textContent = "Itxi";
+        closeButton.style.marginTop = "20px";
+        closeButton.addEventListener("click", () => {
+            document.body.removeChild(overlay);
+            document.body.removeChild(modal);
+            document.getElementById("content").classList.remove("blur");
+        });
+    
+        modalContent.appendChild(closeButton);
+        modal.appendChild(modalContent);
+    
+        document.body.appendChild(overlay);
+        document.body.appendChild(modal);
+        document.getElementById("content").classList.add("blur");
     }
-}  ;
-async function taldeakBistaratu(event, idEpaimahaikidea) {
-    event.preventDefault();
-    const taldeak = await ta.getTaldeak();
-    taldeak.sort((a, b) => {
-        if (a.egoera < b.egoera) return -1;
-        if (a.egoera > b.egoera) return 1;
-        return 0; 
+    
+
+
+
+async function ebaluazioakBistaratu(event, epaimahaikidea) {
+    event.preventDefault(); 
+    const modal = document.createElement("div");
+    const modalContent = document.createElement("div");
+    const overlay = document.createElement("div");
+    const ebaluazioakTaula = document.createElement("table");
+    const faseakTaula = document.getElementById('faseakTaula');
+    overlay.id = "modalOverlay";
+    modal.id = "modal";
+    modalContent.id = "modalContent";
+    styling(overlay, modal);
+    const titulua = document.createElement('h1');
+    const ebaluazioak = await eb.getEpailearenEbaluazioakFaseka(event);
+    if (ebaluazioak.length === 0) {
+        modalContent.textContent = "Ez dago ebaluaziorik";
+    } else {
+        titulua.textContent = epaimahaikidea.username+" epailearen ebaluazioak";
+        const headerRow = ebaluazioakTaula.insertRow();
+        headerRow.insertCell().textContent = "Puntuazioa";
+        headerRow.insertCell().textContent = "Data";
+        headerRow.insertCell().textContent = "Ezaugarria";
+        headerRow.insertCell().textContent = "Taldea";
+
+        for (const ebaluazioa of ebaluazioak) {
+            const row = ebaluazioakTaula.insertRow();
+            faseakTaula.setAttribute('data', ebaluazioa.idTaldea + "-" + ebaluazioa.idEzaugarria);
+            const ezaugarria = await ez.getEzaugarria2();
+            const taldea = await ta.getTaldea();
+            console.log(ezaugarria);
+            console.log(taldea);
+            row.insertCell().textContent = ebaluazioa.puntuak;
+            row.insertCell().textContent = ebaluazioa.noiz;
+            row.insertCell().textContent = ezaugarria.izena;
+            row.insertCell().textContent = taldea.izena;
+        }
+        
+        modalContent.appendChild(titulua);
+        modalContent.appendChild(ebaluazioakTaula);
+    }
+
+    const closeButton = document.createElement("button");
+    closeButton.textContent = "Itxi";
+    closeButton.style.marginTop = "20px";
+    closeButton.addEventListener("click", () => {
+        document.body.removeChild(overlay);
+        document.body.removeChild(modal);
+        document.getElementById("content").classList.remove("blur");
     });
 
-    const taula = document.getElementById(`taulaTaldeak-${idEpaimahaikidea}`);
-    const bal = event.target.textContent;
-    
-    taula.innerHTML = "";
-    const row1 = taula.insertRow();
-    row1.insertCell().innerHTML = `<button id = "buttonTaldeak-${idEpaimahaikidea}">${bal}</button>`;
-    row1.insertCell().textContent = "Taldea";
-    row1.insertCell().textContent = "Datuak";
-    row1.insertCell().textContent = "Egoera";
-    row1.insertCell().textContent = "Puntuak guztira";
-    
-    for (const taldea of taldeak) {
-        const row2 = taula.insertRow();
-        row2.insertCell();
-        row2.insertCell().textContent = taldea.izena;
-        row2.insertCell().textContent = taldea.email+ ", "+taldea.telefonoa;
-        row2.insertCell().textContent = parseInt(taldea.egoera) === 0 ? "Txapelketan" : parseInt(taldea.egoera) === 1 ? "Txapelketan" : "Deskalifikatuta";
-        row2.insertCell().textContent = taldea.puntuakGuztira || "0";
-        
-    }
-    const button = document.getElementById(`buttonTaldeak-${idEpaimahaikidea}`);
-    if (button) {
-        button.addEventListener('click', (event) => garbituTaldea(event, idEpaimahaikidea)); 
-    }
-};
+    modalContent.appendChild(closeButton);
+    modal.appendChild(modalContent);
 
-async function garbituTaldea(event, idEpaimahaikidea) {
-    event.preventDefault();
-    const taula = document.getElementById(`taulaTaldeak-${idEpaimahaikidea}`);
-    taula.innerHTML = `<tr><td><button id="buttonTaldeak-${idEpaimahaikidea}">${event.target.textContent}</button></td></tr>`;
-    const button = document.getElementById(`buttonTaldeak-${idEpaimahaikidea}`);
-    if (button) {
-        button.addEventListener('click', (event) => taldeakBistaratu(event, idEpaimahaikidea));
-    }
-}  ;
-
-
-
-async function ebaluazioakBistaratu(event, ebaluazioak){
-    event.preventDefault();
-    const ebaluazioakTaula = document.getElementById("taulaEbaluazioak-"+event.target.id.split('buttonEbaluazioak-')[1]);
-    ebaluazioakTaula.innerHTML = "";
-    const row1 = ebaluazioakTaula.insertRow();
-    row1.insertCell().innerHTML = `<button id = "buttonEbaluazioak-${event.target.id.split('buttonEbaluazioak-')[1]}">${event.target.textContent}</button>`;
-    row1.insertCell().textContent = "Puntuazioa";
-    row1.insertCell().textContent = "Data";
-    row1.insertCell().textContent = "Ezaugarria";
-    row1.insertCell().textContent = "Taldea";
-    for (const ebaluazioa of ebaluazioak) {
-        const row2 = ebaluazioakTaula.insertRow();
-        row2.insertCell();
-        row2.insertCell().textContent = ebaluazioa.puntuak;
-        row2.insertCell().textContent = ebaluazioa.noiz;
-        row2.insertCell().textContent = ebaluazioa.idEzaugarria;
-        row2.insertCell().textContent = ebaluazioa.idTaldea;
-    }
-    const button = document.getElementById(`buttonEbaluazioak-${event.target.id.split('buttonEbaluazioak-')[1]}`);
-    if (button) {
-        button.addEventListener('click', (event) => garbituEbaluazioa(event, ebaluazioak));
-    }
-};
-
-function garbituEbaluazioa(event, ebaluazioak) {
-    event.preventDefault();
-    const idEbaluazioa = event.target.id.split('buttonEbaluazioak-')[1];
-    const info = ebaluazioak.length;
-    const taula = document.getElementById(`taulaEbaluazioak-${idEbaluazioa}`);
-    taula.innerHTML = `<tr><td><button id="buttonEbaluazioak-${idEbaluazioa}">${info}</button></td></tr>`;
-    const button = document.getElementById(`buttonEbaluazioak-${idEbaluazioa}`);
-    if (button) {
-        button.addEventListener('click', (event) => ebaluazioakBistaratu(event, ebaluazioak));
-    }
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+    document.getElementById("content").classList.add("blur");
 }
 
 async function aldatuEgoera(event) {
@@ -486,3 +507,140 @@ async function aldatuEgoera(event) {
 
 }
 
+
+function styling(overlay, modal) {
+   
+    overlay.style.position = "fixed";
+    overlay.style.top = 0;
+    overlay.style.left = 0;
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+    overlay.style.zIndex = 999;
+
+    modal.style.position = "fixed";
+    modal.style.top = "50%";
+    modal.style.left = "50%";
+    modal.style.transform = "translate(-50%, -50%)";
+    modal.style.backgroundColor = "#fff";
+    modal.style.padding = "20px";
+    modal.style.borderRadius = "8px";
+    modal.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+    modal.style.zIndex = 1000;
+    modal.style.overflowY = "auto";
+}
+
+export async function faseAktiboarenEbaluazioakBistaratu(){
+    const ebaluazioak = await eb.getFaseAktiboarenEbaluazioak();
+    const taula = document.createElement('table');
+    const headerRow = taula.insertRow();
+    headerRow.insertCell().textContent = "Epailea";
+    headerRow.insertCell().textContent = "Ezaugarria";
+    headerRow.insertCell().textContent = "Taldea";
+    headerRow.insertCell().textContent = "Puntuazioa";
+    headerRow.insertCell().textContent = "Data";
+    ebaluazioak.forEach(ebaluazioa => {
+        const row = taula.insertRow();
+        row.insertCell().textContent = ebaluazioa.username;
+        row.insertCell().textContent = ebaluazioa.ezaugarriaIzena;
+        row.insertCell().textContent = ebaluazioa.taldeaIzena;
+        row.insertCell().textContent = ebaluazioa.puntuak;
+        row.insertCell().textContent = ebaluazioa.noiz;
+    });
+
+    document.body.appendChild(taula);
+   
+}
+
+export async function fasearenEbaluazioakBistaratu(event){
+    event.preventDefault();
+    const modal = document.createElement("div");
+    const modalContent = document.createElement("div");
+    const overlay = document.createElement("div");
+    overlay.id = "modalOverlay";
+    modal.id = "modal";
+    modalContent.id = "modalContent";
+    styling(overlay, modal);
+    const ebaluazioak = await eb.getFasearenEbaluazioak(event);
+    if (ebaluazioak.length === 0) {
+        modalContent.textContent = "Ez dago ebaluaziorik";
+        modal.appendChild(modalContent);
+       
+    }
+    
+    else{
+    const taula = document.createElement('table');
+    const headerRow = taula.insertRow();
+    headerRow.insertCell().textContent = "Epailea";
+    headerRow.insertCell().textContent = "Ezaugarria";
+    headerRow.insertCell().textContent = "Taldea";
+    headerRow.insertCell().textContent = "Puntuazioa";
+    headerRow.insertCell().textContent = "Data";
+    ebaluazioak.forEach(ebaluazioa => {
+        const row = taula.insertRow();
+        row.insertCell().textContent = ebaluazioa.username;
+        row.insertCell().textContent = ebaluazioa.ezaugarriaIzena;
+        row.insertCell().textContent = ebaluazioa.taldeaIzena;
+        row.insertCell().textContent = ebaluazioa.puntuak;
+        row.insertCell().textContent = ebaluazioa.noiz;
+    });
+
+   modalContent.appendChild(taula);
+}
+   const closeButton = document.createElement("button");
+    closeButton.textContent = "Itxi";
+    closeButton.style.marginTop = "20px";
+    modalContent.appendChild(closeButton);
+    modal.appendChild(modalContent);
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+    document.getElementById("content").classList.add("blur");
+
+
+    closeButton.addEventListener("click", () => {
+        document.body.removeChild(overlay);
+        document.body.removeChild(modal);
+        document.getElementById("content").classList.remove("blur");
+    
+});
+   
+    
+
+   }
+
+export async function kalkuluakBistaratu(){
+    await u.autentifikatu();
+    const taula = document.createElement('table');
+    const taldeak = await ta.getTaldeak();
+    console.log(taldeak);
+    taldeak.sort((a, b) => {
+       
+        if ((a.egoera === 0 || a.egoera === 1) && b.egoera === 2) return -1;
+        if (a.egoera === 2 && (b.egoera === 0 || b.egoera === 1)) return 1;
+    
+     
+        return b.puntuakGuztira - a.puntuakGuztira;
+    });
+    
+    const row1 = taula.insertRow();
+    row1.insertCell().textContent = "Posizioa";
+    row1.insertCell().textContent = "Taldea";
+    row1.insertCell().textContent = "Puntuazioa";
+    row1.insertCell().textContent = "Egoera";
+    let i = 1;
+    taldeak.forEach(taldea => {
+        const row = taula.insertRow();
+        row.insertCell().textContent = i;
+        i++;
+        row.insertCell().textContent = taldea.izena;
+        row.insertCell().textContent = taldea.puntuakGuztira;
+        const cell = row.insertCell();
+        cell.textContent = parseInt(taldea.egoera) === 2 ? "Deskalifikatuta" : "Txapelketan";
+        cell.style.color = parseInt(taldea.egoera) === 2 ? "red" : "green";
+    });
+
+    document.body.appendChild(taula);
+
+
+
+}

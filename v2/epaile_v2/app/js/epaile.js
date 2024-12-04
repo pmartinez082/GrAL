@@ -18,13 +18,15 @@ export async function ebaluazioaForm(){
    
 
     const fase = await f.getFaseAktiboa();
-    const fasearenEzaugarriak = await f.getFasearenEzaugarriak();
-    if (fase == null) {
+    console.log(fase);
+    if (fase.length === 0) {
         const abisua = document.createElement('h1');
         abisua.innerHTML = "Oraindik ez da fasea hasi";
         document.body.appendChild(abisua);
         return;
     }
+    const fasearenEzaugarriak = await f.getFasearenEzaugarriak();
+
   
    
     const taula = document.getElementById('ebaluazioaTaula');

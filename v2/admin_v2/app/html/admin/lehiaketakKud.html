@@ -20,8 +20,9 @@
         <button type="submit">Atzera joan</button>
     </form>
     <h1>txapelketa berri bat sortu ezazu</h1>
-    <form   id = "txapelketaForm1">    
-        <table>
+    
+        <table id = "txapelketaTaula">
+           <tr hidden><td> <input id = "idTxapelketa" hidden> </td></tr> 
             <tr>
                 <td>Izena</td>
                 <td><input type="text" id="txapelketaIzena" placeholder="Izena" required></td>
@@ -29,49 +30,45 @@
 
             <tr>
                 <td>Data</td>
-                <td><input type="date" id="dataOrdua" placeholder="uuuu-hh-ee" required min = currentDate></td>
+                <td><input type="date" id="dataOrdua" placeholder="uuuu-hh-ee" required ></td>
             </tr>
 
             <tr>
                 <td>Lekua</td>
                 <td><input type="text" id="lekua" placeholder="Lekua" required></td>
             </tr>
+            
             <tr>
-                <td><button type="submit">Sortu</button></td>
-            </tr>
-            <tr>
-                <td><input type="hidden" id="idTxapelketa"></td>
+                <td hidden><input type="hidden" id="idTxapelketa"></td>
             </tr>
         </table>
-        <script type="module">
-            import { txapelketaSortu } from '../../js/admin.js'; 
-            const txapelketaForm = document.getElementById('txapelketaForm1');
-            txapelketaForm.addEventListener('submit', txapelketaSortu);
-        </script>
-    </form>
+        <button type="button" id="sortu" >Sortu</button>
+ 
+        
+    
 
 
-    <form id = "faseForm" >
-        <script type="module">
-            import { faseaSortu } from '../../js/admin.js'; 
-            const faseForm = document.getElementById('faseForm');
-            faseForm.addEventListener('submit', faseaSortu);  
-        </script>  
-        <div id="faseenTaula"></div>
-
-    </form>
-
-    <div id = "ezarritakoFaseak" hidden>   
-
-    </div>
- <input id = "idTxapelketa" hidden>   
+    <div id="faseenTaula"></div>  
+     
 
 </input>
-<form id = "amaitu" hidden action = "lehiaketakView.html">
-    <button type="submit">Amaitu</button>
-</form>
-<div id = "txapelketak" ></div>
-</body>
 
+<div id = "txapelketak" ></div>
+<form id = "amaitu" hidden action = "lehiaketakView.html">
+    <button type="submit" hidden>Amaitu</button>
+</form>
+
+</body>
+<script type="module">
+    import {txapelketaSortu, faseaSortu} from '../../js/admin.js';
+
+    document.getElementById('sortu').addEventListener('click', async (event) => {
+        await txapelketaSortu(event);
+    });
+    document.getElementById('amaitu').addEventListener('click', (event) => {
+        faseaSortu(event);
+        window.location.href = 'lehiaketakView.html';
+    });
+</script>
 
 </html>

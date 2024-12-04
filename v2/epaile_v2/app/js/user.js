@@ -1,6 +1,6 @@
 import * as klaseak from './klaseak.js';
 import 'https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js';
-const API_URL = 'http://192.168.13.117:3000';
+const API_URL = 'http://192.168.1.140:3000';
 export const getEpaileak = async () => {
     try {
         const response = await fetch(`${API_URL}/user/role/epaileak`, {
@@ -147,7 +147,7 @@ export async function autentifikatu(){
     else{
         document.body.innerHTML = '';
         const mezua = document.createElement('h1');
-        mezua.textContent = `${username} ez du hemen egoteko baimenik`;
+        mezua.textContent = `${username}-k ez du hemen egoteko baimenik`;
         
         document.body.appendChild(mezua);
         const button  = document.createElement('button');

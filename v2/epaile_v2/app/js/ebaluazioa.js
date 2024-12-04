@@ -1,5 +1,5 @@
 
-const API_URL = 'http://192.168.13.117:3000';
+const API_URL = 'http://192.168.1.140:3000';
 import * as klaseak from "./klaseak.js";
 import { getEpailearenEpaimahaiak } from './epaimahaikidea.js';
 import { autentifikatu } from "./user.js";
@@ -15,7 +15,7 @@ export const getEbaluazioak = async () => {
             const data = await response.json();
             const ebaluazioak = [];
             data.array.forEach(ebaluazioa => {
-                ebaluazioak.push(new klaseak.Ebaluazioa(ebaluazioa.idEbaluazioa, ebaluazioa.idTxapelketa, ebaluazioa.kodea, ebaluazioa.izena, ebaluazioa.hasiera, ebaluazioa.amaiera, ebaluazioa.egoera, ebaluazioa.irizpidea));
+                ebaluazioak.push(new klaseak.Ebaluazioa(ebaluazioa.idEbaluazioa, ebaluazioa.idTxapelketa, ebaluazioa.izena, ebaluazioa.hasiera, ebaluazioa.amaiera, ebaluazioa.egoera, ebaluazioa.irizpidea));
             });
             return ebaluazioak;
         }

@@ -1,4 +1,4 @@
-const API_URL = 'http://192.168.13.117:3000';
+const API_URL = 'http://192.168.1.140:3000';
 import * as klaseak from "./klaseak.js";
 export const getTaldeak = async () => {
     try {
@@ -53,9 +53,9 @@ export const createNewTaldea = async () => {
 };
 
 export const getTaldea = async () => {
-    
+    const id = document.getElementById('faseakTaula').getAttribute('data').split('-')[0];
     try {
-        const response = await fetch(`${API_URL}/taldea/1`, {
+        const response = await fetch(`${API_URL}/taldea/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export const getTaldea = async () => {
         });
         if (response.ok) {
             const data = await response.json();
-           return new klaseak.Taldea(data.idTaldea, data.izena, data.email, data.telefonoa, data.puntuakGuztira, data.egoera);
+           return new klaseak.Taldea(data[0].idTaldea, data[0].izena, data[0].email, data[0].telefonoa, data[0].puntuakGuztira, data[0].egoera);    
 
 
         }
@@ -75,9 +75,9 @@ export const getTaldea = async () => {
 
 };
 
-export const getBaloratuGabekoTaldeak = async () => {
-    //const idEpaimahaikidea = document.getElementById('idEpaimahaikidea').value;
-    const idEpaimahaikidea = 5; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+export const getBaloratuGabekoTaldeak = async (event) => {
+   
+    const idEpaimahaikidea = event.target.id.split('buttonTaldeak-')[1];
     try {
         const response = await fetch(`${API_URL}/taldea/${idEpaimahaikidea}/baloratu-gabekoak`, {
             method: 'GET',
@@ -95,7 +95,7 @@ export const getBaloratuGabekoTaldeak = async () => {
             return taldeak;
         }
         else{
-            return null;
+            return [];
         }
     } catch (err) {
         console.error(err);
@@ -173,7 +173,7 @@ export const getTaldearenEbaluazioak = async () => {
             const data = await response.json();
             const ebaluazioak = [];
             data.forEach(ebaluazioa => {
-                ebaluazioak.push(new klaseak.Ebaluazioa(ebaluazioa.idEbaluazioa, ebaluazioa.idTxapelketa, ebaluazioa.kodea, ebaluazioa.izena, ebaluazioa.hasiera, ebaluazioa.amaiera, ebaluazioa.egoera, ebaluazioa.irizpidea));
+                ebaluazioak.push(new klaseak.Ebaluazioa(ebaluazioa.idEbaluazioa, ebaluazioa.idTxapelketa,  ebaluazioa.izena, ebaluazioa.hasiera, ebaluazioa.amaiera, ebaluazioa.egoera, ebaluazioa.irizpidea));
             });
             return ebaluazioak;
         }

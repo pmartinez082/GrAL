@@ -1,4 +1,4 @@
-const API_URL = 'http://192.168.13.117:3000';
+const API_URL = 'http://192.168.1.140:3000';
 import * as klaseak from './klaseak.js';
 function getEpaimahaikideakArray(){
    const epaimahaikideakCheck = document.getElementsByName('checkbox');
@@ -97,3 +97,23 @@ export const getEpailearenEpaimahaiak = async (username) => {
         console.error(err);
     }
 };
+
+export const getEpaimahaikidea = async (event) => {
+    event.preventDefault();
+    const id = event.target.id.value.split('-')[1];
+    try {
+        const response = await fetch(`${API_URL}/event/getEpaimahaikidea/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            return data;
+        }
+    } catch (err) {
+        console.error(err);
+    }   
+}

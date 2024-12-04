@@ -164,3 +164,78 @@ export const createNewEbaluazioa = async (req, res) => {
       console.error(error); 
       res.status(500).json({ error: 'errorea' });    }
   };
+
+
+  export const getFaseAktiboarenEbaluazioak = async (req, res) => {
+    const sqlQuery = `SELECT 
+    eb.*, 
+    t.izena AS taldeaIzena, 
+    e.izena AS ezaugarriaIzena,
+    f.izena AS faseaIzena,
+    ep.username
+FROM 
+    ebaluazioa eb
+JOIN 
+    epaimahaikidea ep ON eb.idEpaimahaikidea = ep.idEpaimahaikidea
+JOIN 
+    fasea f ON ep.idFasea = f.idFasea
+LEFT JOIN 
+    taldea t ON eb.idTaldea = t.idTaldea
+LEFT JOIN 
+    ezaugarria e ON eb.idEzaugarria = e.idEzaugarria
+WHERE 
+    f.egoera = 1;
+`;
+    try{
+      const [results] = await dbConnection.query(sqlQuery);
+      if(results.length > 0)
+        res.status(200).json(results);
+      else
+        res.status(200).json([]);
+  
+        }
+        catch(err){
+          res.status(500).json({message: err.message})
+        }
+  
+  
+  
+  };
+
+
+  export const getFasearenEbaluazioak = async (req, res) => {
+    const idFasea = req.params.idFasea;
+    const sqlQuery = `SELECT 
+    eb.*, 
+    t.izena AS taldeaIzena, 
+    e.izena AS ezaugarriaIzena,
+    f.izena AS faseaIzena,
+    ep.username
+FROM 
+    ebaluazioa eb
+JOIN 
+    epaimahaikidea ep ON eb.idEpaimahaikidea = ep.idEpaimahaikidea
+JOIN 
+    fasea f ON ep.idFasea = f.idFasea
+LEFT JOIN 
+    taldea t ON eb.idTaldea = t.idTaldea
+LEFT JOIN 
+    ezaugarria e ON eb.idEzaugarria = e.idEzaugarria
+WHERE 
+    f.idFasea = ?
+ORDER BY
+e.idEzaugarria, t.idTaldea, eb.idEpaimahaikidea;
+`;
+    try{
+      const [results] = await dbConnection.query(sqlQuery, idFasea);
+      if(results.length > 0)
+        res.status(200).json(results);
+      else
+        res.status(200).json([]);
+  
+        }
+        catch(err){
+          res.status(500).json({message: err.message})
+        }
+
+  }

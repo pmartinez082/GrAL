@@ -1,6 +1,6 @@
 import * as klaseak from './klaseak.js';
 import {createClassesFromDataF} from './fasea.js' ;
-const API_URL = 'http://192.168.13.117:3000'
+const API_URL = 'http://192.168.1.140:3000'
 
 
 
@@ -168,7 +168,7 @@ export const getTxapelketarenFaseak = async () => {
             const data = await response.json();
             const faseak = [];
             data.forEach(fase => {
-                faseak.push(new klaseak.Fasea(fase.idFasea, fase.idTxapelketa, fase.izena, fase.kodea, fase.egoera, fase.hasiera, fase.amaiera, fase.irizpidea));
+                faseak.push(new klaseak.Fasea(fase.idFasea, fase.idTxapelketa, fase.izena, fase.egoera, fase.hasiera, fase.amaiera, fase.irizpidea));
             });
             return faseak;
         }

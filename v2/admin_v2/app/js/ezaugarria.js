@@ -1,4 +1,4 @@
-const API_URL = 'http://192.168.13.117:3000';
+const API_URL = 'http://192.168.1.140:3000';
 import * as klaseak from './klaseak.js';
 export function getEzaugarriakArray(){
     const idFasea = document.getElementById('idFasea').value;
@@ -6,17 +6,26 @@ export function getEzaugarriakArray(){
     const ezaugarriaIzena = document.getElementsByName('ezaugarriaIzena');
     const eMin = document.getElementsByName('ezaugarriaMin');
     const eMax = document.getElementsByName('ezaugarriaMax');
+    const ponderazioa = document.getElementsByName('ponderazioa');
+    var b = 0;
     for (var i = 0; i < ezaugarriaIzena.length; i = i+1) {
-        if (ezaugarriaIzena[i].value !== "" && eMin[i].value !== "" && eMax[i].value !== "") {
-            ezaugarriak.push(new klaseak.Ezaugarria(0,ezaugarriaIzena[i].value, eMin[i].value, eMax[i].value, idFasea));
+        if(ponderazioa[i].value !== ""){
+        b += parseFloat(ponderazioa[i].value);
         }
+        console.log(b);
+        if (ezaugarriaIzena[i].value !== "" && eMin[i].value !== "" && eMax[i].value !== "") {
+            ezaugarriak.push(new klaseak.Ezaugarria(0,ezaugarriaIzena[i].value, eMax[i].value, eMin[i].value, idFasea, ponderazioa[i].value));
+        }
+    }
+    if(parseInt(b) !== 1){
+    return false;
     }
     return ezaugarriak;
 }
 
 
-export const getEzaugarriak = async (event) => {
-    event.preventDefault();
+export const getEzaugarriak = async () => {
+    
     try {
         const response = await fetch(`${API_URL}/ezaugarria/`, {
             method: 'GET',
@@ -29,7 +38,7 @@ export const getEzaugarriak = async (event) => {
             const data = await response.json();
             const ezaugarriak = [];
             data.array.forEach(ezaugarria => {
-                ezaugarriak.push(new klaseak.Ezaugarria(ezaugarria.idEzaugarria, ezaugarria.izena, ezaugarria.puntuakMax, ezaugarria.puntuakMin));
+                ezaugarriak.push(new klaseak.Ezaugarria(ezaugarria.idEzaugarria, ezaugarria.izena, ezaugarria.puntuakMax, ezaugarria.puntuakMin, ezaugarria.ponderazioa));
             });
             return ezaugarriak;
         }
@@ -38,12 +47,12 @@ export const getEzaugarriak = async (event) => {
     }
 };
 
-export const getEzaugarria = async (event) => {
+export const getEzaugarria = async () => {
   
     try {
-        //event.preventDefault();
-        console.log(event.target.id);
-        const idEzaugarri  = event.target.id.split('buttonEzaugarria-')[1];  
+      
+        const idEzaugarri  =   document.getElementsByName("ezaugarria")[0].getAttribute('data-idEzaugarria');
+        
         if (!idEzaugarri) {
             console.error("Error: Missing idEzaugarria "+idEzaugarri);
             return null;
@@ -62,27 +71,56 @@ export const getEzaugarria = async (event) => {
 
         const data = await response.json();
         console.log(data);
-        return new klaseak.Ezaugarria(data[0].idEzaugarria, data[0].izena, data[0].puntuakMax, data[0].puntuakMin, data[0].idFasea);
+        return new klaseak.Ezaugarria(data[0].idEzaugarria, data[0].izena, data[0].puntuakMax, data[0].puntuakMin, data[0].idFasea, data[0].ponderazioa);
         
     } catch (err) {
         console.error("Network or parsing error:", err);
         return null;
     }
 };
+export const getEzaugarria2 = async () => {
+    const id = document.getElementById('faseakTaula');
+    const idEzaugarria = id.getAttribute('data').split('-')[1];
+    try {
+        const response = await fetch(`${API_URL}/ezaugarria/${idEzaugarria}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            
+        });
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+           return new klaseak.Ezaugarria(data[0].idEzaugarria, data[0].izena, data[0].puntuakMax, data[0].puntuakMin, data[0].ponderazioa);
+
+
+        }
+      
+    
+    } catch (err) {
+        console.error(err);
+    }
+};
+        
+
 
 //EZAUGARRIA SORTU
 export const createNewEzaugarria = async () => {
     var i = 0;
+    if(!getEzaugarriakArray() ) return false;
     while (i < getEzaugarriakArray().length) {
         if (getEzaugarriakArray()[i].idEzaugarria === null) {
             break;
         }
+        
         const data = {
             idEzaugarria: null,
             izena: getEzaugarriakArray()[i].izena,
             puntuakMin: getEzaugarriakArray()[i].puntuakMin,
             puntuakMax: getEzaugarriakArray()[i].puntuakMax,
-            idFasea: document.getElementById('idFasea').value   
+            idFasea: document.getElementById('idFasea').value,
+            ponderazioa: getEzaugarriakArray()[i].ponderazioa 
         };
         try {
             const response = await fetch(`${API_URL}/ezaugarria/add`, {
@@ -95,7 +133,7 @@ export const createNewEzaugarria = async () => {
             if (response.ok) {
                 
                 const responseData = await response.json();
-                const idEzaugarria= responseData.idEzaugarria;
+                //const idEzaugarria= responseData.idEzaugarria;
             
                 console.log("ezaugarria ondo sortu da");
             } else {
@@ -108,4 +146,5 @@ export const createNewEzaugarria = async () => {
         }
         i = i + 1;
     }
+return true;
 };
