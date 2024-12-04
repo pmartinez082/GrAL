@@ -8,8 +8,8 @@ const app = express();
 
 //* Settings
 const port = 3000;
-//const host = '192.168.1.140'; 
-const host = '192.168.1.140';
+//const host = '192.168.137.1'; 
+const host = '192.168.137.1';
 //* Middlewares
 app.use(morgan('dev'));
 

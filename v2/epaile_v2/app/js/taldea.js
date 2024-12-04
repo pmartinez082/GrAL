@@ -1,4 +1,4 @@
-const API_URL = 'http://192.168.1.140:3000'
+const API_URL = 'http://192.168.137.1:3000'
 import * as klaseak from "./klaseak.js";
 import {autentifikatu} from './user.js';
 import {getEpailearenEpaimahaiak} from './epaimahaikidea.js';

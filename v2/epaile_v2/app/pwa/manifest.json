@@ -2,7 +2,7 @@
   "name": "Putxerapp_epaile",
   "short_name": "Putx_epaile",
   "description": "",
-  "orientation": "portrait",
+  "orientation": "any",
   
   "icons": [
     {

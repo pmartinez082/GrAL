@@ -1,5 +1,5 @@
 
-const API_URL = 'http://192.168.1.140:3000';
+const API_URL = 'http://192.168.137.1:3000';
 import * as klaseak from "./klaseak.js";
 import { getEpailearenEpaimahaiak } from './epaimahaikidea.js';
 import { autentifikatu } from "./user.js";
@@ -135,7 +135,7 @@ export const getFasearenEbaluazioak = async (event) => {
     event.preventDefault();
     const idFasea = event.target.id.split('-')[1];
     try {
-        const response = await fetch(`http://192.168.1.140:3000/ebaluazioa/get/fasearenEbaluazioak/${idFasea}`);
+        const response = await fetch(`http://192.168.137.1:3000/ebaluazioa/get/fasearenEbaluazioak/${idFasea}`);
         if (response.ok) {
             const data = await response.json();
             console.log(data);

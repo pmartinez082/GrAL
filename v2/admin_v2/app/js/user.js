@@ -1,6 +1,6 @@
 import * as klaseak from './klaseak.js';
 import { jwtDecode } from '../../../db_v2/node_modules/jwt-decode/build/esm/index.js';
-const API_URL = 'http://192.168.1.140:3000';
+const API_URL = 'http://192.168.137.1:3000';
 export const getEpaileak = async () => {
     try {
         const response = await fetch(`${API_URL}/user/role/epaileak`, {
