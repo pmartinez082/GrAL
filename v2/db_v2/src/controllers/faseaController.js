@@ -236,9 +236,16 @@ export const faseaExists = async (req, res) => {
     try {
       const faseaObj = [
         fasea.egoera,
+        fasea.data,
         fasea.idFasea
+        
       ];
-      const sqlQuery = 'UPDATE fasea SET egoera = ? WHERE idFasea = ?';
+      let sqlQuery = "";
+      if(fasea.egoera === "1"){
+      sqlQuery = 'UPDATE fasea SET egoera = ?, hasiera = ? WHERE idFasea = ?';}
+      else{
+      sqlQuery = 'UPDATE fasea SET egoera = ?, amaiera = ? WHERE idFasea = ?';
+      }
       await dbConnection.execute(sqlQuery, faseaObj);
       res.status(200).json({ message: 'fasea updated' });
     }catch (error) {

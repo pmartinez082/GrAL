@@ -3,9 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Faseak monitorizatu</title>
+        <title>Faseak Monitorizatu</title>
         <link rel="manifest" href="../../../pwa/manifest.json" />
-        <link rel="stylesheet" href="../../css/style.css">
+        <link rel = "stylesheet" href = "../../css/style.css">
         <script type="module">
             import { faseakBistaratu } from '../../js/admin.js';
             window.addEventListener('DOMContentLoaded', () => {
@@ -15,17 +15,34 @@
     </head>
 
     <body>
-       <div id= "content">
-        <form action = "faseakView.html">
-            <button>Birkargatu</button>
-        </form>
-        <form action = "admin.html">
-            <button type="submit">Atzera joan</button>
-        </form>
-        
-            <table id = "faseakTaula"></table>
-        
-    </div>
+        <div class="back-container">
+            <form action="./admin.html">
+                <button type="submit"><img src="../../pics/atzera.svg" alt="Atzera"></button>
+            </form>
+            <form action="./faseakView.html">
+                <button type="submit"><img src="../../pics/birkargatu.svg" alt="Birkargatu"></button>
+            </form>
+        </div>
 
+        <div id="content" >
+            <table id="faseakTaula" class = "taula" >
+             
+            </table>
+        </div>
+
+        <div class="button-container">
+            <form id="adminForm4" action="kalkuluak.html">
+                <button type="submit"><img src="../../pics/podium.svg" alt="Podiuma ikusi"></button>
+            </form>
+            <form id="adminForm2" action="lehiaketakView.html">
+                <button type="submit"><img src="../../pics/historia.svg" alt="Aurreko txapelketak ikusi"></button>
+            </form>
+            <form id="adminForm1" action="lehiaketakKud.html">
+                <button type="submit"><img src="../../pics/berria.svg" alt="Txapelketa berria sortu"></button>
+            </form>
+            <form id="adminForm3" action="faseakView.html">
+                <button type="submit"><img src="../../pics/ezarpenak.svg" alt="Martxan dagoen txapelketa kudeatu"></button>
+            </form>
+        </div>
     </body>
 </html>

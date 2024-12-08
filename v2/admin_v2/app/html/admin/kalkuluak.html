@@ -8,12 +8,14 @@
     <link rel="manifest" href="../../../pwa/manifest.json" />
 </head>
 <body>
-    <form action = "admin.html">
-        <button type="submit">Atzera joan</button>
-    </form>
-    <form action = "kalkuluak.html">
-        <button type="submit">Birkargatu</button>
-    </form>
+    <div class="back-container">
+        <form action="./admin.html">
+            <button type="submit"><img src="../../pics/atzera.svg" alt="Atzera"></button>
+        </form>
+        <form action="./kalkuluak.html">
+            <button type="submit"><img src="../../pics/birkargatu.svg" alt="Birkargatu"></button>
+        </form>
+    </div>
     <script type = "module">
         import { autentifikatu } from '../../js/user.js';
         import { kalkuluakBistaratu } from '../../js/admin.js';
@@ -23,7 +25,20 @@
             kalkuluakBistaratu();
         });
     </script>
-
+<div class="button-container">
+    <form id="adminForm4" action="kalkuluak.html">
+        <button type="submit"><img src="../../pics/podium.svg" alt="Podiuma ikusi"></button>
+    </form>
+    <form id="adminForm2" action="lehiaketakView.html">
+        <button type="submit"><img src="../../pics/historia.svg" alt="Aurreko txapelketak ikusi"></button>
+    </form>
+    <form id="adminForm1" action="lehiaketakKud.html">
+        <button type="submit"><img src="../../pics/berria.svg" alt="Txapelketa berria sortu"></button>
+    </form>
+    <form id="adminForm3" action="faseakView.html">
+        <button type="submit"><img src="../../pics/ezarpenak.svg" alt="Martxan dagoen txapelketa kudeatu"></button>
+    </form>
+</div>
 </body>
 
 </html>

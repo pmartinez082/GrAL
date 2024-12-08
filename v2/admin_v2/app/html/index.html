@@ -4,45 +4,61 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="../pwa/manifest.json" />
-  
+  <link rel="stylesheet" href="../css/style.css">
   <title>Sesioa hasi</title>
-  <link rel="stylesheet" href = ../css/style.css> 
-    
 </head>
-
-
 <body>
-  <script type = "module">
-    import {login, toggleLogin} from '../js/app.js';
+  <script type="module">
+    import { login, toggleLogin } from '../js/app.js';
     document.getElementById('authForm').addEventListener('submit', login);
     document.getElementById('toggle-button').addEventListener('click', toggleLogin);
   </script>
-  <div id = "logDiv"></div>
-    <h1 id="formTitle">Sesioa hasi</h1>
+
+  <div id="logDiv" class="login-container">
+    <h1 id="formTitle">Saioa hasi</h1>
     <form id="authForm">
-
-    <table>
-        <tr> 
-            <td><input type = text id = username placeholder = "Erabiltzaile izena" required /></td>
-            <td><input type="email" id="email" placeholder = "eposta kontua"  hidden /></td>
-            <td><input type="password" id="password" placeholder="pasahitza" required  /></td>
-            <td><button type="submit">Bidali</button></td>
-        </tr>
-    </table>
+      <input type="text" id="username" placeholder="Erabiltzaile izena" required />
+      <input type="email" id="email" placeholder="Eposta kontua" hidden />
+      <input type="password" id="password" placeholder="Pasahitza" required />
+      <button type="submit">Bidali</button>
     </form>
-    <button id="toggle-button" >Ez duzu konturik? Erregistratu zaitez</button>
+    <button id="toggle-button">Ez duzu konturik? Erregistratu zaitez</button>
+    <button id="installButton">Instalatu</button>
+  </div>
+
   
-
-
- <!-- Register the app's service worker. -->
- <script>
+</body>
+<script>
   if ("serviceWorker" in navigator) {
-    
     navigator.serviceWorker.register("../pwa/sw.js");
-    
   }
 </script>
 
+<script>
+  let deferredPrompt;
+  if (!('beforeinstallprompt' in window)) {
+    console.log('El navegador no soporta la instalación de PWAs.');
+  }
 
-</body>
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installButton').style.display = 'block';
+  });
+
+  const installButton = document.getElementById('installButton');
+  installButton.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const choiceResult = await deferredPrompt.userChoice;
+      if (choiceResult.outcome === 'accepted') {
+        console.log('El usuario aceptó la instalación');
+      } else {
+        console.log('El usuario rechazó la instalación');
+      }
+      deferredPrompt = null;
+      installButton.style.display = 'none';
+    }
+  });
+</script>
 </html>

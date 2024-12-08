@@ -1,0 +1,407 @@
+/*body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.3;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}*/
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    color: white;
+    font-size: 12px;
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+td:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+td:nth-child(even) {
+    background-color: #fafafa;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+td:hover {
+    background-color: #eaeaea;
+}
+
+td:last-child, th:last-child {
+    border-right: 2px solid #333;
+}
+
+table tr:first-of-type {
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+}
+
+button {
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button:hover {
+    background-color: #102C54;
+    transform: scale(1.05);
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+button:disabled {
+    background-color: #d3d3d3;
+    color: #a1a1a1;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+button.btn-primary {
+    background-color: #008CBA;
+}
+
+button.btn-primary:hover {
+    background-color: #007B9E;
+}
+
+button.btn-secondary {
+    background-color: #f44336;
+}
+
+button.btn-secondary:hover {
+    background-color: #e53935;
+}
+
+button.outline {
+    background-color: transparent;
+    color: #102C54;
+    border: 2px solid #102C54;
+}
+
+button.outline:hover {
+    background-color: #102C54;
+    color: white;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="number"]:focus {
+    border-color: #102C54;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+    outline: none;
+}
+
+input[type="submit"], input[type="button"] {
+    background-color: #102C54;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="submit"]:hover, input[type="button"]:hover {
+    background-color: #102C54;
+    transform: scale(1.05);
+}
+
+input[type="submit"]:active, input[type="button"]:active {
+    transform: scale(0.98);
+}
+
+input[type="checkbox"] {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    appearance: none;
+    border: 2px solid #102C54;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #102C54;
+    border-color: #102C54;
+}
+
+input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 6px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 12px;
+    background-color: white;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234CAF50'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+select:focus {
+    border-color: #102C54;
+    box-shadow: 0 0 8px rgba(16, 44, 84, 0.5);
+    outline: none;
+}
+
+option {
+    padding: 8px;
+    background-color: white;
+    font-size: 12px;
+}
+
+form > * {
+    margin-bottom: 12px;
+}
+
+label {
+    font-size: 10px;
+    font-weight: bold;
+    color: #555;
+    display: block;
+    margin-bottom: 4px;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 8px;
+    }
+
+    table {
+        width: 100%;
+        margin-bottom: 12px;
+        font-size: 9px;
+    }
+
+    td, th {
+        padding: 5px 6px;
+    }
+
+    th {
+        font-size: 10px;
+    }
+
+    button {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="date"] {
+        padding: 6px;
+        font-size: 10px;
+    }
+
+    input[type="submit"], input[type="button"] {
+        padding: 8px 10px;
+        font-size: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+    }
+
+    input[type="date"] {
+        width: 16px;
+        height: 16px;
+    }
+
+    select {
+        padding: 6px;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    table {
+        font-size: 7px;
+    }
+
+    td, th {
+        padding: 4px 5px;
+    }
+
+    input[type="submit"], input[type="button"] {
+        font-size: 9px;
+        padding: 6px 8px;
+    }
+
+    button {
+        font-size: 9px;
+        padding: 6px 8px;
+    }
+
+    input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="date"] {
+        font-size: 9px;
+        padding: 5px;
+    }
+
+    #modalOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    #modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 15px;
+        border-radius: 6px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        width: 75%;
+        max-width: 500px;
+        max-height: 70vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #modalContent {
+        flex: 1;
+        overflow-y: auto;
+        padding-right: 8px;
+        max-height: calc(70vh - 40px);
+        overflow-y: auto;  
+        overflow-x: auto; 
+        border: 1px solid #ddd; 
+    }
+
+    #modalContent button {
+        margin-top: 12px;
+        padding: 8px 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        align-self: center;
+    }
+
+    #modalContent button:hover {
+        background-color: #0056b3;
+    }
+
+    #content.blur {
+        filter: blur(4px);
+        pointer-events: none;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modalContent {
+        background: white;
+        padding: 15px;
+        border-radius: 6px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        max-width: 75%;
+        max-height: 80%;
+        overflow: auto;
+    }
+}
+
+
+
+h1 {
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
+    
+}
+
+#content {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    overflow-x: auto; 
+    border: none; 
+    margin: 70px 10px 10px 10px;
+}

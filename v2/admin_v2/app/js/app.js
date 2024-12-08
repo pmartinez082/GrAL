@@ -39,8 +39,9 @@ export async function login(event) {
         return;
       }
     else{  
-    logDiv.innerHTML = "";
+    
     bideratu();
+    logDiv.innerHTML = "";
     }
     } else {
         logDiv.innerHTML = "";

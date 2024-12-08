@@ -31,8 +31,8 @@ export const createNewFasea = async () => {
         idFasea: null,
         idTxapelketa: document.getElementById('idTxapelketa').value,
         izena: document.getElementById('faseIzena').value,
-        hasiera: document.getElementById('faseHasiera').value,
-        amaiera: document.getElementById('faseAmaiera').value,
+        hasiera: null,
+        amaiera: null,
         egoera: "0",
         irizpidea: document.getElementById('faseIrizpidea').value
     };
@@ -293,6 +293,7 @@ export const egoeraAldatu = async (event) => {
     const data = {
         idFasea: event.target.id.split('buttonEgoera-')[1],
         egoera: event.target.textContent === 'Hasi' ? "1" : "2",
+        data: new Date().toISOString().split('T')[0],
     };
     try {
         const response = await fetch(`${API_URL}/fasea/egoeraAldatu`, {

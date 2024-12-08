@@ -128,6 +128,7 @@ export async function autentifikatu(){
         const mezua = document.createElement('h1');
         mezua.textContent = 'Ez zaude logeatuta, saioa hasi, mesedez';
         const button = document.createElement('button');
+        button.style.width = '100px';
         button.textContent = 'Hasi saioa';
         button.addEventListener('click', () => {
             window.location.href = '../index.html';
@@ -152,6 +153,7 @@ export async function autentifikatu(){
         document.body.appendChild(mezua);
         const button  = document.createElement('button');
         button.textContent = 'Sesioa hasi';
+        button.style.width = '100px';
         button.addEventListener('click', () => {
             window.location.href = '../index.html';
         });

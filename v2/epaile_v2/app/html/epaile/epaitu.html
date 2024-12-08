@@ -8,20 +8,38 @@
     <title>Balorazioak</title>
 </head>
 <body >
-    <form action = "../index.html">
-        <button type="submit">Atzera joan</button>
-    </form>
-    <script type = "module">
-        import {ebaluazioaForm, ebaluazioaSortu} from '../../js/epaile.js';
-        import {autentifikatu} from '../../js/user.js';
-        document.getElementById('ebaluazioaButton').addEventListener('click', ebaluazioaForm);
-        window.addEventListener('DOMContentLoaded', autentifikatu);
+    <div class="back-container">
+        <form action="../index.html">
+            <button type="submit"><img src="../../pics/atzera.svg" alt="Atzera"></button>
+        </form>
+        <form action = "epaitu.html"><button type = "submit"><img src="../../pics/birkargatu.svg" alt="Birkargatu"></button></form>
+    </div>
 
-        
-  </script>
-    <button type="button" id="ebaluazioaButton">Baloratzen hasi</button>
-    <table id="ebaluazioaTaula" ></table>
-    </form>
+    <script type="module">
+        import { ebaluazioaForm, ebaluazioaSortu } from '../../js/epaile.js';
+        import { autentifikatu } from '../../js/user.js';
+        document.addEventListener('DOMContentLoaded', async () => {
+          await autentifikatu(); 
+          const ebaluazioaButton = document.getElementById('ebaluazioaButton');
+      
+          if (ebaluazioaButton) {
+            ebaluazioaButton.addEventListener('click', async () => {
+              await ebaluazioaForm();
+            });
+          }
+        });
+      </script>
+      
+
+  <div id = "divBozkatu" >
+  <h2>Baloratzen hasi</h2>
+  <button  type="button" id="ebaluazioaButton" style = "background-color: transparent;"><img src="../../pics/epaitu.svg"></button>
+</div>  
+  <div class="taula-container">
+    
+    <table id="ebaluazioaTaula" class = "taula" ></table>
+   
+    </div>
    
 </body>
 

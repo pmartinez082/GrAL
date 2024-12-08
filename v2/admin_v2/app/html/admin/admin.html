@@ -4,33 +4,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
-    <link rel="stylesheet" href="../../css/style.css">
-    <link rel="manifest" href="../../pwa/manifest.json" /> 
+    <link rel="manifest" href="../../pwa/manifest.json" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 50px;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .button-container button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .button-container button:hover {
+            transform: scale(1.1);
+        }
+
+        .button-container img {
+            width: 100px;
+            height: 100px;
+            margin-top: 10px;
+        }
+
+        .back-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .back-container button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-container button img {
+            width: 40px;
+            height: 40px;
+        }
+    </style>
 </head>
 <body>
-<script type = "module">
+<script type="module">
     import { autentifikatu } from '../../js/user.js';
     window.addEventListener('DOMContentLoaded', () => {
-        autentifikatu();
+       autentifikatu();
     });
 </script>
-    <form action = "../index.html">
-        <button type="submit">Atzera joan</button>
+
+<div class="back-container">
+    <form action="../index.html">
+        <button type="submit"><img src="../../pics/atzera.svg" alt="Atzera"></button>
+    </form>
+</div>
+
+<div class="button-container">
+    <form id="adminForm4" action="kalkuluak.html">
+        <button type="submit">
+            Abian dagoen txapelketaren podium-a ikusi
+            <img src="../../pics/podium.svg" alt="Podium">
+        </button>
+    </form>
+    
+    <form id="adminForm2" action="lehiaketakView.html">
+        <button type="submit">
+            Aurreko txapelketak ikusi
+            <img src="../../pics/historia.svg" alt="Historia">
+        </button>
     </form>
 
-    <form id = "adminForm1" action = "lehiaketakKud.html">
-        <button type="submit" >Lehiaketa berria sortu</button>
+    <form id="adminForm1" action="lehiaketakKud.html">
+        <button type="submit">
+            Txapelketa berria sortu
+            <img src="../../pics/berria.svg" alt="Nueva">
+        </button>
     </form>
-    <form id = "adminForm3" action = "faseakView.html">
-        <button type="submit">Martxan dagoen lehiaketa kudeatu</button>
-    </form>
-    <form id = "adminForm2" action = "lehiaketakView.html">
-        <button type="submit">Aurreko lehiaketak ikusi</button>
-    </form>
-    <form id = "adminForm4" action = "kalkuluak.html">
-        <button type="submit">Ranking-a ikusi</button>
 
+    <form id="adminForm3" action="faseakView.html">
+        <button type="submit">
+            Martxan dagoen txapelketa kudeatu
+            <img src="../../pics/ezarpenak.svg" alt="Configuración">
+        </button>
+    </form>
+</div>
 
 </body>
-
 </html>

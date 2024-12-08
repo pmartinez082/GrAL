@@ -17,21 +17,18 @@
     document.getElementById('authForm').addEventListener('submit', login);
     document.getElementById('toggle-button').addEventListener('click', toggleLogin);
   </script>
-  <div id = "logDiv"></div>
+  <div id = "logDiv" class = "login-container">
     <h1 id="formTitle">Sesioa hasi</h1>
     <form id="authForm">
 
-    <table>
-        <tr> 
-            <td><input type = text id = username placeholder = "Erabiltzaile izena" required /></td>
-            <td><input type="email" id="email" placeholder = "eposta kontua"  hidden /></td>
-            <td><input type="password" id="password" placeholder="pasahitza" required  /></td>
-            <td><button type="submit">Bidali</button></td>
-        </tr>
-    </table>
+       <input type = text id = username placeholder = "Erabiltzaile izena" required />
+     <input type="email" id="email" placeholder = "eposta kontua"  hidden />
+      <input type="password" id="password" placeholder="pasahitza" required  />
+        <button type="submit">Bidali</button>
+
     </form>
     <button id="toggle-button" >Ez duzu konturik? Erregistratu zaitez</button>
-  
+  </div>
 
 
  <!-- Register the app's service worker. -->
