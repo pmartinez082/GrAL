@@ -32,6 +32,25 @@ export async function ebaluazioaForm(){
     const taula = document.getElementById('ebaluazioaTaula');
     taula.classList.add('taula');
     taula.innerHTML = "";
+
+    const idEpaimahaikidea = await ep.getEpailearenEpaimahaiak();
+
+    if(!idEpaimahaikidea){
+      const taulaContainer = document.getElementById('ebaluazioak');
+      taulaContainer.innerHTML = "";
+      const abisua = document.createElement('h1');
+
+      abisua.textContent = "Fase honetan ezin duzu bozkatu";
+      const img = document.createElement('img');
+      img.src = "../../pics/debekatuta.svg";
+      img.alt = "Debekatuta";
+      img.style.width = "200px";
+      img.style.height = "200px";
+      
+     taulaContainer.appendChild(abisua);
+     document.body.appendChild(img);
+      return;
+    }
     const baloratzekoTaldeak = await t.getBaloratuGabekoTaldeak();
     if(baloratzekoTaldeak === null){
         const abisua = document.createElement('h1');
@@ -43,8 +62,8 @@ export async function ebaluazioaForm(){
     const zutabe = taula.insertRow();
     zutabe.insertCell().textContent = "Fasea";
     zutabe.insertCell().textContent = "Ezaugarria";
-    zutabe.insertCell().textContent = "Puntazio minimoa";
-    zutabe.insertCell().textContent = "Puntazio maximoa";
+    zutabe.insertCell().textContent = "Puntuazio minimoa";
+    zutabe.insertCell().textContent = "Puntuazio maximoa";
     zutabe.insertCell().textContent = "Balorazioa";
     zutabe.insertCell().textContent = "Taldea";
     zutabe.insertCell().textContent = "Ekintza"
@@ -59,20 +78,8 @@ export async function ebaluazioaForm(){
     lerroa.insertCell().innerHTML = taldeenMenua(baloratzekoTaldeak);
     
     
-    const idEpaimahaikidea = await ep.getEpailearenEpaimahaiak();
-    if(idEpaimahaikidea === null){
-        document.body.innerHTML = "";
-      const abisua = document.createElement('h1');
-      abisua.innerHTML = "Fase honetan ezin duzu bozkatu";
-      document.body.appendChild(abisua);
-      const button = document.createElement('button');
-      button.textContent = "Birkargatu";
-      button.addEventListener('click', () => {
-          window.location.href = './epaitu.html';
-      });
-      document.body.appendChild(button);
-      return;
-    }
+    
+    
     lerroa.insertCell().innerHTML = "<button id = 'ebaluazioaButton-"+idEpaimahaikidea+"'>Baloratu</button>";
     document.getElementById('ebaluazioaButton-'+idEpaimahaikidea).addEventListener('click', (event) => ebaluazioaSortu(event));}
 function balorazioenTaula(i) {

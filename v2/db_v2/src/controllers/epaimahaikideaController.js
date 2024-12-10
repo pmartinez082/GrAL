@@ -156,19 +156,17 @@ export const deleteEpaimahaikidea = async (req, res) => {
 
 export const getEpailearenEpaimahaiak = async (req, res) => {
   const info = req.body;
-  const infoObj =
-  [
+  const infoObj = [
     info.username,
     parseInt(info.idFasea)
-  ]
+  ];
   try {
     const sqlQuery = `SELECT * FROM epaimahaikidea WHERE username = ? AND idFasea = ?`;
     const [results] = await dbConnection.query(sqlQuery, infoObj);
-    if(results.length > 0){
-      res.status(200).json(results);  
-    }
-    else{
-      res.status(404).json(null);
+    if (results.length > 0) {
+      res.status(200).json(results);
+    } else {
+      res.status(200).json([{ idEpaimahaikidea: 0 }]); // Respuesta consistente
     }
   } catch (error) {
     console.error(error);

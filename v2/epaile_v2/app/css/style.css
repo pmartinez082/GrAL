@@ -1,3 +1,5 @@
+
+
 * {
     margin: 0;
     padding: 0;
@@ -11,7 +13,10 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
+
 
 main {
     flex: 1; 
@@ -76,6 +81,8 @@ main {
 .back-container button {
     background-color: transparent; 
     padding: 0;
+    padding-left: 15px;
+    padding-right: 15px;
     cursor: pointer;
     transition: transform 0.3s ease;
     border: none;
@@ -95,20 +102,21 @@ main {
 table {
     width: 100%;
     border-collapse: collapse;
-    
-    font-size: 20px;
+    text-align: left;
 
-    text-align: justify;
-    align-items: flex-end;
 }
 
 
 .taulaDiv{
-    padding: 45px;
-    overflow: auto; 
     position: relative; 
-    overflow-x: auto;
     padding: 10px;
+    max-height: 300px; 
+    max-width: 100%; 
+    overflow-x: auto;
+    overflow-y: auto;
+    border: 1px solid #ddd; 
+    margin: 10px 0; 
+
 }
 .taula > tbody > th, td {
     border: 1px solid #ddd;
@@ -279,7 +287,7 @@ button.outline:hover {
     color: white;
 }
 
-input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="date"] {
+input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="date"], input[type="time"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="search"], input[type="tel"], input[type="url"], select {
     width: 100%;
     padding: 6px;
     margin: 3px 0;
@@ -498,6 +506,10 @@ body {
   }
   
   .login-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -556,3 +568,30 @@ body {
     color: #005f80;
   }
   
+  
+  @media screen and (max-width: 480px) {
+    .taula > tbody > th, td {
+        border: 1px solid #ddd;
+        padding: 6px;
+        font-size: 15px;
+    }
+    
+    .taula > tbody > tr:first-of-type{
+        top:0;
+        position: sticky;
+        background-color: #008CBA;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+        font-size: 9px;
+        font-weight: bold;
+        text-align: center;
+        color: #f9f9f9;
+        text-transform: uppercase;
+        z-index: 999;
+    }
+
+    
+
+       
+    
+  }

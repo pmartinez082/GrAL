@@ -11,6 +11,7 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    
 }
 
 main {
@@ -18,9 +19,12 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: auto; 
+ 
 }
 
+td {
+    font-size: 15px;
+}
 
 .button-container {
     position: fixed;
@@ -75,7 +79,9 @@ main {
 
 .back-container button {
     background-color: transparent; 
-    padding: 0;
+    padding: 0px;
+    padding-left: 15px;
+    padding-right: 15px;
     cursor: pointer;
     transition: transform 0.3s ease;
     border: none;
@@ -91,37 +97,41 @@ main {
 }
 
 
+.taulaDiv{
+    padding-top:50px;
+    padding-bottom: 60px;
+    padding-left: 25px;
+    padding-right: 25px;
+    
+   
+    
+}
 
-table {
+.inputDiv {
+    position: fixed; 
+    top: 280px; 
+    left: 50%;
+    bottom: 100px;
+    transform: translateX(-50%);
+    width: 90%; 
+    max-width: 1200px; 
+    max-height: 70vh; 
+    overflow: auto;
+    z-index: 150; 
+}
+
+.taula, .taulaInput {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 9px;
-    font-size: 9px;
+    margin-bottom: 4px;
 
-    text-align: justify;
-    align-items: flex-end;
-}
-
-table tr:first-of-type {
-    text-transform: uppercase;
-    
 
 }
-.taulaDiv,
-#txapelketakDiv {
-    padding: 45px;
-    overflow: auto; 
-    position: relative; 
-}
-.taula > tbody > th, td {
-    border: 1px solid #ddd;
-    padding: 6px;
-    font-size: 10px;
-}
 
-.taula > tbody > tr:first-of-type{
-    top:0;
+
+.taula > tbody > tr:first-of-type {
     position: sticky;
+    top: 32px; 
     background-color: #008CBA;
     border-collapse: collapse;
     border: 1px solid #ddd;
@@ -132,36 +142,118 @@ table tr:first-of-type {
     text-transform: uppercase;
     z-index: 10;
 }
+
+.taulaInput > tbody > tr:first-of-type {
+    position: sticky;
+    top: -1px; 
+    background-color: #008CBA;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    color: #f9f9f9;
+    text-transform: uppercase;
+    z-index: 10;
+}
+.taulaInput td, .taulaInput th,
+.taula td, .taula th{
+    border: 1px solid #ddd;
+    padding: calc(0.5vw + 1px);
+    text-align: center;
     
-    .taula button {
+}
+.taulaInput button,
+.taula button {
     background-color: #008CBA;
     color: white;
     border: none;
     border-radius: 8px;
     padding: 5px 8px;
-    font-size: 9px;
+    font-size: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
-
-
-.ezaugContainer table,.epaimahaikideaContainer table{
-    gap: 0;
+.form-container {
+    position: fixed;
+    top: 150px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
     width: 100%;
-    table-layout: fixed;
-    border: none;
-    border-collapse: collapse;
-}
-
-.ezaugContainer td, .ezaugContainer th, .epaimahaikideaContainer td, .epaimahaikideaContainer th{
-    width: 120px;
-    max-width: 120px;
-    padding: 12px;
+    max-width: 400px;
     text-align: center;
-    border:  0.5px solid #ddd;
-}
+    z-index: 200;
+  }
+ 
 
+.login-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  form input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  form button {
+    background-color: #008cba;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  form button:hover {
+    background-color: #007aa8;
+  }
+  
+  #toggle-button, #installButton {
+    background-color: transparent;
+    color: #008cba;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 15px;
+    transition: color 0.3s ease;
+  }
+  
+  #toggle-button:hover, #installButton:hover {
+    color: #005f80;
+  }
 
+  
 button {
     background-color: #008CBA;
     color: white;
@@ -350,12 +442,12 @@ label {
     left: 50%;
     transform: translate(-50%, -50%);
     background: #fff;
-    padding: 9px;
+    padding: 15px;
     border-radius: 6px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    width: 70%;
-    max-width: 440px;
+    width: 100%;
+    max-width: 600px;
     max-height: 42vh;
     overflow: hidden;
     display: flex;
@@ -365,22 +457,19 @@ label {
 
 
 #modalContent {
-    flex: 1;
+  
+    border: 1px solid #ddd;
+
     overflow-y: auto;
     padding-right: 5px;
     max-height: calc(42vh - 25px);
     overflow-y: auto;  
     overflow-x: auto; 
-    border: 1px solid #ddd; 
+    font-size: 10px;
+    text-align: center;
 }
 
-#modalContent table {
-    width: 100%;
-    margin-bottom: 7px;
-    font-size: 20px;
-    
 
-}
 
 #modalContent tr:first-of-type {
     text-align: center;
@@ -402,7 +491,7 @@ label {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 7.2px;
+    font-size: 9px;
     align-self: center;
 }
 
@@ -417,83 +506,96 @@ label {
 }
 
 
-#content,
-.taulaDiv {
-    max-height: calc(100vh - 120px);
-    overflow-y: auto;
-    overflow-x: auto; 
-    border: none; 
-    margin: 42px 6px 6px 6px;
+
+.ezaugContainer table,.epaimahaikideaContainer table{
+    gap: 0;
+    width: 100%;
+    table-layout: fixed;
+    border: none;
+    border-collapse: collapse;
+}
+
+.ezaugContainer td, .ezaugContainer th, .epaimahaikideaContainer td, .epaimahaikideaContainer th{
+    width: 120px;
+    max-width: 120px;
+    padding: 12px;
+    text-align: center;
+    border:  none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 9px;
+    font-size: 9px;
+
+    text-align: justify;
+    align-items: flex-end;
 }
 
 
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
+.bigbutton-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px;
+    justify-items: center;
     align-items: center;
-    height: 100vh;
-  }
-  
-  .login-container {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 100%;
-    max-width: 400px;
+}
+
+.bigbutton-container button {
+    background: none;
+    border: none;
+    cursor: pointer;
     text-align: center;
-  }
-  
-  h1 {
-    font-size: 24px;
     color: #333;
-    margin-bottom: 20px;
-  }
-  
-  form {
+    font-size: 16px;
+    font-weight: bold;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-  }
-  
-  form input {
+    align-items: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+.bigbutton-container button:hover {
+    transform: scale(1.1);
+}
+
+.bigbutton-container img {
+    width: 100px;
+    height: 100px;
+    margin-top: 10px;
+}
+
+
+.berriaDiv {
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    justify-content: space-around;
+    align-items: center; 
+    z-index: 1000; 
+}
+
+.berriaDiv table {
     width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  form button {
-    background-color: #008cba;
-    color: white;
-    border: none;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  form button:hover {
-    background-color: #007aa8;
-  }
-  
-  #toggle-button, #installButton {
-    background-color: transparent;
-    color: #008cba;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    margin-top: 15px;
-    transition: color 0.3s ease;
-  }
-  
-  #toggle-button:hover, #installButton:hover {
-    color: #005f80;
-  }
-  
+    border-collapse: collapse;
+    margin-bottom: 9px;
+    font-size: 20px;
+
+    text-align: justify;
+    align-items: flex-end;
+}
+
+.berriaDiv td {
+    width: 100%;
+
+}
+
+.berriaDiv img {
+    width: 50px;
+    height: 50px;
+}
+

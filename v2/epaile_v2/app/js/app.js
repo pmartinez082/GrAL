@@ -7,7 +7,7 @@ export function toggleLogin() {
   const email = document.getElementById('email');
   const toggleButton = document.getElementById('toggle-button');
   if (isLogin) {
-    formTitle.textContent = 'Sesioa hasi';
+    formTitle.textContent = 'Saioa hasi';
     toggleButton.innerHTML = 'Ez duzu konturik? Erregistratu zaitez';
     email.setAttribute('hidden', '');
     email.removeAttribute('required');
@@ -16,7 +16,7 @@ export function toggleLogin() {
   
   else {
     formTitle.textContent = 'Erregistratu';
-    toggleButton.innerHTML = 'Badaukazu konturik? Sesioa hasi';
+    toggleButton.innerHTML = 'Badaukazu konturik? Saioa hasi';
     email.removeAttribute('hidden');
     email.setAttribute('required', '');
 
@@ -43,7 +43,7 @@ export async function login(event) {
     bideratu();
     }
     } else {
-        logDiv.innerHTML = "";
+        
         const user = await u.findUser();
         if(user){
             

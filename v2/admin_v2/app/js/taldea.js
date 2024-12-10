@@ -21,14 +21,17 @@ export const getTaldeak = async () => {
     }
 };
 
-export const createNewTaldea = async () => {
+export const createNewTaldea = async (event) => {
+    event.preventDefault
     const data = {
         izena: document.getElementById('izena').value,
         email: document.getElementById('email').value,
         telefonoa: document.getElementById('telefonoa').value,
-        puntuakGuztira: document.getElementById('puntuakGuztira').value,
-        egoera: document.getElementById('egoera').value
+        puntuakGuztira: 0,
+        egoera: 0
     };
+    if(!data.izena) return false;
+    if(!data.telefonoa) data.telefonoa = "";
     try {
         const response = await fetch(`${API_URL}/taldea/add`, {
             method: 'POST',
@@ -41,10 +44,11 @@ export const createNewTaldea = async () => {
             console.log("taldea ondo sortu da");
             const responseData = await response.json();
             const idTaldea = responseData.idTaldea;
-            document.getElementById('idTaldea').value = idTaldea;
+            return idTaldea;
         } else {
             const error = await response.json();
             console.log(`Error: ${error.error}`);
+            return false;
         }
     } catch (err) {
         alert('Errorea');
@@ -134,7 +138,7 @@ export const updateTaldea = async (event) => {
 };
 
 export const deleteTaldea = async (event) => {
-    const idTaldea = document.getElementById('idTaldea').value;
+    const idTaldea = event.target.id.split('-')[1];
     event.preventDefault();
 
     try {
@@ -143,7 +147,7 @@ export const deleteTaldea = async (event) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(idTaldea),
+            body: JSON.stringify({idTaldea:idTaldea}),
         });
 
         if (response.ok) {
@@ -154,7 +158,7 @@ export const deleteTaldea = async (event) => {
         }
     } catch (err) {
         console.log('Error.');
-        console.error(err);
+        console.log(err);
     }
 };
 

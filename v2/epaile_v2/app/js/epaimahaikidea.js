@@ -77,31 +77,34 @@ export const createNewEpaimahaikidea = async () => {
 };
 
 export const getEpailearenEpaimahaiak = async () => {
-    
     const fasea = await getFaseAktiboa();
     const idFasea = fasea.idFasea;
     const data = {
-        username: await autentifikatu(),
-        idFasea: idFasea
+      username: await autentifikatu(),
+      idFasea: idFasea
     };
     try {
-        const response = await fetch(`${API_URL}/epaimahaikidea/getEpailearenEpaimahaiak`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-        if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            return data[0].idEpaimahaikidea;
+      const response = await fetch(`${API_URL}/epaimahaikidea/getEpailearenEpaimahaiak`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data[0].idEpaimahaikidea === 0) {
+     
+          return false;
         }
-        else {
-            
-            return null;
-        }
+        return data[0].idEpaimahaikidea;
+      } else {
+        console.error('Error en la respuesta del servidor');
+        return null;
+      }
     } catch (err) {
-        console.error(err);
+      console.error(err);
+      return null;
     }
-};
+  };
+  

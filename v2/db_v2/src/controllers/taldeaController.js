@@ -111,8 +111,16 @@ export const updateTaldea = async (req, res) => {
 export async function deleteTaldea(req, res) {
   const idTaldea = parseInt(req.body.idTaldea);
   const sqlQuery = 'DELETE FROM taldea WHERE idTaldea = ?';
-  await dbConnection.execute(sqlQuery, [idTaldea]);
-  res.status(200).json({ message: 'taldea deleted' });
+  try{
+   const result = await dbConnection.execute(sqlQuery, [idTaldea]);
+   res.status(200).json({ message: 'taldea deleted' });
+  }
+  catch(error){
+    console.error(error);
+    res.status(500).json({ error: 'Error deleting taldea' });
+  }
+
+  
 }
 
 export const getTaldearenEbaluazioak = async (req, res) => {

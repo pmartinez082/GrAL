@@ -131,14 +131,14 @@ export const getTxapelketa = async () => {
 export const deleteTxapelketa = async (event) => {
 
 event.preventDefault();
-const idTxapelketa = document.getElementById('idTxapelketa').value;
+const idTxapelketa = event.target.id.split('-')[1];
   try {
     const response = await fetch(`${API_URL}/txapelketa/delete/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(idTxapelketa),
+      body: JSON.stringify({idTxapelketa:idTxapelketa}),
     });
 
     if (response.ok) {

@@ -8,7 +8,7 @@ const APP_STATIC_RESOURCES = [
   "../html/index.html",
   "../html/admin/admin.html",
   "../html/admin/faseakView.html",
-  "../html/admin/lehiaketakKud.html",
+  "../html/admin/txapelketaBerria.html",
   "../html/admin/lehiaketakView.html",
   "../js/admin.js",
   "../js/app.js",

@@ -152,7 +152,7 @@ export async function autentifikatu(){
         
         document.body.appendChild(mezua);
         const button  = document.createElement('button');
-        button.textContent = 'Sesioa hasi';
+        button.textContent = 'saioa hasi';
         button.style.width = '100px';
         button.addEventListener('click', () => {
             window.location.href = '../index.html';

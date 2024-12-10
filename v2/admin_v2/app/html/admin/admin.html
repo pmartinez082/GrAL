@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
     <link rel="manifest" href="../../pwa/manifest.json" />
+    <link rel="stylesheet" href="../../css/style.css">
     <style>
         body {
             margin: 0;
@@ -18,54 +19,6 @@
             background-color: #f4f4f4;
         }
 
-        .button-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 50px;
-            justify-items: center;
-            align-items: center;
-        }
-
-        .button-container button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            text-align: center;
-            color: #333;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: transform 0.2s ease-in-out;
-        }
-
-        .button-container button:hover {
-            transform: scale(1.1);
-        }
-
-        .button-container img {
-            width: 100px;
-            height: 100px;
-            margin-top: 10px;
-        }
-
-        .back-container {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
-        .back-container button {
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-        }
-
-        .back-container button img {
-            width: 40px;
-            height: 40px;
-        }
     </style>
 </head>
 <body>
@@ -80,9 +33,12 @@
     <form action="../index.html">
         <button type="submit"><img src="../../pics/atzera.svg" alt="Atzera"></button>
     </form>
+    <form action="./admin.html">
+        <button type="submit"><img src="../../pics/birkargatu.svg" alt="Birkargatu"></button>
+    </form>
 </div>
 
-<div class="button-container">
+<div class="bigbutton-container">
     <form id="adminForm4" action="kalkuluak.html">
         <button type="submit">
             Abian dagoen txapelketaren podium-a ikusi
@@ -97,9 +53,9 @@
         </button>
     </form>
 
-    <form id="adminForm1" action="lehiaketakKud.html">
+    <form id="adminForm1" action="berria.html">
         <button type="submit">
-            Txapelketa berria sortu
+            Berria sortu
             <img src="../../pics/berria.svg" alt="Nueva">
         </button>
     </form>
