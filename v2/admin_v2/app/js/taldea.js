@@ -1,5 +1,5 @@
-const API_URL = 'http://192.168.137.1:3000';
-import * as klaseak from "./klaseak.js";
+import {API_URL} from './konstanteak.js'
+import * as konstanteak from "./konstanteak.js";
 export const getTaldeak = async () => {
     try {
         const response = await fetch(`${API_URL}/taldea/`, {
@@ -12,7 +12,7 @@ export const getTaldeak = async () => {
             const data = await response.json();
             const taldeak = [];
             data.forEach(taldea => {
-                taldeak.push(new klaseak.Taldea(taldea.idTaldea, taldea.izena, taldea.email, taldea.telefonoa, taldea.puntuakGuztira, taldea.egoera));
+                taldeak.push(new konstanteak.Taldea(taldea.idTaldea, taldea.izena, taldea.email, taldea.telefonoa, taldea.puntuakGuztira, taldea.egoera));
             });
             return taldeak;
         }
@@ -68,7 +68,7 @@ export const getTaldea = async () => {
         });
         if (response.ok) {
             const data = await response.json();
-           return new klaseak.Taldea(data[0].idTaldea, data[0].izena, data[0].email, data[0].telefonoa, data[0].puntuakGuztira, data[0].egoera);    
+           return new konstanteak.Taldea(data[0].idTaldea, data[0].izena, data[0].email, data[0].telefonoa, data[0].puntuakGuztira, data[0].egoera);    
 
 
         }
@@ -94,7 +94,7 @@ export const getBaloratuGabekoTaldeak = async (event) => {
             const data = await response.json();
             const taldeak = [];
             data.forEach(taldea => {
-                taldeak.push(new klaseak.Taldea(taldea.idTaldea, taldea.izena, taldea.email, taldea.telefonoa, taldea.puntuakGuztira, taldea.egoera));
+                taldeak.push(new konstanteak.Taldea(taldea.idTaldea, taldea.izena, taldea.email, taldea.telefonoa, taldea.puntuakGuztira, taldea.egoera));
             });
             return taldeak;
         }
@@ -106,36 +106,6 @@ export const getBaloratuGabekoTaldeak = async (event) => {
     }
 };
 
-export const updateTaldea = async (event) => {
-    event.preventDefault();
-    const data = {
-        idTaldea: document.getElementById('idTaldea').value,
-        izena: document.getElementById('izena').value,
-        email: document.getElementById('email').value,
-        telefonoa: document.getElementById('telefonoa').value,
-        puntuakGuztira: document.getElementById('puntuakGuztira').value,
-        egoera: document.getElementById('egoera').value
-    };
-    try {
-        const response = await fetch(`${API_URL}/taldea/update`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (response.ok) {
-            console.log('Taldea eguneratua');
-        } else {
-            const error = await response.json();
-            console.log(`Error: ${error.error}`);
-        }
-    } catch (err) {
-       
-        console.error(err);
-    }
-};
 
 export const deleteTaldea = async (event) => {
     const idTaldea = event.target.id.split('-')[1];
@@ -177,7 +147,7 @@ export const getTaldearenEbaluazioak = async () => {
             const data = await response.json();
             const ebaluazioak = [];
             data.forEach(ebaluazioa => {
-                ebaluazioak.push(new klaseak.Ebaluazioa(ebaluazioa.idEbaluazioa, ebaluazioa.idTxapelketa,  ebaluazioa.izena, ebaluazioa.hasiera, ebaluazioa.amaiera, ebaluazioa.egoera, ebaluazioa.irizpidea));
+                ebaluazioak.push(new konstanteak.Ebaluazioa(ebaluazioa.idEbaluazioa, ebaluazioa.idTxapelketa,  ebaluazioa.izena, ebaluazioa.hasiera, ebaluazioa.amaiera, ebaluazioa.egoera, ebaluazioa.irizpidea));
             });
             return ebaluazioak;
         }
@@ -185,30 +155,6 @@ export const getTaldearenEbaluazioak = async () => {
         console.error(err);
     }
 };  
-
-export const updateTaldeenEgoera = async () => {
-
-
-    try {
-        const response = await fetch(`${API_URL}/taldea-reset-egoera`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            
-        });
-
-        if (response.ok) {
-            console.log('Taldeen egoera reseteatu da');
-        } else {
-            const error = await response.json();
-            console.log(`Error: ${error.error}`);
-        }
-    } catch (err) {
-        console.log('Error.');
-        console.error(err);
-    }
-};
 
 export const getTaldeAktiboak = async () => {
     try {
@@ -223,7 +169,7 @@ export const getTaldeAktiboak = async () => {
             const data = await response.json();
             const taldeak = [];
             data.forEach(taldea => {
-                taldeak.push(new klaseak.Taldea(taldea.idTaldea, taldea.izena, taldea.email, taldea.telefonoa, taldea.puntuakGuztira, taldea.egoera));
+                taldeak.push(new konstanteak.Taldea(taldea.idTaldea, taldea.izena, taldea.email, taldea.telefonoa, taldea.puntuakGuztira, taldea.egoera));
             });
             return taldeak;
         }

@@ -1,5 +1,5 @@
-const API_URL = 'http://192.168.137.1:3000';
-import * as klaseak from './klaseak.js';
+import {API_URL} from './konstanteak.js'
+import * as konstanteak from './konstanteak.js';
 export function getEzaugarriakArray(){
     const idFasea = document.getElementById('idFasea').value;
     const ezaugarriak = [];
@@ -14,7 +14,7 @@ export function getEzaugarriakArray(){
         }
         console.log(b);
         if (ezaugarriaIzena[i].value !== "" && eMin[i].value !== "" && eMax[i].value !== "") {
-            ezaugarriak.push(new klaseak.Ezaugarria(0,ezaugarriaIzena[i].value, eMax[i].value, eMin[i].value, idFasea, ponderazioa[i].value));
+            ezaugarriak.push(new konstanteak.Ezaugarria(0,ezaugarriaIzena[i].value, eMax[i].value, eMin[i].value, idFasea, ponderazioa[i].value));
         }
     }
     if(parseInt(b) !== 1){
@@ -23,29 +23,6 @@ export function getEzaugarriakArray(){
     return ezaugarriak;
 }
 
-
-export const getEzaugarriak = async () => {
-    
-    try {
-        const response = await fetch(`${API_URL}/ezaugarria/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-        if (response.ok) {
-            const data = await response.json();
-            const ezaugarriak = [];
-            data.array.forEach(ezaugarria => {
-                ezaugarriak.push(new klaseak.Ezaugarria(ezaugarria.idEzaugarria, ezaugarria.izena, ezaugarria.puntuakMax, ezaugarria.puntuakMin, ezaugarria.ponderazioa));
-            });
-            return ezaugarriak;
-        }
-    } catch (err) {
-        console.error(err);
-    }
-};
 
 export const getEzaugarria = async () => {
   
@@ -71,7 +48,7 @@ export const getEzaugarria = async () => {
 
         const data = await response.json();
         console.log(data);
-        return new klaseak.Ezaugarria(data[0].idEzaugarria, data[0].izena, data[0].puntuakMax, data[0].puntuakMin, data[0].idFasea, data[0].ponderazioa);
+        return new konstanteak.Ezaugarria(data[0].idEzaugarria, data[0].izena, data[0].puntuakMax, data[0].puntuakMin, data[0].idFasea, data[0].ponderazioa);
         
     } catch (err) {
         console.error("Network or parsing error:", err);
@@ -92,7 +69,7 @@ export const getEzaugarria2 = async () => {
         if (response.ok) {
             const data = await response.json();
             console.log(data);
-           return new klaseak.Ezaugarria(data[0].idEzaugarria, data[0].izena, data[0].puntuakMax, data[0].puntuakMin, data[0].ponderazioa);
+           return new konstanteak.Ezaugarria(data[0].idEzaugarria, data[0].izena, data[0].puntuakMax, data[0].puntuakMin, data[0].ponderazioa);
 
 
         }
@@ -103,9 +80,6 @@ export const getEzaugarria2 = async () => {
     }
 };
         
-
-
-//EZAUGARRIA SORTU
 export const createNewEzaugarria = async () => {
     var i = 0;
     if(!getEzaugarriakArray() ) return false;

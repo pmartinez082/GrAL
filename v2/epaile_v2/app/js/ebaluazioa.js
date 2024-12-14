@@ -1,35 +1,17 @@
 
-const API_URL = 'http://192.168.137.1:3000';
-import * as klaseak from "./klaseak.js";
-import { getEpailearenEpaimahaiak } from './epaimahaikidea.js';
-import { autentifikatu } from "./user.js";
-export const getEbaluazioak = async () => {
-    try {
-        const response = await fetch(`${API_URL}/ebaluazioa/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        if (response.ok) {
-            const data = await response.json();
-            const ebaluazioak = [];
-            data.array.forEach(ebaluazioa => {
-                ebaluazioak.push(new klaseak.Ebaluazioa(ebaluazioa.idEbaluazioa, ebaluazioa.idTxapelketa, ebaluazioa.izena, ebaluazioa.hasiera, ebaluazioa.amaiera, ebaluazioa.egoera, ebaluazioa.irizpidea));
-            });
-            return ebaluazioak;
-        }
-    } catch (err) {
-        console.error(err);
-    }
-};
+
+import {API_URL} from './konstanteak.js'
+import * as konstanteak from "./konstanteak.js";
+
 
 export function getBaloratzekoEzaugarriak(){
     const baloratzekoEzaugarriak = document.getElementsByName('idEzaugarria');
+    const puntuMin = document.getElementsByName('puntuakMin');
+    const puntuMax = document.getElementsByName('puntuakMax');
     const baloratzekoEzaugarriakArray = [];
     var i = baloratzekoEzaugarriak.length;
     for(var j = 0; j < i; j++){
-        baloratzekoEzaugarriakArray.push(baloratzekoEzaugarriak[j].getAttribute('data-idEzaugarria'));
+        baloratzekoEzaugarriakArray.push(new konstanteak.Ezaugarria(baloratzekoEzaugarriak[j].getAttribute('data-idEzaugarria'),"",puntuMax[j].getAttribute('data-puntuakMax'),puntuMin[j].getAttribute('data-puntuakMin'), null));
     }
     console.log(baloratzekoEzaugarriakArray);
     return baloratzekoEzaugarriakArray;
@@ -50,19 +32,31 @@ export function getEzaugarrienBalorazioak(){
 
 export const createNewEbaluazioa = async (event) => {
     event.preventDefault();
+   
     console.log("createNewEbaluazioa");
     event.preventDefault();
     const balorazioak = getEzaugarrienBalorazioak();
     const ezaugarriak = getBaloratzekoEzaugarriak();
-    for(var i = 0; i < ezaugarriak.length; i++){
-        if(balorazioak[i] === ""){
-            console.log("Errorea");
-            return;
+    for(var j = 0; j < balorazioak.length; j++){
+               
+        console.log(parseFloat(ezaugarriak[j].puntuakMin));
+        console.log(parseFloat(balorazioak[j]));
+        console.log(parseFloat(ezaugarriak[j].puntuakMax));
+        
+
+        if(parseFloat(ezaugarriak[j].puntuakMin) >parseFloat(balorazioak[j])||parseFloat(ezaugarriak[j].puntuakMax )< parseFloat(balorazioak[j])||balorazioak[j] === ""){
+            
+            return false;
         }
+    }
+    
+    for(var i = 0; i < ezaugarriak.length; i++){
+
+
    console.log(event.target.id);
     const data = {
         idEpaimahaikidea: event.target.id.split('ebaluazioaButton-')[1],
-        idEzaugarria: ezaugarriak[i],
+        idEzaugarria: ezaugarriak[i].idEzaugarria,
         idTaldea: document.getElementById('taldeaMenua').value,
         puntuak: balorazioak[i],
         noiz: new Date()
@@ -78,9 +72,8 @@ export const createNewEbaluazioa = async (event) => {
         });
         if (response.ok) {
             console.log("ebaluazioa ondo sortu da");
-            const responseData = await response.json();
-            const idEbaluazioa = responseData.idEbaluazioa;
-            //document.getElementById('idEbaluazioa').value = idEbaluazioa;
+            
+            return true;
         } else {
             const error = await response.json();
             console.log(`Error: ${error.error}`);
@@ -90,6 +83,7 @@ export const createNewEbaluazioa = async (event) => {
         alert('Errorea');
         console.error(err);
     }
+
 }
 
 };
@@ -115,7 +109,7 @@ export const getEpailearenEbaluazioakFaseka = async (event) => {
             
             const ebaluazioakArray = [];
             ebaluazioak.forEach(ebaluazioa => {
-                ebaluazioakArray.push(new klaseak.Ebaluazioa(ebaluazioa.idEbaluazioa, ebaluazioa.idEpaimahaikidea, ebaluazioa.idTaldea, ebaluazioa.idEzaugarria, ebaluazioa.puntuak, ebaluazioa.noiz));
+                ebaluazioakArray.push(new konstanteak.Ebaluazioa(ebaluazioa.idEbaluazioa, ebaluazioa.idEpaimahaikidea, ebaluazioa.idTaldea, ebaluazioa.idEzaugarria, ebaluazioa.puntuak, ebaluazioa.noiz));
             });
             console.log(ebaluazioakArray);
             return ebaluazioakArray;
@@ -128,4 +122,5 @@ export const getEpailearenEbaluazioakFaseka = async (event) => {
         alert('Errorea');
         console.error(err);
     }
-};
+
+} ;

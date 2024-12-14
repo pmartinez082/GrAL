@@ -1,9 +1,4 @@
 {
-    //"liveServer.settings.host": "192.168.13.61",
-    //"liveServer.settings.host": "192.168.1.140",
-    //"liveServer.settings.host": "192.168.137.1",
-    "liveServer.settings.host": "192.168.137.1",
-    "liveServer.settings.port": 5500
-   
-    
+    "liveServer.settings.port": 5500,
+    "liveServer.settings.host": "192.168.137.1"
 }

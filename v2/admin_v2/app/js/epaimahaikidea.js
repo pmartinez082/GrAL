@@ -1,41 +1,16 @@
-const API_URL = 'http://192.168.137.1:3000';
-import * as klaseak from './klaseak.js';
+import {API_URL} from './konstanteak.js'
+import * as konstanteak from './konstanteak.js';
 function getEpaimahaikideakArray(){
    const epaimahaikideakCheck = document.getElementsByName('checkbox');
    const epaimahaikideak = [];
    const idFasea = document.getElementById('idFasea').value;
    epaimahaikideakCheck.forEach(e => {
        if (e.checked) {
-           epaimahaikideak.push(new klaseak.Epaimahaikidea(0, e.value, idFasea));
+           epaimahaikideak.push(new konstanteak.Epaimahaikidea(0, e.value, idFasea));
        }
    });
    return epaimahaikideak;
 }
-
-export const getEpaimahaikideak = async (event) => {
-    event.preventDefault();
-
-    try {
-        const response = await fetch(`${API_URL}/epaimahaikidea/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-        if (response.ok) {
-            const data = await response.json();
-            const epaimahaikideak = [];
-            data.array.forEach(epaimahaikide => {
-                epaimahaikideak.push(new klaseak.Epaimahaikidea(epaimahaikide.idEpaimahaikidea, epaimahaikide.username, epaimahaikide.idFasea));
-            });
-            return faseak;
-        }
-    } catch (err) {
-        console.error(err);
-    }
-};
-
 
 export const createNewEpaimahaikidea = async () => {
     var i = 0;
@@ -74,46 +49,3 @@ export const createNewEpaimahaikidea = async () => {
     }
 };
 
-export const getEpailearenEpaimahaiak = async (username) => {
-    const data = {
-        username: username,
-        idFasea: document.getElementById('idFasea').value,
-        idEzaugarria: document.getElementById('idEzaugarria').value
-    };
-    try {
-        const response = await fetch(`${API_URL}/epaimahaikidea/getEpailearenEpaimahaiak`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-        if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            return data[0].idEpaimahaikidea;
-        }
-    } catch (err) {
-        console.error(err);
-    }
-};
-
-export const getEpaimahaikidea = async (event) => {
-    event.preventDefault();
-    const id = event.target.id.value.split('-')[1];
-    try {
-        const response = await fetch(`${API_URL}/event/getEpaimahaikidea/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            return data;
-        }
-    } catch (err) {
-        console.error(err);
-    }   
-}

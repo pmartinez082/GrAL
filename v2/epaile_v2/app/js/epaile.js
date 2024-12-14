@@ -1,12 +1,19 @@
 import * as f from "./fasea.js";
 import * as eb from "./ebaluazioa.js";
 import * as t from "./taldea.js";
-import * as u from "./user.js";
 import * as ep from "./epaimahaikidea.js"
 
 export async function ebaluazioaSortu(event){
     event.preventDefault();
-    await eb.createNewEbaluazioa(event);
+    const h1 = document.getElementById('ebaluazioaTaula').querySelector('h1');
+    if(h1) document.getElementById('ebaluazioaTaula').removeChild(h1);
+    const e = await eb.createNewEbaluazioa(event);
+    if(!e){
+        const abisua = document.createElement('h1');
+        abisua.innerHTML = "Balorazioak puntu minimo eta maximoen artean egon behar du";
+        document.getElementById('ebaluazioaTaula').appendChild(abisua);
+        return;
+    }
     document.getElementById('ebaluazioaTaula').innerHTML = "";
     document.getElementById('ebaluazioaButton').hidden = true;
     ebaluazioaForm();
@@ -111,9 +118,9 @@ function puntuazioTaula(fasearenEaugarriak, puntuak) {
    
     fasearenEaugarriak.forEach(ezaugarria => {
         if(puntuak === "puntuakMin")
-        taula += `<tr><td>${ezaugarria.puntuakMin}</td></tr>`;
+        taula += `<tr><td><div name= "puntuakMin" id = "min-${ezaugarria.idEzaugarria}" data-puntuakMin = "${ezaugarria.puntuakMin}" >${ezaugarria.puntuakMin}</div></td></tr>`;
         else
-        taula += `<tr><td>${ezaugarria.puntuakMax}</td></tr>`;
+        taula += `<tr><td><div name= "puntuakMax" id = "max-${ezaugarria.idEzaugarria}" data-puntuakMax = "${ezaugarria.puntuakMax}" >${ezaugarria.puntuakMax}</div></td></tr>`;
     });
     taula += '</table></div>';
     return taula;

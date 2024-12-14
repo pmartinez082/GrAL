@@ -1,13 +1,9 @@
-import * as klaseak from './klaseak.js';
+import * as konstanteak from './konstanteak.js';
 import {createClassesFromDataF} from './fasea.js' ;
-const API_URL = 'http://192.168.137.1:3000';
+import {API_URL} from './konstanteak.js'
 
 
 
-/********************************************************************************
-TXAPELKETA
-*/
- 
 
 //TXAPELKETAK LORTU
 export const getTxapelketak = async () => {
@@ -24,7 +20,7 @@ export const getTxapelketak = async () => {
             const data = await response.json();
             const txapelketak = [];
             data.forEach(txapelketa => {
-                txapelketak.push(new klaseak.Txapelketa(txapelketa.idTxapelketa, txapelketa.lekua, txapelketa.izena, txapelketa.dataOrdua));  
+                txapelketak.push(new konstanteak.Txapelketa(txapelketa.idTxapelketa, txapelketa.lekua, txapelketa.izena, txapelketa.dataOrdua));  
             
         });
         return txapelketak;
@@ -46,6 +42,7 @@ export const createNewTxapelketa = async (event) => {
     event.preventDefault();
 
     try {
+        if(!data.lekua||!data.dataOrdua||!data.izena) return false;
         const response = await fetch(`${API_URL}/txapelketa/add`, {
             method: 'POST',
             headers: {
@@ -117,7 +114,7 @@ export const getTxapelketa = async () => {
         });
         if (response.ok) {
             const data = await response.json();
-           return new klaseak.Txapelketa(data.idTxapelketa, data.lekua, data.izena, data.dataOrdua);
+           return new konstanteak.Txapelketa(data.idTxapelketa, data.lekua, data.izena, data.dataOrdua);
 
         }
         
@@ -169,7 +166,7 @@ export const getTxapelketarenFaseak = async () => {
             const data = await response.json();
             const faseak = [];
             data.forEach(fase => {
-                faseak.push(new klaseak.Fasea(fase.idFasea, fase.idTxapelketa, fase.izena, fase.egoera, fase.hasiera, fase.amaiera, fase.irizpidea));
+                faseak.push(new konstanteak.Fasea(fase.idFasea, fase.idTxapelketa, fase.izena, fase.egoera, fase.hasiera, fase.amaiera, fase.irizpidea));
             });
             return faseak;
         }
@@ -220,7 +217,7 @@ export const getTxapelketarenInfoGuztia = async () => {
 };
 function createClassesFromData(data) {
     const txapelketak = data.map(txData => {
-        const txapelketa = new klaseak.Txapelketa(
+        const txapelketa = new konstanteak.Txapelketa(
             txData.idTxapelketa,
             txData.txapelketaLekua,
             txData.txapelketaIzena,
@@ -230,7 +227,7 @@ function createClassesFromData(data) {
         );
 
         txData.faseak.forEach(faseData => {
-            const fase = new klaseak.Fasea(
+            const fase = new konstanteak.Fasea(
                 faseData.idFasea,
                 txData.idTxapelketa,
                 faseData.faseIzena,
@@ -244,7 +241,7 @@ function createClassesFromData(data) {
             );
 
             faseData.ezaugarriak.forEach(ezaugarriaData => {
-                const ezaugarria = new klaseak.Ezaugarria(
+                const ezaugarria = new konstanteak.Ezaugarria(
                     ezaugarriaData.idEzaugarria,
                     ezaugarriaData.ezaugarriaIzena,
                     ezaugarriaData.puntuakMin,
@@ -255,7 +252,7 @@ function createClassesFromData(data) {
             });
 
             faseData.epaimahaikideak.forEach(epaimahaikideaData => {
-                const epaimahaikidea = new klaseak.Epaimahaikidea(
+                const epaimahaikidea = new konstanteak.Epaimahaikidea(
                     epaimahaikideaData.idEpaimahaikidea,
                     epaimahaikideaData.epaimahaikideaUsername,
                     faseData.idFasea

@@ -56,7 +56,8 @@ export async function login(event) {
             return;
         }
         else{
-        await u.createNewUser();
+        const e =await u.createNewUser();
+        if(e)
         bideratu();
         }
     }

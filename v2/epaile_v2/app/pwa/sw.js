@@ -1,5 +1,5 @@
-const VERSION = "v1";
-const CACHE_NAME = `v1-bertsio-${VERSION}`;
+const VERSION = "2";
+const CACHE_NAME = `epaile-bertsio-${VERSION}`;
 const APP_STATIC_RESOURCES = [
   "/",
   "../icons/putxera.jpg",
@@ -13,7 +13,7 @@ const APP_STATIC_RESOURCES = [
   "../js/epaimahaikidea.js",
   "../js/ezaugarria.js",
   "../js/fasea.js",
-  "../js/klaseak.js",
+  "../js/konstanteak.js",
   "../js/taldea.js",
   "../js/txapelketa.js",
   "../js/user.js",

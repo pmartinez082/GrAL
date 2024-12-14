@@ -1,29 +1,6 @@
-const API_URL = 'http://192.168.137.1:3000';
-import * as klaseak from "./klaseak.js";
-//FASEAK LORTU
-export const getFaseak = async (event) => {
-    event.preventDefault();
+import {API_URL} from './konstanteak.js'
+import * as konstanteak from "./konstanteak.js";
 
-    try {
-        const response = await fetch(`${API_URL}/fasea/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-        if (response.ok) {
-            const data = await response.json();
-            const faseak = [];
-            data.array.forEach(fasea => {
-                faseak.push(new klaseak.Fasea(fasea.idFasea, fasea.idTxapelketa, fasea.izena, fasea.hasiera, fasea.amaiera, fasea.egoera, fasea.irizpidea));
-            });
-            return faseak;
-        }
-    } catch (err) {
-        console.error(err);
-    }
-};
 
 //FASEA SORTU
 export const createNewFasea = async () => {
@@ -36,7 +13,9 @@ export const createNewFasea = async () => {
         egoera: "0",
         irizpidea: document.getElementById('faseIrizpidea').value
     };
+
     try {
+        if(!data.idTxapelketa||!data.izena||!data.irizpidea) return false;
         const response = await fetch(`${API_URL}/fasea/add`, {
             method: 'POST',
             headers: {
@@ -49,6 +28,7 @@ export const createNewFasea = async () => {
             const responseData = await response.json();
             const idFasea = responseData.idFasea;
             document.getElementById('idFasea').value = idFasea;
+            return true;
         } else {
             const error = await response.json();
             console.log(`Error: ${error.error}`);
@@ -58,7 +38,7 @@ export const createNewFasea = async () => {
         console.error(err);
     }
 };
-//FASEA EZABATU
+
 export const deleteFasea = async (event) => {
     const idFasea = document.getElementById('idFasea').value;
     event.preventDefault();
@@ -84,109 +64,13 @@ export const deleteFasea = async (event) => {
     }
 };
 
-//FASEA EGUNERATU
-export const updateFasea = async (event) => {
-    event.preventDefault();
-    const data = {
-        idFasea: document.getElementById('idFasea').value,
-        idTxapelketa: document.getElementById('idTxapelketa').value,
-        izena: document.getElementById('izena').value,
-        hasiera: document.getElementById('hasiera').value,
-        amaiera: document.getElementById('amaiera').value,
-        egoera: document.getElementById('egoera').value,
-        irizpidea: document.getElementById('irizpidea').value
-    };
-    try {
-        const response = await fetch(`${API_URL}/fasea/update`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (response.ok) {
-            console.log('Fasea eguneratua');
-        } else {
-            const error = await response.json();
-            console.log(`Error: ${error.error}`);
-        }
-    } catch (err) {
-       
-        console.error(err);
-    }
-};
-
-//FASEA LORTU
-export const getFasea = async () => {
-    
-    try {
-        const response = await fetch(`${API_URL}/fasea/1`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            
-        });
-        if (response.ok) {
-            const data = await response.json();
-           return new klaseak.Fasea(data.idFasea, data.idTxapelketa, data.izena, data.egoera, data.hasiera, data.amaiera, data.irizpidea);
 
 
-        }
-        
-} catch (err) {
-    console.error(err);
-}
 
-};
 
-//FASEAREN EZAUGARRIAK LORTU
-export const getFasearenEzaugarriak = async () => {
-    
-    const idFasea = document.getElementById('idFasea').value;
-    try {
-        const response = await fetch(`${API_URL}/fasea/${idFasea}/ezaugarriak`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            
-        });
-        if (response.ok) {
-            const data = await response.json();
-            const ezaugarriak = [];
-            data.forEach(ezaugarri => {
-                ezaugarriak.push(new klaseak.Ezaugarria(ezaugarri.idEzaugarria, ezaugarri.izena, ezaugarri.puntuakMax, ezaugarri.puntuakMin, ezaugarri.ponderazioa));
-            });
-            return ezaugarriak;
-        }
-    } catch (err) {
-        console.error(err);
-    }
-};
 
-export const getFaseAktiboa = async () => {
-    
-    try {
-        const response = await fetch(`${API_URL}/fasea/lortu/aktiboa`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        if (response.ok) {
-            const data = await response.json();
-            return new klaseak.Fasea(data[0].idFasea, data[0].idTxapelketa, data[0].izena, data[0].egoera, data[0].hasiera, data[0].amaiera, data[0].irizpidea);
-        }
-        else{
-            return [];
-        }
-    } catch (err) {
-        //console.error(err);
-        return null;
-    }
-};
+
+
 
 
 export const getFasearenEpaimahaikideakEzaugarriak = async () => {
@@ -248,7 +132,7 @@ export function createClassesFromDataF(data) {
     
     for (const key in faseMap) {
         const faseData = faseMap[key];
-        const fase = new klaseak.Fasea(
+        const fase = new konstanteak.Fasea(
             faseData.idFasea,
             null, 
             faseData.faseIzena,
@@ -259,7 +143,7 @@ export function createClassesFromDataF(data) {
         );
 
         faseData.ezaugarriak.forEach(ezData => {
-            const ezaugarria = new klaseak.Ezaugarria(
+            const ezaugarria = new konstanteak.Ezaugarria(
                 ezData.idEzaugarria,
                 ezData.ezaugarriIzena,
                 ezData.puntuakMax,
@@ -273,7 +157,7 @@ export function createClassesFromDataF(data) {
         });
 
         faseData.epaimahaikideak.forEach(epData => {
-            const epaimahaikidea = new klaseak.Epaimahaikidea(
+            const epaimahaikidea = new konstanteak.Epaimahaikidea(
                 epData.idEpaimahaikidea,
                 epData.username,
                 faseData.idFasea

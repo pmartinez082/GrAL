@@ -6,26 +6,39 @@ import * as ep from "./epaimahaikidea.js";
 import * as ez from "./ezaugarria.js";
 import * as eb from "./ebaluazioa.js";
 import * as ta from "./taldea.js"
-import * as klaseak from "./klaseak.js";
+import * as konstanteak from "./konstanteak.js";
 
+
+//txapelketaBerria.html, txapelketaEzabatu eta txapelketaView.html
+//***********************************************
+async function txapelketaEzabatu(event){
+    event.preventDefault();
+    await tx.deleteTxapelketa(event);
+    txapelketaBistaratu(2);
+}
  export async function txapelketaSortu(event){
     event.preventDefault();
-    tx.createNewTxapelketa(event);
+    const h1 = document.getElementById("abisua");
+    if(h1) document.body.removeChild(h1);
+    
+    const e = await tx.createNewTxapelketa(event);
+    if(!e){
+
+        const abisua = document.createElement('h1');
+        abisua.id = "abisua";
+        abisua.innerHTML = "Parametro guztiak bete behar dituzu";
+        abisua.style.textAlign = "center";
+        abisua.style.padding = "40px";
+        document.body.appendChild(abisua);
+        return;
+    }
     document.getElementById('txapForm').hidden = true;
     document.getElementById('sortu').hidden = true;
-    
-   
-
     faseakForm(1);
 
 }
-export function getEzaugarriakArray(){
-    return ezaugarriak;
-}
 
-export function getEpaimahaikideakArray(){
-    return epaimahakideak;
-}
+
 export async function faseakForm() {
     const epaileak = await u.getEpaileak();
     const l_ = await tx.getTxapelketa();
@@ -121,7 +134,25 @@ export async function faseakForm() {
     txapelketaBistaratu(0);
 }
 
-  
+function epaileakCheckbox(epaileak) {
+    let htmlString = "<table style='border-collapse: collapse;'>";
+    epaileak.forEach((epaile, index) => {
+        if (index % 2 === 0) {
+            htmlString += "<tr style='border: none;'>";
+        }
+        const checkbox = `<input type="checkbox" id="epaile-${epaile.username}" name="checkbox" value="${epaile.username}">`;
+        const label = `<label for="epaile-${epaile.username}">${epaile.username}</label>`;
+        htmlString += `<td style='border: none;'>${checkbox}${label}</td>`;
+        if (index % 2 !== 0) {
+            htmlString += "</tr>";
+        }
+    });
+    if (epaileak.length % 2 !== 0) {
+        htmlString += "<td style='border: none;'></td></tr>";
+    }
+    htmlString += "</table>";
+    return htmlString;
+} 
 
 export async function faseaSortu(event, i){
   
@@ -157,14 +188,14 @@ export async function faseaSortu(event, i){
     const checkEpaileak = document.getElementsByName('checkbox');
     checkEpaileak.forEach(cE => {
         if (cE.checked) {
-            epaimahakideak.push(new klaseak.Epaimahaikidea(0, cE.value,0));
+            epaimahakideak.push(new konstanteak.Epaimahaikidea(0, cE.value,0));
         }
     });
  
     await ep.createNewEpaimahaikidea();
     
     if(i === 0){
-        window.location.href = 'lehiaketakView.html';
+        window.location.href = 'txapelketakView.html';
     }
     document.getElementById("faseakTaula").innerHTML = "";  
     
@@ -179,8 +210,6 @@ export async function faseaSortu(event, i){
 
 
 
-
-
 export function checkCheckbox(epaileak){
     for (const epaile of epaileak) {
         if(epaile.checked){
@@ -188,6 +217,8 @@ export function checkCheckbox(epaileak){
         }
         return false;
 }
+
+
 export async function txapelketaBistaratu(i) {
     if(!u.autentifikatu()) return;
     try {
@@ -279,25 +310,7 @@ export async function txapelketaBistaratu(i) {
     }
 }       
 
-function epaileakCheckbox(epaileak) {
-    let htmlString = "<table style='border-collapse: collapse;'>";
-    epaileak.forEach((epaile, index) => {
-        if (index % 2 === 0) {
-            htmlString += "<tr style='border: none;'>";
-        }
-        const checkbox = `<input type="checkbox" id="epaile-${epaile.username}" name="checkbox" value="${epaile.username}">`;
-        const label = `<label for="epaile-${epaile.username}">${epaile.username}</label>`;
-        htmlString += `<td style='border: none;'>${checkbox}${label}</td>`;
-        if (index % 2 !== 0) {
-            htmlString += "</tr>";
-        }
-    });
-    if (epaileak.length % 2 !== 0) {
-        htmlString += "<td style='border: none;'></td></tr>";
-    }
-    htmlString += "</table>";
-    return htmlString;
-}
+
 
 export async function faseakBistaratu() {
     if(!u.autentifikatu()) return;
@@ -380,7 +393,6 @@ async function ezaugarriaBistaratu(ezaugarria) {
 }
 
 
-
 async function epaimahaikideaBistaratu(epaimahaikidea){
 
     const taula = document.getElementById("epaimahaikidea-"+epaimahaikidea.idEpaimahaikidea);
@@ -455,7 +467,6 @@ async function epaimahaikideaBistaratu(epaimahaikidea){
     
 
 
-
 async function ebaluazioakBistaratu(event, epaimahaikidea) {
     event.preventDefault(); 
     const modal = document.createElement("div");
@@ -512,7 +523,10 @@ async function ebaluazioakBistaratu(event, epaimahaikidea) {
     document.body.appendChild(modal);
     document.getElementById("content").classList.add("blur");
 }
+//****************************************
 
+//faseakView.html
+//***********************************************
 async function aldatuEgoera(event) {
     event.preventDefault();
     await f.egoeraAldatu(event);
@@ -530,28 +544,6 @@ async function aldatuEgoera(event) {
 
 }
 
-
-function styling(overlay, modal) {
-   
-    overlay.style.position = "fixed";
-    overlay.style.top = 0;
-    overlay.style.left = 0;
-    overlay.style.width = "100%";
-    overlay.style.height = "100%";
-    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-    overlay.style.zIndex = 999;
-
-    modal.style.position = "fixed";
-    modal.style.top = "50%";
-    modal.style.left = "50%";
-    modal.style.transform = "translate(-50%, -50%)";
-    modal.style.backgroundColor = "#fff";
-    modal.style.padding = "20px";
-    modal.style.borderRadius = "8px";
-    modal.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
-    modal.style.zIndex = 1000;
-    modal.style.overflowY = "auto";
-}
 
 export async function faseAktiboarenEbaluazioakBistaratu(){
     const ebaluazioak = await eb.getFaseAktiboarenEbaluazioak();
@@ -631,6 +623,8 @@ export async function fasearenEbaluazioakBistaratu(event){
 
    }
 
+
+   //kalkuluak.html
 export async function kalkuluakBistaratu(){
     if(!u.autentifikatu()) return;
     const taulaDiv = document.createElement('div');
@@ -674,7 +668,7 @@ export async function kalkuluakBistaratu(){
 
 }
 
-
+//taldeaBerria.html eta taldeaEzabatu.html
  export async function  taldeaSortu(event){
     const  taulaDiv = document.getElementById('taulaDiv');
   
@@ -725,7 +719,6 @@ export async function kalkuluakBistaratu(){
     taulaDiv.appendChild(button);
     taldeakBistaratu2(i);
  }
-
 
 
  function taldeenTaula(div, taldeak, i) {
@@ -783,8 +776,3 @@ export async function kalkuluakBistaratu(){
     taldeakBistaratu2();
 }
 
-async function txapelketaEzabatu(event){
-    event.preventDefault();
-    await tx.deleteTxapelketa(event);
-    txapelketaBistaratu(2);
-}

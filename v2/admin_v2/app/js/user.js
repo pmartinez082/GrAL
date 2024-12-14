@@ -1,6 +1,6 @@
-import * as klaseak from './klaseak.js';
+import * as konstanteak from './konstanteak.js';
 import { jwtDecode } from '../../../db_v2/node_modules/jwt-decode/build/esm/index.js';
-const API_URL = 'http://192.168.137.1:3000';
+import {API_URL} from './konstanteak.js'
 export const getEpaileak = async () => {
     try {
         const response = await fetch(`${API_URL}/user/role/epaileak`, {
@@ -14,7 +14,7 @@ export const getEpaileak = async () => {
             const data = await response.json();
             const epaileak = [];
             data.forEach(epaile => {
-                epaileak.push(new klaseak.user(epaile.username, epaile.email, epaile.password, epaile.role));
+                epaileak.push(new konstanteak.user(epaile.username, epaile.email, epaile.password, epaile.role));
                 
             });
             console.log(epaileak);
@@ -103,6 +103,7 @@ export const createNewUser = async () => {
     const password = document.getElementById('password').value;
     const role = document.getElementById('role').value;
     try {
+        if(!username||!email||!password||!role) return false;
         const response = await fetch(`${API_URL}/user/add`, {
             method: 'POST',
             headers: {

@@ -1,5 +1,5 @@
-const VERSION = "v2";
-const CACHE_NAME = `v2-bertsio-${VERSION}`;
+const VERSION = "2";
+const CACHE_NAME = `admin-bertsio-${VERSION}`;
 const APP_STATIC_RESOURCES = [
   "/",
   "../icons/putxera.jpg",
@@ -9,14 +9,18 @@ const APP_STATIC_RESOURCES = [
   "../html/admin/admin.html",
   "../html/admin/faseakView.html",
   "../html/admin/txapelketaBerria.html",
-  "../html/admin/lehiaketakView.html",
+  "../html/admin/txapelketakView.html",
+  "../html/admin/taldeaBerria.html",
+  "../html/admin/taldeaEzabatu.html",
+  "../html/admin/txapelketaEzabatu.html",
+  "../html/admin/kalkuluak.html",
   "../js/admin.js",
   "../js/app.js",
   "../js/ebaluazioa.js",
   "../js/epaimahaikidea.js",
   "../js/ezaugarria.js",
   "../js/fasea.js",
-  "../js/klaseak.js",
+  "../js/konstanteak.js",
   "../js/taldea.js",
   "../js/txapelketa.js",
   "../js/user.js",
