@@ -141,4 +141,13 @@ router.get("/pics/txapBerria.svg", async (req, res) => {
 router.get("/pics/txapEzabatu.svg", async (req, res) => {
     res.sendFile(path.join(__dirname, '..', '..', '..','admin', 'pics', 'txapEzabatu.svg'));
     });
+
+
+router.get("/icons/putxera.jpg", async (req, res) => {
+    res.sendFile(path.join(__dirname, '..', '..', '..','admin', 'icons', 'putxera.jpg'));
+    });
+
+router.get("/icons/putxera.png", async (req, res) => {
+    res.sendFile(path.join(__dirname, '..', '..', '..','admin', 'icons', 'putxera.png'));
+    });
 export default router;

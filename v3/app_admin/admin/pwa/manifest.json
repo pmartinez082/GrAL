@@ -1,6 +1,6 @@
 {
     "name": "Putxerapp_admin",
-    "short_name": "Putx_admin",
+    "short_name": "Putxera_adm",
     "description": "",
     "orientation": "any",
     
@@ -20,7 +20,7 @@
     ],
     
     "id": "/",
-    "start_url": "../html/index.html",
+    "start_url": "/",
     "theme_color": "#CCCCFF",
     "background_color": "#ffffff",
     "display": "standalone"

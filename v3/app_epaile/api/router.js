@@ -1,4 +1,5 @@
 
+import epaileRoutes from './src/routes/epaileRoutes.js';
 import txapelketaRoutes from './src/routes/txapelketaRoutes.js';
 import userRoutes from './src/routes/userRoutes.js';
 import taldeaRoutes from './src/routes/taldeaRoutes.js';
@@ -8,6 +9,7 @@ import faseaRoutes from './src/routes/faseaRoutes.js';
 import ezaugarriaRoutes from './src/routes/ezaugarriaRoutes.js';
 
 const router = (app) => {
+    app.use('/', epaileRoutes);
     app.use('/txapelketa', txapelketaRoutes);
     app.use('/user', userRoutes);
     app.use('/taldea', taldeaRoutes);

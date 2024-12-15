@@ -2,34 +2,35 @@ const VERSION = "2";
 const CACHE_NAME = `epaile-bertsio-${VERSION}`;
 const APP_STATIC_RESOURCES = [
   "/",
-  "../icons/putxera.jpg",
-  "../icons/putxera.png",
-  "../css/style.css",
-  "../html/index.html",
-  "../html/epaile/epaitu.html",
-  "../js/epaile.js",
-  "../js/app.js",
-  "../js/ebaluazioa.js",
-  "../js/epaimahaikidea.js",
-  "../js/ezaugarria.js",
-  "../js/fasea.js",
-  "../js/konstanteak.js",
-  "../js/taldea.js",
-  "../js/txapelketa.js",
-  "../js/user.js",
-  "./manifest.json"
+  "/icons/putxera.jpg",
+  "/icons/putxera.png",
+  "/css/style.css",
+  "/html/index.html",
+  "/html/epaile/epaitu.html",
+  "/js/epaile.js",
+  "/js/app.js",
+  "/js/ebaluazioa.js",
+  "/js/epaimahaikidea.js",
+  "/js/fasea.js",
+  "/js/konstanteak.js",
+  "/js/taldea.js",
+  "/js/txapelketa.js",
+  "/js/user.js",
+  "/pwa/manifest.json",
+  "/pwa/sw.js",
+  "/epaile"
 ];
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").then(
       (registration) => {
-        //console.log("Service worker registration successful:", registration);
+        console.log("Service worker registration successful:", registration);
       },
       (error) => {
-        //console.log(`Service worker registration failed: ${error}`);
+        console.log(`Service worker registration failed: ${error}`);
       },
     );
   } else {
-    //console.log("Service workers are not supported.");
+    console.log("Service workers are not supported.");
   }
 
   // On install, cache the static resources

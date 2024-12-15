@@ -30,5 +30,5 @@ router(app);
 
 //* Starting the server
 app.listen(port, host, () => {
-    //console.log(`Server running at http://${host}:${port}`);
+    console.log(`Server running at http://${host}:${port}`);
 });

@@ -101,7 +101,7 @@ export const createNewUser = async () => {
     const username = document.getElementById('username').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const role = document.getElementById('role').value;
+    const role = "admin";
     try {
         if(!username||!email||!password||!role) return false;
         const response = await fetch(`${API_URL}/user/add`, {

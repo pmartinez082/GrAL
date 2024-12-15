@@ -44,5 +44,12 @@
             <button type="submit"><img src="../pics/ezarpenak.svg" alt="Martxan dagoen txapelketa kudeatu"></button>
         </form>
     </div>
+
+    <script type = "module">
+        import {autentifikatu} from '../js/user.js';
+        window.addEventListener('DOMContentLoaded', () => {
+            autentifikatu();
+        });
+    </script>
 </body>
 </html>

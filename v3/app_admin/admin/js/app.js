@@ -41,14 +41,14 @@ export async function login(event) {
     else{  
     
     bideratu();
-    logDiv.innerHTML = "";
+    
     }
     } else {
-        logDiv.innerHTML = "";
+        
         const user = await u.findUser();
         if(user){
             
-            logDiv.innerHTML = "";
+            
             const mezua = document.createElement('h1');
             mezua.textContent = ` ${document.getElementById('username').value} izenarekin erabiltzailea existitzen da`;
             authForm.reset();

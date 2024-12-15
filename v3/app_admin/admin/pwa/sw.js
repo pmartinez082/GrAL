@@ -2,43 +2,45 @@ const VERSION = "2";
 const CACHE_NAME = `admin-bertsio-${VERSION}`;
 const APP_STATIC_RESOURCES = [
   "/",
-  "../icons/putxera.jpg",
-  "../icons/putxera.png",
-  "../css/style.css",
-  "../html/index.html",
-  "../html/admin/admin.html",
-  "../html/admin/faseakView.html",
-  "../html/admin/txapelketaBerria.html",
-  "../html/admin/txapelketakView.html",
-  "../html/admin/taldeaBerria.html",
-  "../html/admin/taldeaEzabatu.html",
-  "../html/admin/txapelketaEzabatu.html",
-  "../html/admin/kalkuluak.html",
-  "../js/admin.js",
-  "../js/app.js",
-  "../js/ebaluazioa.js",
-  "../js/epaimahaikidea.js",
-  "../js/ezaugarria.js",
-  "../js/fasea.js",
-  "../js/konstanteak.js",
-  "../js/taldea.js",
-  "../js/txapelketa.js",
-  "../js/user.js",
-  "./manifest.json"
+  "/icons/putxera.jpg",
+  "/icons/putxera.png",
+  "/css/style.css",
+  "/admin",
+  "/faseak",
+  "/txapelketak",
+  "/berria",
+  "/ezabatu/txapelketa",
+  "/ezabatu/taldea",
+  "/podium",
+  "/berria/txapelketa",
+  "/berria/taldea",
+  "/pwa/manifest.json",
+  "/pwa/sw.js",
+  "/js/admin.js",
+  "/js/app.js",
+  "/js/ebaluazioa.js",
+  "/js/epaimahaikidea.js",
+  "/js/ezaugarria.js",
+  "/js/fasea.js",
+  "/js/konstanteak.js",
+  "/js/taldea.js",
+  "/js/txapelketa.js",
+  "/js/user.js",
+
 ];
 
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").then(
       (registration) => {
-        //console.log("Service worker registration successful:", registration);
+        console.log("Service worker registration successful:", registration);
       },
       (error) => {
-        //console.log(`Service worker registration failed: ${error}`);
+        console.log(`Service worker registration failed: ${error}`);
       },
     );
   } else {
-    //console.log("Service workers are not supported.");
+    console.log("Service workers are not supported.");
   }
 
   // On install, cache the static resources
