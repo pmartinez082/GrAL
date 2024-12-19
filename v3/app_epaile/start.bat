@@ -1,0 +1,3 @@
+
+npm run setup
+echo Zerbitzaria abiarazten...
