@@ -9,10 +9,10 @@ import https from 'https';
 const app = express();
 
 //* Settings
-//const port = 443;
-//const host = '192.168.137.1'; 
-const port = 3000;
-const host = 'putxerapp.eus';
+const port = 443;
+const host = '192.168.137.1'; 
+//const port = 3000;
+//const host = 'putxerapp.eus';
 //* Middlewares
 app.use(morgan('dev'));
 
@@ -30,17 +30,17 @@ app.use(express.urlencoded( { extended:true }));
 //* Routes
 router(app);
 
-/*
-https.createServer({
-    cert: fs.readFileSync('https/cert.pem'),
-    key: fs.readFileSync('https/key.pem')
-  },app).listen(PUERTO, function(){
-     console.log('Server running at http://${host}:${port}');
- });
+const options = {
+    key: fs.readFileSync('https/key.pem'),
+    cert: fs.readFileSync('https/cert.pem')
+};
+
+const server = https.createServer(options, app);
  
-*/
+  
+
 
 //* Starting the server
-app.listen(port, host, () => {
+server.listen(port, host, () => {
     console.log(`Server running at http://${host}:${port}`);
 });
